@@ -1,10 +1,14 @@
 <h1>AgentLycoris : {{ Auth::user()->name }}</h1>
+<form action="/logout" method="post">
+    @csrf
+    <button type="submit">Logout</button>
+</form>
 
 <h2>What To Do?</h2>
 <ul>
-    <li>Tiket Bus</li>
-    <li>Langganan Netflix</li>
-    <li>Tiket Film</li>
-    <li>Top up Game</li>
-    <li>Isi token listrik</li>
+    <li><a href="">Tiket Bus</a></li>
+    <li><a href="">Langganan Netflix</a></li>
+    <li><a href="">Tiket Film</a></li>
+    <li><a href="">Top up Game</a></li>
+    <li><a href="">Isi token listrik</a></li>
 </ul>
