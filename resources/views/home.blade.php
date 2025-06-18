@@ -6,7 +6,7 @@
 
 <h2>What To Do?</h2>
 <ul>
-    <li><a href="">Tiket Bus</a></li>
+    <li><a href="/bus-ticket">Tiket Bus</a></li>
     <li><a href="">Langganan Netflix</a></li>
     <li><a href="">Tiket Film</a></li>
     <li><a href="">Top up Game</a></li>
