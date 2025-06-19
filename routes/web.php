@@ -8,6 +8,7 @@ use App\Http\Controllers\BusTicketController;
 Route::middleware("auth")->group(function () {
    Route::get('/', [ViewController::class, "home"]);
    Route::get("/bus-ticket", [ViewController::class, "busTicket"]);
+   Route::get("/bpjs", [ViewController::class, "bpjs"]);
 
    Route::post("/bus-ticket", [BusTicketController::class, "order"]);
 

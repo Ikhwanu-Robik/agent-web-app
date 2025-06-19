@@ -13,4 +13,8 @@ class ViewController extends Controller
     public function busTicket() {
         return view("bus_ticket");
     }
+
+    public function bpjs() {
+        return view("bpjs_subscription");
+    }
 }
