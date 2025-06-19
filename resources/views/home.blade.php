@@ -8,7 +8,7 @@
 <ul>
     <li><a href="/bus-ticket">Tiket Bus</a></li>
     <li><a href="/bpjs">Bayar BPJS</a></li>
-    <li><a href="">Tiket Film</a></li>
+    <li><a href="/film">Tiket Film</a></li>
     <li><a href="">Top up Game</a></li>
     <li><a href="">Isi token listrik</a></li>
 </ul>

@@ -9,6 +9,9 @@ Route::middleware("auth")->group(function () {
    Route::get('/', [ViewController::class, "home"]);
    Route::get("/bus-ticket", [ViewController::class, "busTicket"]);
    Route::get("/bpjs", [ViewController::class, "bpjs"]);
+   Route::get("/film", [ViewController::class, "filmTicket"]);
+   Route::get("/film/cinema", [ViewController::class, "filmCinema"]);
+   Route::get("/film/cinema/seat", [ViewController::class, "cinemaSeat"]);
 
    Route::post("/bus-ticket", [BusTicketController::class, "order"]);
 
