@@ -43,4 +43,19 @@ class ViewController extends Controller
 
         return view("film_ticket_seat");
     }
+
+    public function game() {
+        return view("game_topup");
+    }
+
+    public function gamePackage() {
+        $game = null;
+        // fetch the selected game model
+
+        if (!$game) {
+            return response("You need to choose a game to view this page");
+        }
+
+        return view("game_topup_package");
+    }
 }
