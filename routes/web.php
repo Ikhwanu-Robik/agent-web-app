@@ -14,6 +14,7 @@ Route::middleware("auth")->group(function () {
    Route::get("/film/cinema/seat", [ViewController::class, "cinemaSeat"]);
    Route::get("/game/topup", [ViewController::class, "game"]);
    Route::get("/game/topup/package", [ViewController::class, "gamePackage"]);
+   Route::get("/power", [ViewController::class, "power"]);
    
    Route::post("/bus-ticket", [BusTicketController::class, "order"]);
 

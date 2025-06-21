@@ -10,5 +10,5 @@
     <li><a href="/bpjs">Bayar BPJS</a></li>
     <li><a href="/film">Tiket Film</a></li>
     <li><a href="/game/topup">Top up Game</a></li>
-    <li><a href="">Isi token listrik</a></li>
+    <li><a href="/power">Isi token listrik</a></li>
 </ul>
