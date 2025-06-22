@@ -18,13 +18,20 @@ Route::middleware("auth")->group(function () {
    Route::get("/power", [ViewController::class, "power"]);
 
    Route::get("/master", [ViewController::class, "master"]);
-   Route::get("/master/bus/station", [BusStationController::class, "index"]);
-   Route::get("/master/bus/station/create", [BusStationController::class, "create"]);
-   Route::post("/master/bus/station/create", [BusStationController::class, "store"]);
-   Route::get("/master/bus/station/edit/{bus_station}", [BusStationController::class, "edit"]);
-   Route::put("/master/bus/station/edit/{bus_station}", [BusStationController::class, "update"]);
-   Route::get("/master/bus/station/delete/{bus_station}", [BusStationController::class, "delete"]);
-   Route::delete("/master/bus/station/delete/{bus_station}", [BusStationController::class, "destroy"]);
+
+   Route::prefix("/master")->group(function () {
+      
+      Route::prefix("/bus/station")->group(function () {
+         Route::get("/", [BusStationController::class, "index"]);
+         Route::get("/create", [BusStationController::class, "create"]);
+         Route::post("/create", [BusStationController::class, "store"]);
+         Route::get("/edit/{bus_station}", [BusStationController::class, "edit"]);
+         Route::put("/edit/{bus_station}", [BusStationController::class, "update"]);
+         Route::get("/delete/{bus_station}", [BusStationController::class, "delete"]);
+         Route::delete("/delete/{bus_station}", [BusStationController::class, "destroy"]);
+      });
+      
+   });
    
    Route::post("/bus-ticket", [BusTicketController::class, "order"]);
 
