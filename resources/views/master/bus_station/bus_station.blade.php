@@ -18,7 +18,7 @@
             <td>{{ $station->name }}</td>
             <td>{{ $station->created_at }}</td>
             <td>{{ $station->updated_at }}</td>
-            <td><a href="{{ "/master/bus/station/edit/" . $station->id }}"><button>Update</button></a><form action="" method="post" style="display:inline"><button>Delete</button></form></td>
+            <td><a href="{{ "/master/bus/station/edit/" . $station->id }}"><button>Update</button></a><a href="{{ "/master/bus/station/delete/" . $station->id }}"><button>Delete</button></a></td>
         </tr>
     @endforeach
 </table>

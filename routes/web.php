@@ -23,6 +23,8 @@ Route::middleware("auth")->group(function () {
    Route::post("/master/bus/station/create", [BusStationController::class, "store"]);
    Route::get("/master/bus/station/edit/{bus_station}", [BusStationController::class, "edit"]);
    Route::put("/master/bus/station/edit/{bus_station}", [BusStationController::class, "update"]);
+   Route::get("/master/bus/station/delete/{bus_station}", [BusStationController::class, "delete"]);
+   Route::delete("/master/bus/station/delete/{bus_station}", [BusStationController::class, "destroy"]);
    
    Route::post("/bus-ticket", [BusTicketController::class, "order"]);
 

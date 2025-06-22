@@ -40,14 +40,6 @@ class BusStationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(vc $vc)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(BusStation $bus_station)
@@ -70,11 +62,21 @@ class BusStationController extends Controller
         return redirect("/master/bus/station");
     }
 
+    public function delete(BusStation $bus_station) {
+        return view("master.bus_station.delete", ["bus_station" => $bus_station]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(vc $vc)
+    public function destroy(Request $request, BusStation $bus_station)
     {
-        //
+        $validated = $request->validate([
+            "bus_station" => "required|numeric|exists:bus_stations,id"
+        ]);
+
+        $bus_station->delete();
+
+        return redirect("/master/bus/station");
     }
 }
