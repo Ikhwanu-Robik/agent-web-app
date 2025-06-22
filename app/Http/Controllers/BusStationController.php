@@ -50,17 +50,24 @@ class BusStationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(vc $vc)
+    public function edit(BusStation $bus_station)
     {
-        //
+        return view("master.bus_station.edit", ["bus_station" => $bus_station]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, vc $vc)
+    public function update(Request $request, BusStation $bus_station)
     {
-        //
+        $validated = $request->validate([
+            "name" => "required|string"
+        ]);
+
+        $bus_station->name = $validated["name"];
+        $bus_station->save();
+
+        return redirect("/master/bus/station");
     }
 
     /**

@@ -21,6 +21,8 @@ Route::middleware("auth")->group(function () {
    Route::get("/master/bus/station", [BusStationController::class, "index"]);
    Route::get("/master/bus/station/create", [BusStationController::class, "create"]);
    Route::post("/master/bus/station/create", [BusStationController::class, "store"]);
+   Route::get("/master/bus/station/edit/{bus_station}", [BusStationController::class, "edit"]);
+   Route::put("/master/bus/station/edit/{bus_station}", [BusStationController::class, "update"]);
    
    Route::post("/bus-ticket", [BusTicketController::class, "order"]);
 
