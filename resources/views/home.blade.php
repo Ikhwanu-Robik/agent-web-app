@@ -5,6 +5,10 @@
 </form>
 
 <h2>What To Do?</h2>
+
+<a href="/master"><button>Switch to Admin</button></a>
+
+<h3>or Proceed As Agent</h3>
 <ul>
     <li><a href="/bus/ticket">Tiket Bus</a></li>
     <li><a href="/bpjs">Bayar BPJS</a></li>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BusStationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ViewController;
@@ -15,6 +16,22 @@ Route::middleware("auth")->group(function () {
    Route::get("/game/topup", [ViewController::class, "game"]);
    Route::get("/game/topup/package", [ViewController::class, "gamePackage"]);
    Route::get("/power", [ViewController::class, "power"]);
+
+   Route::get("/master", [ViewController::class, "master"]);
+
+   Route::prefix("/master")->group(function () {
+      
+      Route::prefix("/bus/station")->group(function () {
+         Route::get("/", [BusStationController::class, "index"]);
+         Route::get("/create", [BusStationController::class, "create"]);
+         Route::post("/create", [BusStationController::class, "store"]);
+         Route::get("/edit/{bus_station}", [BusStationController::class, "edit"]);
+         Route::put("/edit/{bus_station}", [BusStationController::class, "update"]);
+         Route::get("/delete/{bus_station}", [BusStationController::class, "delete"]);
+         Route::delete("/delete/{bus_station}", [BusStationController::class, "destroy"]);
+      });
+      
+   });
    
    Route::post("/bus-ticket", [BusTicketController::class, "order"]);
 

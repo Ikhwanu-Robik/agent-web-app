@@ -71,4 +71,8 @@ class ViewController extends Controller
     {
         return view("electric_token");
     }
+
+    public function master() {
+        return view("master.master");
+    }
 }
