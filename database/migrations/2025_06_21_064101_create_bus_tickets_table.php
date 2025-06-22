@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('bus_stations', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string("name");
         });
 
         Schema::create("bus_schedules", function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->date("departure_date");
+            $table->time("departure_time");
+            $table->integer("seats");
         });
     }
 
