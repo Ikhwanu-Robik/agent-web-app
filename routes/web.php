@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BusStationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ViewController;
@@ -15,6 +16,9 @@ Route::middleware("auth")->group(function () {
    Route::get("/game/topup", [ViewController::class, "game"]);
    Route::get("/game/topup/package", [ViewController::class, "gamePackage"]);
    Route::get("/power", [ViewController::class, "power"]);
+
+   Route::get("/master", [ViewController::class, "master"]);
+   Route::get("/master/bus", [BusStationController::class, "index"]);
    
    Route::post("/bus-ticket", [BusTicketController::class, "order"]);
 
