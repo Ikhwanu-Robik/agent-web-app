@@ -1,6 +1,6 @@
 <h1>Admin Stasiun Bus</h1>
 
-<a href="">
+<a href="/master/bus/station/create">
     <button>Create</button>
 </a>
 

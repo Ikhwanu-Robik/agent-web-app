@@ -22,7 +22,7 @@ class BusStationController extends Controller
      */
     public function create()
     {
-        //
+        return view("master.bus_station.create");
     }
 
     /**
@@ -30,7 +30,13 @@ class BusStationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            "name" => "required|string"
+        ]);
+
+        BusStation::create($validated);
+
+        return redirect("/master/bus/station");
     }
 
     /**

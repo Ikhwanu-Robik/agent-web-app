@@ -18,7 +18,9 @@ Route::middleware("auth")->group(function () {
    Route::get("/power", [ViewController::class, "power"]);
 
    Route::get("/master", [ViewController::class, "master"]);
-   Route::get("/master/bus", [BusStationController::class, "index"]);
+   Route::get("/master/bus/station", [BusStationController::class, "index"]);
+   Route::get("/master/bus/station/create", [BusStationController::class, "create"]);
+   Route::post("/master/bus/station/create", [BusStationController::class, "store"]);
    
    Route::post("/bus-ticket", [BusTicketController::class, "order"]);
 
