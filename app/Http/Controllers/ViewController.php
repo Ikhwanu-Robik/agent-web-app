@@ -13,17 +13,17 @@ class ViewController extends Controller
 
     public function busTicket()
     {
-        return view("bus_ticket");
+        return view("agent.bus_ticket");
     }
 
     public function bpjs()
     {
-        return view("bpjs_subscription");
+        return view("agent.bpjs_subscription");
     }
 
     public function filmTicket()
     {
-        return view("film_ticket");
+        return view("agent.film_ticket");
     }
 
     public function filmCinema()
@@ -35,7 +35,7 @@ class ViewController extends Controller
             return response("You need to choose a film to view this page", 401);
         }
 
-        return view("film_ticket_cinema");
+        return view("agent.film_ticket_cinema");
     }
 
     public function cinemaSeat()
@@ -47,12 +47,12 @@ class ViewController extends Controller
             return response("You need to choose a cinema to view this page", 401);
         }
 
-        return view("film_ticket_seat");
+        return view("agent.film_ticket_seat");
     }
 
     public function game()
     {
-        return view("game_topup");
+        return view("agent.game_topup");
     }
 
     public function gamePackage()
@@ -64,12 +64,12 @@ class ViewController extends Controller
             return response("You need to choose a game to view this page");
         }
 
-        return view("game_topup_package");
+        return view("agent.game_topup_package");
     }
 
     public function power()
     {
-        return view("electric_token");
+        return view("agent.electric_token");
     }
 
     public function master() {
