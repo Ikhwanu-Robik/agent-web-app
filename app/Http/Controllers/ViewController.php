@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusStation;
 use Illuminate\Http\Request;
 
 class ViewController extends Controller
@@ -13,7 +14,10 @@ class ViewController extends Controller
 
     public function busTicket()
     {
-        return view("agent.bus_ticket");
+        $matching_schedules = null;
+        // fetchMatchingSchedules()
+
+        return view("agent.bus_ticket", ["bus_stations" => BusStation::all(), "matching_schedules" => $matching_schedules]);
     }
 
     public function bpjs()
