@@ -1,6 +1,6 @@
 <h1>Edit Bus Station</h1>
 
-<form action="/master/bus/station/edit/1" method="post">
+<form action="{{ "/master/bus/station/edit/" . $bus_station->id }}" method="post">
     @csrf
     @method("PUT")
     <label for="name">Station Name</label>
