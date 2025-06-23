@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BusController;
 use App\Http\Controllers\BusStationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -29,6 +30,16 @@ Route::middleware("auth")->group(function () {
          Route::put("/edit/{bus_station}", [BusStationController::class, "update"]);
          Route::get("/delete/{bus_station}", [BusStationController::class, "delete"]);
          Route::delete("/delete/{bus_station}", [BusStationController::class, "destroy"]);
+      });
+
+      Route::prefix("/bus")->group(function () {
+         Route::get("/", [BusController::class, "index"]);
+         Route::get("/create", [BusController::class, "create"]);
+         Route::post("/create", [BusController::class, "store"]);
+         Route::get("/edit/{bus}", [BusController::class, "edit"]);
+         Route::put("/edit/{bus}", [BusController::class, "update"]);
+         Route::get("/delete/{bus}", [BusController::class, "delete"]);
+         Route::delete("/delete/{bus}", action: [BusController::class, "destroy"]);
       });
       
    });
