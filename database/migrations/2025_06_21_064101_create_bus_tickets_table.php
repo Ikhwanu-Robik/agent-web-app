@@ -41,10 +41,17 @@ return new class extends Migration {
         Schema::create("bus_ticket_transactions", function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("bus_schedule_id");
             $table->integer("ticket_amount");
+            $table->integer("total");
+            $table->string('method')->nullable();
+            $table->boolean('status')->nullable();
+            $table->string('flip_link_id')->unique()->nullable();
+            $table->string('flip_link_url')->unique()->nullable();
 
             $table->foreign("bus_schedule_id")->references("id")->on("bus_schedules");
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
 
