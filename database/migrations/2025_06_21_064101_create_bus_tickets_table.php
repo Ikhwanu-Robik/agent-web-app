@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -39,6 +38,14 @@ return new class extends Migration
             $table->foreign("destination_station_id")->references("id")->on("bus_stations");
         });
 
+        Schema::create("bus_ticket_transactions", function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->unsignedBigInteger("bus_schedule_id");
+            $table->integer("ticket_amount");
+
+            $table->foreign("bus_schedule_id")->references("id")->on("bus_schedules");
+        });
     }
 
     /**
@@ -46,8 +53,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists("buses");
-        Schema::dropIfExists('bus_stations');
+        Schema::dropIfExists("bus_ticket_transactions");
         Schema::dropIfExists("bus_schedules");
+        Schema::dropIfExists('bus_stations');
+        Schema::dropIfExists("buses");
     }
 };

@@ -54,8 +54,12 @@ Route::middleware("auth")->group(function () {
       });
       
    });
-   
-   Route::post("/bus-ticket", [BusTicketController::class, "order"]);
+
+   Route::post("/bus/schedules", [BusScheduleController::class, "search"]);
+   Route::post("/bus/ticket", [BusTicketController::class, "order"]);
+
+   Route::get("/transaction/payment", [ViewController::class, "payment"]);
+   Route::get("/transaction/finished", [ViewController::class, "receipt"]);
 
    Route::post("/logout", [AuthController::class, "logout"]);
 });

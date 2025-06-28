@@ -12,6 +12,15 @@ class ViewController extends Controller
         return view("home");
     }
 
+    public function payment() {
+        return view("agent.payment_method");
+    }
+
+    public function receipt()
+    {
+        return view("agent.receipt");
+    }
+
     public function busTicket()
     {
         $matching_schedules = null;
@@ -76,7 +85,8 @@ class ViewController extends Controller
         return view("agent.electric_token");
     }
 
-    public function master() {
+    public function master()
+    {
         return view("master.master");
     }
 }
