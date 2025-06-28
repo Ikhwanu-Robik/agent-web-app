@@ -25,15 +25,33 @@ class BusTicketController extends Controller
         // TODO "total" => $validated["ticket_amount"] * $bus_schedule->ticket_price,
         // TODO "user_id" => Auth::id(),
         // TODO "transaction_status" => "pending",
-        // ]);
+        // ])->with(["busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"]);
         // $bus_schedule->save();
 
-        $transaction = BusTicketTransaction::latest()->first();
+        $transaction = BusTicketTransaction::latest()->first(); // tmp
 
-        // Do I need to show the transaction receipt?
-        // Yes, I need to
         $transaction_data = $transaction->with(["busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])->latest()->first();
-        $transaction_data->total = $transaction_data->ticket_amount * $transaction_data->busSchedule->ticket_price;
-        return redirect("/transaction/payment")->with("transaction_data", $transaction_data)->with("transaction_type", "bus_ticket");
+        $transaction_data->total = $transaction_data->ticket_amount * $transaction_data->busSchedule->ticket_price; // tmp
+        return redirect("/bus/ticket/payment")->with("transaction_data", $transaction_data);
+    }
+
+    public function payment()
+    {
+        return view("agent.bus_ticket.payment_method");
+    }
+
+    public function receipt()
+    {
+        return view("agent.bus_ticket.receipt");
+    }
+
+    public function pay(Request $request) {
+        // process according to payment method
+
+        $transaction = BusTicketTransaction::latest()->first(); // tmp
+
+        $transaction_data = $transaction->with(["busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])->latest()->first();
+        $transaction_data->total = $transaction_data->ticket_amount * $transaction_data->busSchedule->ticket_price; // tmp
+        return redirect("/bus/ticket/finished")->with("transaction_data", $transaction_data);
     }
 }

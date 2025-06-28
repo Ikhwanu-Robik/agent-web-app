@@ -12,31 +12,19 @@ class ViewController extends Controller
         return view("home");
     }
 
-    public function payment() {
-        return view("agent.payment_method");
-    }
-
-    public function receipt()
-    {
-        return view("agent.receipt");
-    }
-
     public function busTicket()
     {
-        $matching_schedules = null;
-        // fetchMatchingSchedules()
-
-        return view("agent.bus_ticket", ["bus_stations" => BusStation::all(), "matching_schedules" => $matching_schedules]);
+        return view("agent.bus_ticket.bus_ticket", ["bus_stations" => BusStation::all()]);
     }
 
     public function bpjs()
     {
-        return view("agent.bpjs_subscription");
+        return view("agent.bpjs_subscription.bpjs_subscription");
     }
 
     public function filmTicket()
     {
-        return view("agent.film_ticket");
+        return view("agent.film_ticket.film_ticket");
     }
 
     public function filmCinema()
@@ -48,7 +36,7 @@ class ViewController extends Controller
             return response("You need to choose a film to view this page", 401);
         }
 
-        return view("agent.film_ticket_cinema");
+        return view("agent.film_ticket.film_ticket_cinema");
     }
 
     public function cinemaSeat()
@@ -60,12 +48,12 @@ class ViewController extends Controller
             return response("You need to choose a cinema to view this page", 401);
         }
 
-        return view("agent.film_ticket_seat");
+        return view("agent.film_ticket.film_ticket_seat");
     }
 
     public function game()
     {
-        return view("agent.game_topup");
+        return view("agent.game_topup.game_topup");
     }
 
     public function gamePackage()
@@ -77,12 +65,12 @@ class ViewController extends Controller
             return response("You need to choose a game to view this page");
         }
 
-        return view("agent.game_topup_package");
+        return view("agent.game_topup.game_topup_package");
     }
 
     public function power()
     {
-        return view("agent.electric_token");
+        return view("agent.electric_token.electric_token");
     }
 
     public function master()
