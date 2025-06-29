@@ -36,16 +36,24 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             "name" => "required|string",
+            "profile_photo" => "required|image",
             "email" => "required|email|unique:users,email",
             "password" => "required"
         ]);
+
+        if (!$request->file("profile_photo")->isValid()) {
+            return response("Photo profil is not uploaded successfully", 422);
+        }
+        $file_name = $request->file("profile_photo")->storePublicly();
+        $validated["profile_photo"] = $file_name;
 
         User::create($validated);
 
         return redirect("/");
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
 
         $request->session()->invalidate();
