@@ -1,4 +1,5 @@
 <h1>AgentLycoris : {{ Auth::user()->name }}</h1>
+<img src="{{ config("app.url") . '/storage/' . Auth::user()->profile_photo }}" alt="">
 <form action="/logout" method="post">
     @csrf
     <button type="submit">Logout</button>
