@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PaymentMethod;
 use App\Models\BusSchedule;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 use App\Models\BusTicketTransaction;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +20,6 @@ class BusTicketController extends Controller
         ]);
 
         $bus_schedule = BusSchedule::find($validated["schedule_id"]);
-        $bus_schedule->seats = $bus_schedule->seats - $validated["ticket_amount"];
 
         $attribute = [
             "user_id" => Auth::id(),
@@ -29,8 +30,6 @@ class BusTicketController extends Controller
         ];
         $transaction = BusTicketTransaction::create($attribute);
         $transaction_data = BusTicketTransaction::with(["busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])->find($transaction->id);
-
-        $bus_schedule->save();
 
         return redirect("/bus/ticket/payment")->with("transaction_data", $transaction_data);
     }
@@ -47,12 +46,25 @@ class BusTicketController extends Controller
 
     public function pay(Request $request)
     {
-        // process according to payment method
+        $validated = $request->validate([
+            "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
+            "bus_ticket_transaction_id" => "required|exists:bus_ticket_transactions,id"
+        ]);
 
-        $transaction = BusTicketTransaction::latest()->first(); // tmp
+        $transaction_data = BusTicketTransaction::with(["busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])->find($validated["bus_ticket_transaction_id"]);
 
-        $transaction_data = $transaction->with(["busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])->latest()->first();
-        $transaction_data->total = $transaction_data->ticket_amount * $transaction_data->busSchedule->ticket_price; // tmp
-        return redirect("/bus/ticket/finished")->with("transaction_data", $transaction_data);
+        if ($validated["payment_method"] == "cash") {
+            $bus_schedule = $transaction_data->busSchedule;
+            $bus_schedule->seats = $bus_schedule->seats - $transaction_data->ticket_amount;
+            $bus_schedule->save();
+            
+            $transaction_data->status = "finished";
+            $transaction_data->method = "cash";
+            $transaction_data->save();
+        } else if ($validated["payment_method" == "flip"]) {
+            // call flip api
+        }
+        
+        return redirect("/bus/ticket/finished")->with("transaction_data", $transaction_data)->with("payment_method", $validated["payment_method"]);
     }
 }

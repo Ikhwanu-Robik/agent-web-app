@@ -16,11 +16,13 @@
         <form action="/bus/ticket/pay" method="post" style="display:inline">
             @csrf
             <input type="hidden" name="payment_method" value="cash">
+            <input type="hidden" name="bus_ticket_transaction_id" value="{{ $transaction->id }}">
             <button type="submit">CASH</button>
         </form>
         <form action="/bus/ticket/pay" method="post" style="display:inline">
             @csrf
             <input type="hidden" name="payment_method" value="flip">
+            <input type="hidden" name="bus_ticket_transaction_id" value="{{ $transaction->id }}">
             <button type="submit">FLIP</button>
         </form>
     </div>

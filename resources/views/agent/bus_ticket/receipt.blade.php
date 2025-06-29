@@ -17,7 +17,7 @@
                 {{ $transaction->busSchedule->departure_date . ' ' . $transaction->busSchedule->departure_time }}</h4>
             <span>{{ $transaction->ticket_amount }} Ticket{{ $transaction->ticket_amount > 1 ? 's' : '' }}</span> <br>
             <h3>Rp.{{ $transaction->total }}</h3>
-            <h3>Paid with Flip/Cash</h3>
+            <h3>Paid with {{ session("payment_method") }}</h3>
         </div>
     @else
         Oops, it seems there is no transaction data here!
