@@ -10,6 +10,7 @@ use App\Http\Controllers\BusTicketController;
 
 Route::middleware("auth")->group(function () {
    Route::get('/', [ViewController::class, "home"]);
+   Route::get("/report", [ViewController::class, "report"]);
    Route::get("/bus/ticket", [ViewController::class, "busTicket"]);
    Route::get("/bpjs", [ViewController::class, "bpjs"]);
    Route::get("/film", [ViewController::class, "filmTicket"]);
@@ -22,7 +23,7 @@ Route::middleware("auth")->group(function () {
    Route::get("/master", [ViewController::class, "master"]);
 
    Route::prefix("/master")->group(function () {
-      
+
       Route::prefix("/bus/station")->group(function () {
          Route::get("/", [BusStationController::class, "index"]);
          Route::get("/create", [BusStationController::class, "create"]);
@@ -52,7 +53,7 @@ Route::middleware("auth")->group(function () {
          Route::get("/delete/{schedule}", [BusScheduleController::class, "delete"]);
          Route::delete("/delete/{schedule}", action: [BusScheduleController::class, "destroy"]);
       });
-      
+
    });
 
    Route::post("/bus/schedules", [BusScheduleController::class, "search"]);

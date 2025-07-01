@@ -4,12 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\BusStation;
 use Illuminate\Http\Request;
+use App\Models\BusTicketTransaction;
+use Illuminate\Support\Facades\Auth;
 
 class ViewController extends Controller
 {
     public function home()
     {
         return view("home");
+    }
+
+    public function report(Request $request)
+    {
+        switch ($request->query("service")) {
+            case "bus-ticket":
+                $bus_ticket_transactions = BusTicketTransaction::where("user_id", "=", Auth::id())
+                    ->with(["busSchedule", "busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])
+                    ->get();
+                
+                return view("report", ["bus_ticket_transactions" => $bus_ticket_transactions]);
+            default:
+                $bus_ticket_transactions = BusTicketTransaction::where("user_id", "=", Auth::id())
+                    ->with(["busSchedule", "busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])
+                    ->get();
+                
+                return view("report", ["bus_ticket_transactions" => $bus_ticket_transactions]);
+        }
     }
 
     public function busTicket()

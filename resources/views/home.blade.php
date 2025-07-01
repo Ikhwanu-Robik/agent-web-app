@@ -70,31 +70,31 @@
             border: none;
         }
 
-        body {
+        main {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        body>#services {
+        main>#services {
             width: 70%;
             margin: 1em;
             background-color: rgb(240, 240, 240);
             padding: 1em;
         }
 
-        body>#services>ul {
+        main>#services>ul {
             display: flex;
             justify-content: space-between;
             list-style: none;
         }
 
-        body>#services>ul>li {
+        main>#services>ul>li {
             height: 8em;
             width: 8em;
         }
 
-        body>#services>ul>li>a {
+        main>#services>ul>li>a {
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -103,7 +103,7 @@
             color: black;
         }
 
-        body>#services>ul>li>a>img {
+        main>#services>ul>li>a>img {
             background-color: rgb(119, 195, 227);
             padding: 1em;
             border-radius: 15%;
@@ -171,9 +171,9 @@
             <img src="{{ config('app.url') . '/storage/' . Auth::user()->profile_photo }}" alt="profile_photo"
                 id="profile_photo">
             <span id="username">{{ Auth::user()->name }}</span>
-            <a href="" class="nav-button">Dashboard</a>
+            <a href="/" class="nav-button">Dashboard</a>
             <a href="" class="nav-button">Vouchers</a>
-            <a href="" class="nav-button">Transaction History</a>
+            <a href="/report" class="nav-button">Transaction History</a>
         </div>
         <form action="/logout" method="post">
             @csrf
@@ -181,7 +181,7 @@
         </form>
     </header>
 
-    <body>
+    <main>
         <section id="services">
             <h2>What to do?</h2>
             <ul>
@@ -218,7 +218,7 @@
                 <div class="bar bus"></div>
             </article>
         </section>
-    </body>
+    </main>
 </body>
 
 </html>
