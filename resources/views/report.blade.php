@@ -127,7 +127,7 @@
                 id="profile_photo">
             <span id="username">{{ Auth::user()->name }}</span>
             <a href="/" class="nav-button">Dashboard</a>
-            <a href="" class="nav-button">Vouchers</a>
+            <a href="/vouchers" class="nav-button">Vouchers</a>
             <a href="/report" class="nav-button">Transaction History</a>
         </div>
         <form action="/logout" method="post">

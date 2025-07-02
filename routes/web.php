@@ -3,6 +3,7 @@
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\BusScheduleController;
 use App\Http\Controllers\BusStationController;
+use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ViewController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\BusTicketController;
 Route::middleware("auth")->group(function () {
    Route::get('/', [ViewController::class, "home"]);
    Route::get("/report", [ViewController::class, "report"]);
+   Route::get("/vouchers", [ViewController::class, "vouchers"]);
    Route::get("/bus/ticket", [ViewController::class, "busTicket"]);
    Route::get("/bpjs", [ViewController::class, "bpjs"]);
    Route::get("/film", [ViewController::class, "filmTicket"]);
@@ -23,6 +25,12 @@ Route::middleware("auth")->group(function () {
    Route::get("/master", [ViewController::class, "master"]);
 
    Route::prefix("/master")->group(function () {
+
+      Route::prefix("/vouchers")->group(function () {
+         Route::get("/", [VoucherController::class, "index"]);
+         Route::get("/create", [VoucherController::class, "create"]);
+         Route::post("/create", [VoucherController::class, "store"]);
+      });
 
       Route::prefix("/bus/station")->group(function () {
          Route::get("/", [BusStationController::class, "index"]);
