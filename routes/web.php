@@ -30,6 +30,10 @@ Route::middleware("auth")->group(function () {
          Route::get("/", [VoucherController::class, "index"]);
          Route::get("/create", [VoucherController::class, "create"]);
          Route::post("/create", [VoucherController::class, "store"]);
+         Route::get("/edit/{voucher}", [VoucherController::class, "edit"]);
+         Route::put("/edit/{voucher}", [VoucherController::class, "update"]);
+         Route::get("/delete/{voucher}", [VoucherController::class, "delete"]);
+         Route::delete("/delete/{voucher}", [VoucherController::class, "destroy"]);
       });
 
       Route::prefix("/bus/station")->group(function () {
