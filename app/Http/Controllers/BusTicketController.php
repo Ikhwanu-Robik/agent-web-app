@@ -6,8 +6,8 @@ use App\Enums\PaymentMethod;
 use App\Models\BusSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Log;
 use App\Models\BusTicketTransaction;
+use App\Models\Voucher;
 use Illuminate\Support\Facades\Auth;
 
 class BusTicketController extends Controller
@@ -28,10 +28,22 @@ class BusTicketController extends Controller
             "total" => $validated["ticket_amount"] * $bus_schedule->ticket_price,
             "status" => "pending",
         ];
-        $transaction = BusTicketTransaction::create($attribute);
-        $transaction_data = BusTicketTransaction::with(["busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])->find($transaction->id);
+        $transaction = BusTicketTransaction::make($attribute);
+        $bus_schedule_detail = BusSchedule::with(["bus", "originStation", "destinationStation"])->findOrFail($attribute["bus_schedule_id"]);
+        $transaction->busSchedule = $bus_schedule_detail;
 
-        return redirect("/bus/ticket/payment")->with("transaction_data", $transaction_data);
+        $vouchers = Voucher::where("user_id", "=", Auth::id())->get();
+        $valid_vouchers = [];
+        foreach ($vouchers as $voucher) {
+            $valid_services = json_decode($voucher->valid_for);
+
+            foreach ($valid_services as $service) {
+                if ($service == "bus_ticket") {
+                    array_push($valid_vouchers, $voucher);
+                }
+            }
+        }
+        return redirect("/bus/ticket/payment")->with("transaction_data", $transaction)->with("vouchers", $valid_vouchers);
     }
 
     public function payment()
@@ -47,24 +59,53 @@ class BusTicketController extends Controller
     public function pay(Request $request)
     {
         $validated = $request->validate([
+            "bus_schedule_id" => "required|exists:bus_schedules,id",
+            "ticket_amount" => "required|numeric",
             "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
-            "bus_ticket_transaction_id" => "required|exists:bus_ticket_transactions,id"
+            "voucher" => "required"
         ]);
 
-        $transaction_data = BusTicketTransaction::with(["busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])->find($validated["bus_ticket_transaction_id"]);
+        $voucher = Voucher::find($validated["voucher"]);
+        $isVoucherValid = false;
+        foreach (json_decode($voucher->valid_for) as $service) {
+            if ($service == "bus_ticket") {
+                $isVoucherValid = true;
+            }
+        }
 
+        $discount = 1;
+        if ($validated["voucher"] != -1 && $isVoucherValid) {
+            $discount = (100 - $voucher->off_percentage) / 100;
+
+            $voucher->delete();
+        }
+
+        $payment_method = null;
+        $status = "pending";
         if ($validated["payment_method"] == "cash") {
-            $bus_schedule = $transaction_data->busSchedule;
-            $bus_schedule->seats = $bus_schedule->seats - $transaction_data->ticket_amount;
-            $bus_schedule->save();
-            
-            $transaction_data->status = "finished";
-            $transaction_data->method = "cash";
-            $transaction_data->save();
+            $payment_method = "cash";
+            $status = "finished";
         } else if ($validated["payment_method" == "flip"]) {
             // call flip api
         }
-        
-        return redirect("/bus/ticket/finished")->with("transaction_data", $transaction_data)->with("payment_method", $validated["payment_method"]);
+
+        $bus_schedule = BusSchedule::with(["bus", "originStation", "destinationStation"])->findOrFail($validated["bus_schedule_id"]);
+        $total = $validated["ticket_amount"] * $bus_schedule->ticket_price * $discount;
+        $bus_schedule->seats = $bus_schedule->seats - $validated["ticket_amount"];
+        $bus_schedule->save();
+
+        $attributes = [
+            "user_id" => Auth::id(),
+            "bus_schedule_id" => $validated["bus_schedule_id"],
+            "ticket_amount" => $validated["ticket_amount"],
+            "method" => $payment_method,
+            "total" => $total,
+            "status" => $status
+        ];
+
+        $transaction = BusTicketTransaction::create($attributes);
+        $transaction->busSchedule = $bus_schedule;
+
+        return redirect("/bus/ticket/finished")->with("transaction_data", $transaction)->with("payment_method", $validated["payment_method"]);
     }
 }

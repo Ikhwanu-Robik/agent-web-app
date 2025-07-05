@@ -10,6 +10,7 @@ class BusTicketTransaction extends Model
         "user_id",
         "bus_schedule_id",
         "ticket_amount",
+        "method",
         "total",
         "status",
     ];
