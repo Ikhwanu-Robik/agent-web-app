@@ -18,6 +18,6 @@ class ActiveBpjsController extends Controller
         $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->first();
         $bpjs = ActiveBpjs::where("civil_information_id", "=", $civil_information->id)->first();
 
-        return redirect("/bpjs")->with("bpjs", $bpjs)->with("NIK", $civil_information->NIK);
+        return redirect("/bpjs")->with("bpjs", $bpjs);
     }
 }
