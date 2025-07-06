@@ -67,9 +67,11 @@ class BusTicketController extends Controller
 
         $voucher = Voucher::find($validated["voucher"]);
         $isVoucherValid = false;
-        foreach (json_decode($voucher->valid_for) as $service) {
-            if ($service == "bus_ticket") {
-                $isVoucherValid = true;
+        if ($voucher) {
+            foreach (json_decode($voucher->valid_for) as $service) {
+                if ($service == "bus_ticket") {
+                    $isVoucherValid = true;
+                }
             }
         }
 
