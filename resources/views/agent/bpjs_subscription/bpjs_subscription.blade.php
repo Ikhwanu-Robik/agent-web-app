@@ -2,27 +2,38 @@
 
 <h2>Cari tahu masa aktif BPJS mu</h2>
 
+@if ($errors->any())
+    @foreach ($errors->all() as $error)
+        <div>
+            {{ $error }}
+        </div>
+    @endforeach
+@endif
+
 <form action="" method="POST">
+    @csrf
     <label for="civil-id">NIK</label>
-    <input type="number" name="civil_id" id="civil-id">
+    <input type="number" name="civil_id" id="civil-id" value="{{ session('NIK') }}">
     <button type="submit">Cari data BPJS</button>
 </form>
 
-{{-- @if ($bpjs)
+@if (session('bpjs'))
+    @php $bpjs = session("bpjs"); @endphp
     <section id="bpjs-active-status">
-        @if ($bpjs->stillSubscribed)
-            Kamu sudah membayar BPJS sampai {{ 'Januari 2026' }}
+        @if ($bpjs->isStillActive())
+            Kamu sudah membayar BPJS sampai {{ $bpjs->dueDate()->monthName . " " . $bpjs->dueDate()->year }}
         @else
             Kamu tidak memiliki langganan BPJS yang aktif
         @endif
     </section>
-@endif --}}
-
-<h2>atau langsung berlangganan</h2>
+    <h2>Bayar BPJS</h2>
+@else
+    <h2>atau langsung berlangganan</h2>
+@endif
 
 <form action="" method="post">
     @if (isset($bpjs))
-        <input type="hidden" name="civil_information_id" value="{{ $civil_information->NIK }}">
+        <input type="hidden" name="civil_information_id" value="{{ $bpjs->civilInformation->NIK }}">
     @else
         <label for="civil-id">NIK</label>
         <input type="number" name="civil_id" id="civil-id">
