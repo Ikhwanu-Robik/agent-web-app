@@ -22,7 +22,7 @@ class BpjsPriceController extends Controller
      */
     public function create()
     {
-        return view("master.bus_station.create");
+        return view("master.bpjs_price.create");
     }
 
     /**
@@ -31,52 +31,56 @@ class BpjsPriceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            "name" => "required|string"
+            "class" => "required|numeric|unique:bpjs_prices,class",
+            "price" => "required|numeric"
         ]);
 
         BpjsPrice::create($validated);
 
-        return redirect("/master/bus/station");
+        return redirect("/master/bpjs/prices");
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(BpjsPrice $bus_station)
+    public function edit(BpjsPrice $bpjs_price)
     {
-        return view("master.bus_station.edit", ["bus_station" => $bus_station]);
+        return view("master.bpjs_price.edit", ["bpjs_price" => $bpjs_price]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, BpjsPrice $bus_station)
+    public function update(Request $request, BpjsPrice $bpjs_price)
     {
         $validated = $request->validate([
-            "name" => "required|string"
+            "class" => "required|numeric|unique:bpjs_prices,class",
+            "price" => "required|numeric"
         ]);
 
-        $bus_station->name = $validated["name"];
-        $bus_station->save();
+        $bpjs_price->class = $validated["class"];
+        $bpjs_price->price = $validated["price"];
+        $bpjs_price->save();
 
-        return redirect("/master/bus/station");
+        return redirect("/master/bpjs/prices");
     }
 
-    public function delete(BpjsPrice $bus_station) {
-        return view("master.bus_station.delete", ["bus_station" => $bus_station]);
+    public function delete(BpjsPrice $bpjs_price)
+    {
+        return view("master.bpjs_price.delete", ["bpjs_price" => $bpjs_price]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, BpjsPrice $bus_station)
+    public function destroy(Request $request, BpjsPrice $bpjs_price)
     {
         $validated = $request->validate([
-            "bus_station" => "required|numeric|exists:bus_stations,id"
+            "bpjs_price" => "required|numeric|exists:bpjs_prices,id"
         ]);
 
-        $bus_station->delete();
+        $bpjs_price->delete();
 
-        return redirect("/master/bus/station");
+        return redirect("/master/bpjs/prices");
     }
 }

@@ -7,11 +7,21 @@
     <li><a href="/master/bus/schedules">Master Bus Schedule</a></li>
 </ul>
 
-<form action="{{ "/master/bus/edit/" . $bus->id }}" method="post">
+@if ($errors->any())
+    <div class="errors">
+        @foreach ($errors->all() as $error)
+            <div>{{ $error }}</div>
+        @endforeach
+    </div>
+@endif
+
+<form action="{{ "/master/bpjs/prices/edit/" . $bpjs_price->id }}" method="post">
     @csrf
     @method("PUT")
-    <label for="name">Bus Name</label>
-    <input type="text" name="name" id="name" value="{{ $bus->name }}">
+    <label for="class">Class</label>
+    <input type="number" name="class" id="class" value="{{ $bpjs_price->class }}">
+    <label for="price">Monthy pay</label>
+    <input type="number" name="price" id="price" value="{{ $bpjs_price->price }}">
     
     <button type="submit">Save</button>
 </form>

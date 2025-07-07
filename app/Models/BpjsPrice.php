@@ -10,6 +10,6 @@ class BpjsPrice extends Model
 
     protected $fillable = [
         "class",
-        "prices"
+        "price"
     ];
 }

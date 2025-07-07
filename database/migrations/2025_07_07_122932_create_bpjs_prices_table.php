@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('bpjs_prices', function (Blueprint $table) {
             $table->id();
-            $table->integer("class");
+            $table->integer("class")->unique();
             $table->integer("price");
             $table->timestamps();
         });

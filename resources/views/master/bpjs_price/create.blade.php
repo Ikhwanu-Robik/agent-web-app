@@ -1,4 +1,4 @@
-<h1>Add New Bus</h1>
+<h1>Add New BPJS Class</h1>
 
 <ul>
     <li><a href="/master/vouchers">Master Vouchers</a></li>
@@ -7,10 +7,20 @@
     <li><a href="/master/bus/schedules">Master Bus Schedule</a></li>
 </ul>
 
-<form action="/master/bus/create" method="post">
+@if ($errors->any())
+    <div class="errors">
+        @foreach ($errors->all() as $error)
+            <div>{{ $error }}</div>
+        @endforeach
+    </div>
+@endif
+
+<form action="/master/bpjs/prices/create" method="post">
     @csrf
-    <label for="name">Bus Name</label>
-    <input type="text" name="name" id="name">
+    <label for="class">Class</label>
+    <input type="number" name="class" id="class">
+    <label for="price">Monthly pay</label>
+    <input type="number" name="price" id="price">
 
     <button type="submit">Add</button>
 </form>
