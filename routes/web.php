@@ -12,6 +12,7 @@ use App\Http\Controllers\BusTicketController;
 require("pages.php");
 require("admin.php");
 require("bus_ticket.php");
+require("bpjs.php");
 
 Route::middleware("auth")->group(function () {
    Route::post("/logout", [AuthController::class, "logout"]);

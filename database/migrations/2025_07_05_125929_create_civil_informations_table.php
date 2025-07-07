@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('civil_informations', function (Blueprint $table) {
             $table->id();
-            $table->string("NIK");
+            $table->string("NIK")->unique();
             $table->timestamps();
         });
     }

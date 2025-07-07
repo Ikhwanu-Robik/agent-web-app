@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BpjsPriceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\ViewController;
@@ -8,7 +9,7 @@ use App\Http\Controllers\BusStationController;
 use App\Http\Controllers\BusScheduleController;
 
 Route::middleware("auth")->group(function () {
-    Route::get("/master", [ViewController::class, "master"]);
+   Route::get("/master", [ViewController::class, "master"]);
 
    Route::prefix("/master")->group(function () {
 
@@ -52,5 +53,14 @@ Route::middleware("auth")->group(function () {
          Route::delete("/delete/{schedule}", action: [BusScheduleController::class, "destroy"]);
       });
 
+      Route::prefix("/bpjs/prices")->group(function () {
+         Route::get("/", [BpjsPriceController::class, "index"]);
+         Route::get("/create", [BpjsPriceController::class, "create"]);
+         Route::post("/create", [BpjsPriceController::class, "store"]);
+         Route::get("/edit/{bpjs_price}", [BpjsPriceController::class, "edit"]);
+         Route::put("/edit/{bpjs_price}", [BpjsPriceController::class, "update"]);
+         Route::get("/delete/{bpjs_price}", [BpjsPriceController::class, "delete"]);
+         Route::delete("/delete/{bpjs_price}", [BpjsPriceController::class, "destroy"]);
+      });
    });
 });

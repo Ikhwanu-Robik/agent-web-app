@@ -11,6 +11,8 @@ class BpjsTransaction extends Model
     protected $fillable = [
         "civil_information_id",
         "month_bought",
+        "total",
+        "method"
     ];
 
     public function civilInformation()
