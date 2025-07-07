@@ -12,13 +12,17 @@ use Illuminate\Support\Facades\Log;
 
 class BpjsTransactionController extends Controller
 {
-    private function processPayment($method)
+    private function processPayment($transaction)
     {
-        if ($method == "cash") {
-            return;
-        } else if ($method == "flip") {
+        $price = 30000;
+        if ($transaction["payment_method"] == "cash") {
+            $total = $transaction["month"] * $price;
+            return $total;
+        } else if ($transaction["payment_method"] == "flip") {
             // TODO : call flip api
         }
+
+        return response("Payment method invalid", 422);
     }
 
     public function pay(Request $request)
@@ -37,7 +41,7 @@ class BpjsTransactionController extends Controller
         $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->with("activeBpjs")->first();
         $bpjs = ActiveBpjs::where("civil_information_id", "=", $civil_information->id)->first();
 
-        $this->processPayment($validated["payment_method"]);
+        $total = $this->processPayment($validated);
 
         if ($bpjs->isStillActive()) {
             $bpjs->due_timestamp = $bpjs->due_timestamp + $monthBought;
@@ -49,7 +53,9 @@ class BpjsTransactionController extends Controller
 
         $transactionAttribute = [
             "civil_information_id" => $civil_information->id,
-            "month_bought" => $validated["month"]
+            "month_bought" => $validated["month"],
+            "total" => $total,
+            "method" => $validated["payment_method"]
         ];
         $transaction = BpjsTransaction::create($transactionAttribute);
 
@@ -58,26 +64,6 @@ class BpjsTransactionController extends Controller
 
     public function receipt()
     {
-        $bpjs = (object) [
-            "id" => 2,
-            "civil_information_id" => 29,
-            "due_timestamp" => 1765684716,
-            "created_at" => null,
-            "updated_at" => "2025-07-06T13:19:48.000000Z"
-        ];
-        $validated = (object) [
-            "civil_id" => "33120002",
-            "month" => "1",
-            "payment_method" => "cash"
-        ];
-        $transaction = (object) [ 
-            "civil_information_id" => 29,
-            "month_bought" => "1",
-            "updated_at" => "2025-07-06T13:35:46.000000Z",
-            "created_at" => "2025-07-06T13:35:46.000000Z",
-            "id" => 1
-        ];
-
-        return view("agent.bpjs_subscription.receipt", ["bpjs" => $bpjs, "form_input" => $validated, "transaction" => $transaction]);
+        return view("agent.bpjs_subscription.receipt");
     }
 }
