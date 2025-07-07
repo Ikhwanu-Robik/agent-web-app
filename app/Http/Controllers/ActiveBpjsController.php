@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActiveBpjs;
 use Illuminate\Http\Request;
 use App\Models\CivilInformation;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class ActiveBpjsController extends Controller
@@ -16,7 +17,7 @@ class ActiveBpjsController extends Controller
         ]);
 
         $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->first();
-        $bpjs = ActiveBpjs::where("civil_information_id", "=", $civil_information->id)->first();
+        $bpjs = ActiveBpjs::with("bpjsClass")->where("civil_information_id", "=", $civil_information->id)->first();
 
         return redirect("/bpjs")->with("bpjs", $bpjs);
     }

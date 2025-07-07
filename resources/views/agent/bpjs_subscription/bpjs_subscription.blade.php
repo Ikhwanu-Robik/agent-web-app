@@ -22,7 +22,7 @@
     @php $bpjs = session("bpjs"); @endphp
     <section id="bpjs-active-status">
         @if ($bpjs->isStillActive())
-            Kamu sudah membayar BPJS sampai {{ $bpjs->dueDate()->monthName . ' ' . $bpjs->dueDate()->year }}
+            Kamu BPJS kelas {{ $bpjs->bpjsClass->class }}, dengan biaya bulanan Rp.{{ number_format($bpjs->bpjsClass->price, 0, ".") }}. Kamu sudah membayar BPJS sampai {{ $bpjs->dueDate()->monthName . ' ' . $bpjs->dueDate()->year }}
         @else
             Kamu tidak memiliki langganan BPJS yang aktif
         @endif

@@ -8,13 +8,12 @@ use App\Models\BpjsTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\CivilInformation;
-use Illuminate\Support\Facades\Log;
 
 class BpjsTransactionController extends Controller
 {
-    private function processPayment($transaction)
+    private function processPayment($transaction, $bpjs)
     {
-        $price = 30000;
+        $price = $bpjs->bpjsClass->price;
         if ($transaction["payment_method"] == "cash") {
             $total = $transaction["month"] * $price;
             return $total;
@@ -39,9 +38,9 @@ class BpjsTransactionController extends Controller
         $monthBought = $validated["month"] * 30 * 24 * 60 * 60;
 
         $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->with("activeBpjs")->first();
-        $bpjs = ActiveBpjs::where("civil_information_id", "=", $civil_information->id)->first();
+        $bpjs = ActiveBpjs::with("bpjsClass")->where("civil_information_id", "=", $civil_information->id)->first();
 
-        $total = $this->processPayment($validated);
+        $total = $this->processPayment($validated, $bpjs);
 
         if ($bpjs->isStillActive()) {
             $bpjs->due_timestamp = $bpjs->due_timestamp + $monthBought;

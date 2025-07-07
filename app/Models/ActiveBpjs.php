@@ -20,6 +20,11 @@ class ActiveBpjs extends Model
         return $this->belongsTo(CivilInformation::class, "civil_information_id", "id");
     }
 
+    public function bpjsClass()
+    {
+        return $this->belongsTo(BpjsPrice::class, "class_id", "id");
+    }
+
     public function isStillActive() {
         return $this->due_timestamp > now()->unix();
     }
