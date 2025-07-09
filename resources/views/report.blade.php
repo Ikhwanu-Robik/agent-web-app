@@ -127,7 +127,7 @@
 </head>
 
 <body>
-    @include('components.header');
+    @include('components.header')
 
     <main>
         <aside id="choose_history">
@@ -167,7 +167,7 @@
         @elseif ($service == 'bpjs' || isset($bpjs_transactions))
             <article>
 
-                @if (!isset($bpjs_transactions))
+                @if (!isset($bpjs_transactions) && session()->get("bpjs_transactions") == null)
                     <h2>First of all, we need to know your NIK</h2>
 
                     @if ($errors->any())
@@ -184,6 +184,11 @@
                         <button type="submit">Send</button>
                     </form>
                 @else
+                    @php
+                    $bpjs_transactions = isset($bpjs_transactions) ? $bpjs_transactions : session()->get("bpjs_transactions");
+                    $civil_information = isset($civil_information) ? $civil_information : session()->get("civil_information");
+                    @endphp
+                    
                     <h1>Your BPJS Transaction History</h1>
                     <h4>NIK : {{ $civil_information->NIK }}</h4>
                     <h4>Class : {{ $civil_information->activeBpjs->bpjsClass->class }}</h4>

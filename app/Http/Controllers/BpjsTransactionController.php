@@ -76,6 +76,10 @@ class BpjsTransactionController extends Controller
         $bpjs_transactions = BpjsTransaction::where("civil_information_id", "=", $civil_information->id)
             ->get();
 
+        // TODO : make session persists over different requests
+        session()->put("bpjs_transactions", $bpjs_transactions);
+        session()->put("civil_information", $civil_information);
+
         return view("report", ["bpjs_transactions" => $bpjs_transactions, "civil_information" => $civil_information]);
     }
 }
