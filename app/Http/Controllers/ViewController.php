@@ -25,11 +25,7 @@ class ViewController extends Controller
 
                 return view("report", ["bus_ticket_transactions" => $bus_ticket_transactions]);
             default:
-                $bus_ticket_transactions = BusTicketTransaction::where("user_id", "=", Auth::id())
-                    ->with(["busSchedule", "busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])
-                    ->get();
-
-                return view("report", ["bus_ticket_transactions" => $bus_ticket_transactions]);
+                return view("report");
         }
     }
 

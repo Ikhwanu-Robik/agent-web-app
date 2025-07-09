@@ -117,11 +117,17 @@
             color: white;
             margin: 0 0 0.5em 0;
         }
+
+        main #no-service-selected {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 
 <body>
-    @include("components.header");
+    @include('components.header');
 
     <main>
         <aside id="choose_history">
@@ -133,24 +139,36 @@
             <a href="">Power Top Up</a>
         </aside>
 
-        <article>
-            <h1>Your Transaction History</h1>
-    
-            <section id="content">
-                <ul>
-                    @foreach ($bus_ticket_transactions as $transaction)
-                        <li class="transaction-record">
-                            <h2>{{ $transaction->busSchedule->originStation->name }} -
-                                {{ $transaction->busSchedule->destinationStation->name }} |
-                                {{ $transaction->busSchedule->bus->name }}</h2>
-                            <p>{{ $transaction->ticket_amount }} ticket{{ $transaction->ticket_amount > 1 ? 's' : '' }} |
-                                Rp.{{ number_format($transaction->total, 0, ',', '.') }} | {{ $transaction->method }} |
-                                {{ $transaction->status }}</p>
-                        </li>
-                    @endforeach
-                </ul>
-            </section>
-        </article>
+
+        @php
+            $service = request()->query('service');
+        @endphp
+        @if ($service == 'bus-ticket')
+            <article>
+                <h1>Your Transaction History</h1>
+
+                <section id="content">
+                    <ul>
+                        @foreach ($bus_ticket_transactions as $transaction)
+                            <li class="transaction-record">
+                                <h2>{{ $transaction->busSchedule->originStation->name }} -
+                                    {{ $transaction->busSchedule->destinationStation->name }} |
+                                    {{ $transaction->busSchedule->bus->name }}</h2>
+                                <p>{{ $transaction->ticket_amount }}
+                                    ticket{{ $transaction->ticket_amount > 1 ? 's' : '' }} |
+                                    Rp.{{ number_format($transaction->total, 0, ',', '.') }} |
+                                    {{ $transaction->method }} |
+                                    {{ $transaction->status }}</p>
+                            </li>
+                        @endforeach
+                    </ul>
+                </section>
+            </article>
+        @else
+            <article id="no-service-selected">
+                <h1>Choose a service to see your transaction history</h1>
+            </article>
+        @endif
     </main>
 </body>
 
