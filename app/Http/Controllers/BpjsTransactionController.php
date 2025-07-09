@@ -65,4 +65,17 @@ class BpjsTransactionController extends Controller
     {
         return view("agent.bpjs_subscription.receipt");
     }
+
+    public function report(Request $request)
+    {
+        $validated = $request->validate([
+            "civil_id" => "required|exists:civil_informations,NIK"
+        ]);
+
+        $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->with(["activeBpjs", "activeBpjs.bpjsClass"])->first();
+        $bpjs_transactions = BpjsTransaction::where("civil_information_id", "=", $civil_information->id)
+            ->get();
+
+        return view("report", ["bpjs_transactions" => $bpjs_transactions, "civil_information" => $civil_information]);
+    }
 }

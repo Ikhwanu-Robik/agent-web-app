@@ -133,7 +133,7 @@
         <aside id="choose_history">
             <h2>Choose Your History</h2>
             <a href="/report?service=bus-ticket">Bus Ticket</a>
-            <a href="">BPJS</a>
+            <a href="/report?service=bpjs">BPJS</a>
             <a href="">Film Ticket</a>
             <a href="">Game Top Up</a>
             <a href="">Power Top Up</a>
@@ -145,7 +145,7 @@
         @endphp
         @if ($service == 'bus-ticket')
             <article>
-                <h1>Your Transaction History</h1>
+                <h1>Your Bus Ticket Transaction History</h1>
 
                 <section id="content">
                     <ul>
@@ -163,6 +163,45 @@
                         @endforeach
                     </ul>
                 </section>
+            </article>
+        @elseif ($service == 'bpjs' || isset($bpjs_transactions))
+            <article>
+
+                @if (!isset($bpjs_transactions))
+                    <h2>First of all, we need to know your NIK</h2>
+
+                    @if ($errors->any())
+                        <div class="errors">
+                            @foreach ($errors->all() as $error)
+                                <div>{{ $error }}</div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <form action="/report/bpjs" method="post">
+                        @csrf
+                        <input type="text" name="civil_id" id="civil_id" placeholder="NIK">
+                        <button type="submit">Send</button>
+                    </form>
+                @else
+                    <h1>Your BPJS Transaction History</h1>
+                    <h4>NIK : {{ $civil_information->NIK }}</h4>
+                    <h4>Class : {{ $civil_information->activeBpjs->bpjsClass->class }}</h4>
+                    <h4>Active until : {{ $civil_information->activeBpjs->dueDate() }}</h4>
+
+                    <section id="content">
+                        <ul>
+                            @foreach ($bpjs_transactions as $transaction)
+                                <li class="transaction-record">
+                                    <h5>+ {{ $transaction->month_bought }}
+                                        month{{ $transaction->month_bought > 1 ? 's' : '' }}</h5>
+                                    <span>Rp.{{ number_format($transaction->total, 0, '.') }} |
+                                        {{ $transaction->method }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </section>
+                @endif
             </article>
         @else
             <article id="no-service-selected">
