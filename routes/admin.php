@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BpjsPriceController;
+use App\Http\Controllers\CinemaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\ViewController;
@@ -61,6 +62,16 @@ Route::middleware("auth")->group(function () {
          Route::put("/edit/{bpjs_price}", [BpjsPriceController::class, "update"]);
          Route::get("/delete/{bpjs_price}", [BpjsPriceController::class, "delete"]);
          Route::delete("/delete/{bpjs_price}", [BpjsPriceController::class, "destroy"]);
+      });
+
+      Route::prefix("/cinemas")->group(function () {
+         Route::get("/", [CinemaController::class, "index"]);
+         Route::get("/create", [CinemaController::class, "create"]);
+         Route::post("/create", [CinemaController::class, "store"]);
+         Route::get("/edit/{cinema}", [CinemaController::class, "edit"]);
+         Route::put("/edit/{cinema}", [CinemaController::class, "update"]);
+         Route::get("/delete/{cinema}", [CinemaController::class, "delete"]);
+         Route::delete("/delete/{cinema}", [CinemaController::class, "destroy"]);
       });
    });
 });
