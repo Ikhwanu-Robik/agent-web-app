@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\BpjsPriceController;
-use App\Http\Controllers\CinemaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusController;
+use App\Http\Controllers\FilmController;
 use App\Http\Controllers\ViewController;
+use App\Http\Controllers\CinemaController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\BpjsPriceController;
 use App\Http\Controllers\BusStationController;
 use App\Http\Controllers\BusScheduleController;
 
@@ -72,6 +73,16 @@ Route::middleware("auth")->group(function () {
          Route::put("/edit/{cinema}", [CinemaController::class, "update"]);
          Route::get("/delete/{cinema}", [CinemaController::class, "delete"]);
          Route::delete("/delete/{cinema}", [CinemaController::class, "destroy"]);
+      });
+
+      Route::prefix("/films")->group(function () {
+         Route::get("/", [FilmController::class, "index"]);
+         Route::get("/create", [FilmController::class, "create"]);
+         Route::post("/create", [FilmController::class, "store"]);
+         Route::get("/edit/{film}", [FilmController::class, "edit"]);
+         Route::put("/edit/{film}", [FilmController::class, "update"]);
+         Route::get("/delete/{film}", [FilmController::class, "delete"]);
+         Route::delete("/delete/{film}", [FilmController::class, "destroy"]);
       });
    });
 });
