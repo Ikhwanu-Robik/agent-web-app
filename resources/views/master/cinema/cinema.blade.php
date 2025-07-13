@@ -35,8 +35,12 @@
             </td>
             <td>{{ $cinema->created_at }}</td>
             <td>{{ $cinema->updated_at }}</td>
-            <td><a href="{{ '/master/cinemas/edit/' . $cinema->id }}"><button>Update</button></a><a
-                    href="{{ '/master/cinemas/delete/' . $cinema->id }}"><button>Delete</button></a></td>
+            <td>
+                <a href="{{ '/master/cinemas/' . $cinema->id . '/films' }}"><button>Manage film</button></a>
+                <a href="{{ '/master/cinemas/edit/' . $cinema->id }}"><button>Update</button></a>
+                <a
+                    href="{{ '/master/cinemas/delete/' . $cinema->id }}"><button>Delete</button></a>
+                </td>
         </tr>
     @endforeach
 </table>

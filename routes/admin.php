@@ -8,6 +8,7 @@ use App\Http\Controllers\CinemaController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\BpjsPriceController;
 use App\Http\Controllers\BusStationController;
+use App\Http\Controllers\CinemaFilmController;
 use App\Http\Controllers\BusScheduleController;
 
 Route::middleware("auth")->group(function () {
@@ -73,6 +74,11 @@ Route::middleware("auth")->group(function () {
          Route::put("/edit/{cinema}", [CinemaController::class, "update"]);
          Route::get("/delete/{cinema}", [CinemaController::class, "delete"]);
          Route::delete("/delete/{cinema}", [CinemaController::class, "destroy"]);
+
+         Route::get("/{cinema}/films", [CinemaFilmController::class, "index"]);
+         Route::get("/{cinema}/films/schedule", [CinemaFilmController::class, "create"]);
+         Route::post("/{cinema}/films/schedule", [CinemaFilmController::class, "store"]);
+         Route::delete("/{cinema}/films/schedule/{cinema_film}", [CinemaFilmController::class, "destroy"]);
       });
 
       Route::prefix("/films")->group(function () {
