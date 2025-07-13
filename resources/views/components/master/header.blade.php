@@ -4,4 +4,6 @@
     <li><a href="/master/bus/station">Master Bus Station</a></li>
     <li><a href="/master/bus/schedules">Master Bus Schedule</a></li>
     <li><a href="/master/bpjs/prices">Master BPJS</a></li>
+    <li><a href="/master/cinemas">Master Cinema</a></li>
+    <li><a href="/master/films">Master Film</a></li>
 </ul>
