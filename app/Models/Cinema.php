@@ -16,6 +16,6 @@ class Cinema extends Model
     public function Films() {
         return $this->belongsToMany(Film::class)
             ->as("film_schedule")
-            ->withPivot(["ticket_price", "airing_datetime"]);
+            ->withPivot(["id", "ticket_price", "airing_datetime", "seats_status"]);
     }
 }

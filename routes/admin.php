@@ -1,11 +1,14 @@
 <?php
 
-use App\Http\Controllers\BpjsPriceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusController;
+use App\Http\Controllers\FilmController;
 use App\Http\Controllers\ViewController;
+use App\Http\Controllers\CinemaController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\BpjsPriceController;
 use App\Http\Controllers\BusStationController;
+use App\Http\Controllers\CinemaFilmController;
 use App\Http\Controllers\BusScheduleController;
 
 Route::middleware("auth")->group(function () {
@@ -61,6 +64,31 @@ Route::middleware("auth")->group(function () {
          Route::put("/edit/{bpjs_price}", [BpjsPriceController::class, "update"]);
          Route::get("/delete/{bpjs_price}", [BpjsPriceController::class, "delete"]);
          Route::delete("/delete/{bpjs_price}", [BpjsPriceController::class, "destroy"]);
+      });
+
+      Route::prefix("/cinemas")->group(function () {
+         Route::get("/", [CinemaController::class, "index"]);
+         Route::get("/create", [CinemaController::class, "create"]);
+         Route::post("/create", [CinemaController::class, "store"]);
+         Route::get("/edit/{cinema}", [CinemaController::class, "edit"]);
+         Route::put("/edit/{cinema}", [CinemaController::class, "update"]);
+         Route::get("/delete/{cinema}", [CinemaController::class, "delete"]);
+         Route::delete("/delete/{cinema}", [CinemaController::class, "destroy"]);
+
+         Route::get("/{cinema}/films", [CinemaFilmController::class, "index"]);
+         Route::get("/{cinema}/films/schedule", [CinemaFilmController::class, "create"]);
+         Route::post("/{cinema}/films/schedule", [CinemaFilmController::class, "store"]);
+         Route::delete("/{cinema}/films/schedule/{cinema_film}", [CinemaFilmController::class, "destroy"]);
+      });
+
+      Route::prefix("/films")->group(function () {
+         Route::get("/", [FilmController::class, "index"]);
+         Route::get("/create", [FilmController::class, "create"]);
+         Route::post("/create", [FilmController::class, "store"]);
+         Route::get("/edit/{film}", [FilmController::class, "edit"]);
+         Route::put("/edit/{film}", [FilmController::class, "update"]);
+         Route::get("/delete/{film}", [FilmController::class, "delete"]);
+         Route::delete("/delete/{film}", [FilmController::class, "destroy"]);
       });
    });
 });
