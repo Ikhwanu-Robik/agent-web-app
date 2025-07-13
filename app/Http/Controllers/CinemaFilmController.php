@@ -45,7 +45,8 @@ class CinemaFilmController extends Controller
             "cinema_id" => $cinema->id,
             "film_id" => $validated["film"],
             "ticket_price" => $validated["ticket_price"],
-            "airing_datetime" => $validated["datetime_airing"]
+            "airing_datetime" => $validated["datetime_airing"],
+            "seats_status" => $cinema->seats_structure
         ];
         CinemaFilm::create($attributes);
 
@@ -57,7 +58,7 @@ class CinemaFilmController extends Controller
      */
     public function edit(Film $film)
     {
-        return view("master.film.edit", ["film" => $film]);
+        //
     }
 
     /**
@@ -65,31 +66,12 @@ class CinemaFilmController extends Controller
      */
     public function update(Request $request, Film $film)
     {
-        $validated = $request->validate([
-            "title" => "required|string",
-            "poster" => "required|image",
-            "release_date" => "required|date",
-            "duration" => "required|numeric"
-        ]);
-
-        if (!$request->file("poster")->isValid()) {
-            return response("Poster not uploaded successfully", 422);
-        }
-        Storage::disk("public")->delete($film->poster_image_url);
-        $image_url = $request->file("poster")->storePublicly();
-
-        $film->title = $validated["title"];
-        $film->poster_image_url = $image_url;
-        $film->release_date = $validated["release_date"];
-        $film->duration = $validated["duration"];
-        $film->save();
-
-        return redirect("/master/films");
+        //
     }
 
     public function delete(Film $film)
     {
-        return view("master.film.delete", ["film" => $film]);
+        //
     }
 
     /**

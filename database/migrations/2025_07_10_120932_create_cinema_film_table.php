@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger("film_id");
             $table->integer("ticket_price");
             $table->dateTime("airing_datetime");
+            $table->string("seats_status");
             $table->timestamps();
 
             $table->foreign("cinema_id")->references("id")->on("cinemas");

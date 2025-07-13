@@ -12,7 +12,8 @@ class CinemaFilm extends Model
         "cinema_id",
         "film_id",
         "ticket_price",
-        "airing_datetime"
+        "airing_datetime",
+        "seats_status"
     ];
 
     public function Cinema() {
