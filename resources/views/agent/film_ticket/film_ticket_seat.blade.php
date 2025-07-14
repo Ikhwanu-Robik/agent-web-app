@@ -1,46 +1,61 @@
-<h1>Beli Tiket Film</h1>
-<h2>Pilih Kursi</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-Bioskop RakyatSemesta
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Film Ticket</title>
+</head>
 
-<div id="seats">
-    <span>Diagram Kursi</span>
+<body>
+    <h1>Beli Tiket Film</h1>
+    <h2>Pilih Kursi</h2>
 
-    <form action="" method="post">
+    Bioskop RakyatSemesta
+
+    <div id="seats">
+        <span>Diagram Kursi</span>
+
+        <form action="" method="post">
 
 
-        <table>
-            <tr>
-                <td>
-                    <input type="checkbox" name="" id="" checked disabled>
-                    <input type="checkbox" name="" id="" checked disabled>
-                    <input type="checkbox" name="" id="">
-                    <input type="checkbox" name="" id="">
-                    <input type="checkbox" name="" id="" checked disabled>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="checkbox" name="" id="">
-                    <input type="checkbox" name="" id="">
-                    <input type="checkbox" name="" id="" checked disabled>
-                    <input type="checkbox" name="" id="" checked disabled>
-                    <input type="checkbox" name="" id="">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="checkbox" name="" id="">
-                    <input type="checkbox" name="" id="" checked disabled>
-                    <input type="checkbox" name="" id="" checked disabled>
-                    <input type="checkbox" name="" id="">
-                    <input type="checkbox" name="" id="" checked disabled>
-                </td>
-            </tr>
+            <table>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="" id="" checked disabled>
+                        <input type="checkbox" name="" id="" checked disabled>
+                        <input type="checkbox" name="" id="">
+                        <input type="checkbox" name="" id="">
+                        <input type="checkbox" name="" id="" checked disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="" id="">
+                        <input type="checkbox" name="" id="">
+                        <input type="checkbox" name="" id="" checked disabled>
+                        <input type="checkbox" name="" id="" checked disabled>
+                        <input type="checkbox" name="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="" id="">
+                        <input type="checkbox" name="" id="" checked disabled>
+                        <input type="checkbox" name="" id="" checked disabled>
+                        <input type="checkbox" name="" id="">
+                        <input type="checkbox" name="" id="" checked disabled>
+                    </td>
+                </tr>
 
-        </table>
-        <button type="submit">Beli</button>
+            </table>
+            <button type="submit">Beli</button>
 
-    </form>
+        </form>
 
-</div>
+    </div>
+
+</body>
+
+</html>

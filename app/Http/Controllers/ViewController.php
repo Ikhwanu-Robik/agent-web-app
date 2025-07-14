@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Film;
 use App\Models\Voucher;
 use App\Models\BusStation;
 use Illuminate\Http\Request;
@@ -48,31 +49,9 @@ class ViewController extends Controller
 
     public function filmTicket()
     {
-        return view("agent.film_ticket.film_ticket");
-    }
+        $films = Film::all();
 
-    public function filmCinema()
-    {
-        $film = null;
-        //fetch the selected film model
-
-        if (!$film) {
-            return response("You need to choose a film to view this page", 401);
-        }
-
-        return view("agent.film_ticket.film_ticket_cinema");
-    }
-
-    public function cinemaSeat()
-    {
-        $cinema = null;
-        // fetch the selecteld cinema model
-
-        if (!$cinema) {
-            return response("You need to choose a cinema to view this page", 401);
-        }
-
-        return view("agent.film_ticket.film_ticket_seat");
+        return view("agent.film_ticket.film_ticket", ["films" => $films]);
     }
 
     public function game()
