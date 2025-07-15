@@ -19,7 +19,7 @@
                 <td>
                     <h4>Seats Status</h4>
                     <table>
-                        @foreach (json_decode($cinemaWithFilms->seats_structure) as $row)
+                        @foreach (json_decode($film->film_schedule->seats_status) as $row)
                             <tr>
                                 @foreach ($row as $col)
                                     <td>
