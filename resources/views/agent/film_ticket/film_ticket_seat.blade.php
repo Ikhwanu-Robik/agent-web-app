@@ -12,42 +12,42 @@
     <h1>Beli Tiket Film</h1>
     <h2>Pilih Kursi</h2>
 
-    Bioskop RakyatSemesta
+    @if ($errors->any())
+    <div>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>    
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    <h3>{{ $film_schedule->film->title }}</h3>
+    <span>{{ $film_schedule->cinema->name }}</span> <br>
+    <span>{{ $film_schedule->airing_datetime }}</span> <br>
+    <span>Rp.{{ number_format($film_schedule->ticket_price, 0, '.') }}</span>
 
     <div id="seats">
-        <span>Diagram Kursi</span>
+        <span>Pilih Kursi</span>
 
-        <form action="" method="post">
-
+        <form action="/film/cinema/seats/book" method="post">
+            @csrf
+            <input type="hidden" name="cinema_film_id" value="{{ $film_schedule->id }}">
 
             <table>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="" id="" checked disabled>
-                        <input type="checkbox" name="" id="" checked disabled>
-                        <input type="checkbox" name="" id="">
-                        <input type="checkbox" name="" id="">
-                        <input type="checkbox" name="" id="" checked disabled>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="" id="">
-                        <input type="checkbox" name="" id="">
-                        <input type="checkbox" name="" id="" checked disabled>
-                        <input type="checkbox" name="" id="" checked disabled>
-                        <input type="checkbox" name="" id="">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="" id="">
-                        <input type="checkbox" name="" id="" checked disabled>
-                        <input type="checkbox" name="" id="" checked disabled>
-                        <input type="checkbox" name="" id="">
-                        <input type="checkbox" name="" id="" checked disabled>
-                    </td>
-                </tr>
+
+                @foreach (json_decode($film_schedule->seats_status) as $indexY => $row)
+                    <tr>
+
+                        @foreach ($row as $indexX => $col)
+                            <td>
+                                <input type="checkbox" name="seat_coordinates[]" value="{{ $indexX . ',' . $indexY }}"
+                                    {{ $col == 1 ? 'checked disabled' : '' }}>
+                            </td>
+                        @endforeach
+
+                    </tr>
+                @endforeach
 
             </table>
             <button type="submit">Beli</button>

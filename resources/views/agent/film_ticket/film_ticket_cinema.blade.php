@@ -17,10 +17,6 @@
             <li>
                 <div id="cinema">
                     <h3>{{ $cinema->name }}</h3>
-                    <form action="" method="post">
-                        <input type="hidden" name="cinema" value="{{ $cinema->id }}">
-                        <button type="submit">Pilih</button>
-                    </form>
 
                     <div id="seats">
                         <h4>Jadwal Tersedia</h4>
@@ -28,6 +24,13 @@
 
                             @foreach ($cinema->films as $schedule)
                                 <tr>
+                                    <td>
+                                        <form action="/film/cinema/seats" method="get">
+                                            <input type="hidden" name="cinema_film_id"
+                                                value="{{ $schedule->film_schedule->id }}">
+                                            <button type="submit">Pilih</button>
+                                        </form>
+                                    </td>
                                     <td>
                                         <h5>{{ $schedule->title }}</h5>
                                         <img src="{{ asset($schedule->poster_image_url) }}" alt=""
@@ -37,7 +40,7 @@
                                     <td>
                                         <span>Tiket :
                                             Rp.{{ number_format($schedule->film_schedule->ticket_price, 0, '.') }}</span>
-                                            <br>
+                                        <br>
                                         <span>Date : {{ $schedule->film_schedule->airing_datetime }}</span>
                                     </td>
 
