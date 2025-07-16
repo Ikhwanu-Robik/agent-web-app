@@ -36,9 +36,10 @@ class ViewController extends Controller
 
     public function report(Request $request)
     {
-        $reports = ReportController::getReport($request->query("service"));
-
-        return view("report", ["service" => $request->query("service"), "reports" => $reports]);
+        $service = $request->query("service") ? $request->query("service") : "";
+        $reports = ReportController::getReport($service);
+        
+        return view("report", ["service" => $service, "reports" => $reports]);
     }
 
     public function busTicket()
