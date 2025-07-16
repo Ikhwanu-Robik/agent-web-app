@@ -55,17 +55,7 @@ class FilmTicketTransactionController extends Controller
             $cinema->films = $matchingFilms;
         }
 
-        return view("agent.film_ticket.film_ticket_cinema", ["cinemas" => $matchingCinemas]);
-    }
-
-    public function showBookSeatPage(Request $request)
-    {
-        $validated = $request->validate([
-            "cinema_film_id" => "required|exists:cinema_film,id"
-        ]);
-
-        $cinemaFilm = CinemaFilm::with(["cinema", "film"])->find($validated["cinema_film_id"]);
-        return view("agent.film_ticket.film_ticket_seat", ["film_schedule" => $cinemaFilm]);
+        return redirect("/film/cinema")->with("cinemas", $matchingCinemas);
     }
 
     public function order(Request $request)
@@ -87,24 +77,6 @@ class FilmTicketTransactionController extends Controller
         return redirect("/film/cinema/payment")
             ->with("film_ticket_transaction", $filmTicketTransaction)
             ->with("seat_coordinates", $validated["seat_coordinates"]);
-    }
-
-    public function showPaymentPage()
-    {
-        if (!session("film_ticket_transaction") || !session("seat_coordinates")) {
-            return response("This content is unavailable for you", 404);
-        }
-
-        $film_ticket_transaction = session("film_ticket_transaction");
-        $cinema_film = CinemaFilm::with(["cinema", "film"])->find($film_ticket_transaction->cinema_film_id);
-        $film_ticket_transaction->cinema_film = $cinema_film;
-
-        session()->reflash();
-        
-        return view("agent.film_ticket.film_ticket_payment", [
-            "film_ticket_transaction" => $film_ticket_transaction,
-            "seat_coordinates" => session("seat_coordinates")
-        ]);
     }
 
     public function makeTransaction(Request $request)
@@ -144,23 +116,5 @@ class FilmTicketTransactionController extends Controller
         session()->flash("payment_status", "success");
 
         return redirect("/film/cinema/seats/transaction/success");
-    }
-
-    public function showReceipt()
-    {
-        if (!session("film_ticket_transaction") || !session("seat_coordinates")) {
-            return response("This content is unavailable for you", 404);
-        }
-
-        $film_ticket_transaction = session("film_ticket_transaction");
-        $cinema_film = CinemaFilm::with(["cinema", "film"])->find($film_ticket_transaction->cinema_film_id);
-        $film_ticket_transaction->cinema_film = $cinema_film;
-        $film_ticket_transaction->payment_method = session("payment_method");
-        $film_ticket_transaction->payment_status = session("payment_status");
-
-        return view("agent.film_ticket.receipt", [
-            "film_ticket_transaction" => $film_ticket_transaction,
-            "seat_coordinates" => session("seat_coordinates"),
-        ]);
     }
 }
