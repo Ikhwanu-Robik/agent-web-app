@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\resources;
 
 use App\Models\CinemaFilm;
 use App\Models\Film;

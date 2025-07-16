@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\utilities;
 
-use App\Enums\PaymentMethod;
+use App\Models\Voucher;
 use App\Models\BusSchedule;
+use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 use App\Models\BusTicketTransaction;
-use App\Models\Voucher;
 use Illuminate\Support\Facades\Auth;
 
 class BusTicketController extends Controller

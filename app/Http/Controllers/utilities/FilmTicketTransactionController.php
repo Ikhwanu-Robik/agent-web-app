@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\utilities;
 
 use App\Models\Film;
 use App\Models\Cinema;
@@ -8,6 +8,7 @@ use App\Models\CinemaFilm;
 use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 use App\Models\FilmTicketTransaction;
 
 class FilmTicketTransactionController extends Controller

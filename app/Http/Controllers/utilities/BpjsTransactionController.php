@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\utilities;
 
 use App\Models\ActiveBpjs;
 use App\Enums\PaymentMethod;
-use App\Models\BpjsTransaction;
 use Illuminate\Http\Request;
+use App\Models\BpjsTransaction;
 use Illuminate\Validation\Rule;
 use App\Models\CivilInformation;
+use App\Http\Controllers\Controller;
 
 class BpjsTransactionController extends Controller
 {

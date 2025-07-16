@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\resources;
 
 use App\Models\Cinema;
 use Illuminate\Http\Request;

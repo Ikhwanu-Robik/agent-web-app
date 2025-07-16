@@ -1,33 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\views;
 
+use App\Http\Controllers\utilities\ReportController;
 use App\Models\Film;
 use App\Models\Voucher;
 use App\Models\BusStation;
 use Illuminate\Http\Request;
-use App\Models\BusTicketTransaction;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class ViewController extends Controller
 {
+    public function showLoginForm()
+    {
+        return view("auth.login");
+    }
+
+    public function showRegisterForm()
+    {
+        return view("auth.register");
+    }
+
     public function home()
     {
         return view("home");
-    }
-
-    public function report(Request $request)
-    {
-        switch ($request->query("service")) {
-            case "bus-ticket":
-                $bus_ticket_transactions = BusTicketTransaction::where("user_id", "=", Auth::id())
-                    ->with(["busSchedule", "busSchedule.bus", "busSchedule.originStation", "busSchedule.destinationStation"])
-                    ->get();
-
-                return view("report", ["bus_ticket_transactions" => $bus_ticket_transactions]);
-            default:
-                return view("report");
-        }
     }
 
     public function vouchers()
@@ -35,6 +32,13 @@ class ViewController extends Controller
         $vouchers = Voucher::where("user_id", "=", Auth::id())->get();
 
         return view("vouchers", ["vouchers" => $vouchers]);
+    }
+
+    public function report(Request $request)
+    {
+        $reports = ReportController::getReport($request->query("service"));
+
+        return view("report", ["service" => $request->query("service"), "reports" => $reports]);
     }
 
     public function busTicket()
