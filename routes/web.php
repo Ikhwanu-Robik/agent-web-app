@@ -1,13 +1,8 @@
 <?php
 
-use App\Http\Controllers\BusController;
-use App\Http\Controllers\BusScheduleController;
-use App\Http\Controllers\BusStationController;
-use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\views\ViewController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ViewController;
-use App\Http\Controllers\BusTicketController;
+use App\Http\Controllers\utilities\AuthController;
 
 require("pages.php");
 require("admin.php");
@@ -20,9 +15,9 @@ Route::middleware("auth")->group(function () {
 });
 
 Route::middleware("guest")->group(function () {
-   Route::get("/login", [AuthController::class, "showLoginForm"])->name("login");
-   Route::get("/register", [AuthController::class, "showRegisterForm"])->name("register");
-
+   Route::get("/login", [ViewController::class, "showLoginForm"])->name("login");
    Route::post("/login", [AuthController::class, "login"]);
+
+   Route::get("/register", [ViewController::class, "showRegisterForm"])->name("register");
    Route::post("/register", [AuthController::class, "register"]);
 });

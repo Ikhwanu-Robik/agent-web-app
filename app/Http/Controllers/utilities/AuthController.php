@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\utilities;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function showLoginForm()
-    {
-        return view("auth.login");
-    }
 
     public function login(Request $request)
     {
@@ -25,11 +22,6 @@ class AuthController extends Controller
         }
 
         return redirect()->back()->with("auth_fail", "email or password is wrong");
-    }
-
-    public function showRegisterForm()
-    {
-        return view("auth.register");
     }
 
     public function register(Request $request)

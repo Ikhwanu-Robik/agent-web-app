@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\utilities;
 
-use App\Enums\PaymentMethod;
+use App\Models\Voucher;
 use App\Models\BusSchedule;
+use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 use App\Models\BusTicketTransaction;
-use App\Models\Voucher;
 use Illuminate\Support\Facades\Auth;
 
 class BusTicketController extends Controller
@@ -44,16 +45,6 @@ class BusTicketController extends Controller
             }
         }
         return redirect("/bus/ticket/payment")->with("transaction_data", $transaction)->with("vouchers", $valid_vouchers);
-    }
-
-    public function payment()
-    {
-        return view("agent.bus_ticket.payment_method");
-    }
-
-    public function receipt()
-    {
-        return view("agent.bus_ticket.receipt");
     }
 
     public function pay(Request $request)

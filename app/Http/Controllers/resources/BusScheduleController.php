@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\resources;
 
 use App\Models\Bus;
 use App\Models\BusStation;
 use App\Models\BusSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 
 class BusScheduleController extends Controller
 {
-    // Admin functions
     public function index()
     {
         return view("master.bus_schedule.bus_schedule", ["bus_schedules" => BusSchedule::all()]);
@@ -91,26 +91,5 @@ class BusScheduleController extends Controller
         $schedule->delete();
 
         return redirect("/master/bus/schedules");
-    }
-
-    // Agent functions
-    public function search(Request $request)
-    {
-        $validated = $request->validate([
-            "departure_date" => "required|date",
-            "origin" => "required|exists:bus_stations,id",
-            "destination" => "required|exists:bus_stations,id",
-            "ticket_amount" => "required|numeric"
-        ]);
-
-        $query = BusSchedule::where("departure_date", "=", $validated["departure_date"])
-            ->where("origin_station_id", "=", $validated["origin"])
-            ->where("destination_station_id", "=", $validated["destination"])
-            ->where("seats", ">=", $validated["ticket_amount"]);
-
-        $matching_schedules = $query
-            ->get();
-
-        return back()->with("matching_schedules", $matching_schedules)->with("redirect_status", "successful redirection")->withInput();
     }
 }

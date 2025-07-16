@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\resources;
 
 use Log;
 use Closure;
 use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class VoucherController extends Controller
 {

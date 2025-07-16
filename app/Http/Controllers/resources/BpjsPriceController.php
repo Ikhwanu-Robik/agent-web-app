@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\resources;
 
 use App\Models\BpjsPrice;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BpjsPriceController extends Controller
 {

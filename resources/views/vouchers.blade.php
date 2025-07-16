@@ -68,6 +68,17 @@
             background-color: rgb(10, 60, 114);
             border: none;
         }
+
+        #voucher-container {
+            display: flex;
+            gap: 1em;
+            margin: 0.5em;
+        }
+
+        .voucher {
+            background-color: rgb(255, 255, 98);
+            padding: 1em;
+        }
     </style>
 </head>
 <body>
@@ -76,9 +87,15 @@
     <main>
         <h1>Vouchers</h1>
 
-        @foreach ($vouchers as $voucher)
-            <div>{{ json_encode($voucher) }}</div>
-        @endforeach
+        <section id="voucher-container">
+            @foreach ($vouchers as $voucher)
+                <div class="voucher">
+                    %{{ $voucher->off_percentage }}
+                    <br>
+                    {{ $voucher->valid_for }}
+                </div>
+            @endforeach
+        </section>
     </main>
 </body>
 </html>

@@ -139,17 +139,13 @@
             <a href="">Power Top Up</a>
         </aside>
 
-
-        @php
-            $service = request()->query('service');
-        @endphp
         @if ($service == 'bus-ticket')
             <article>
                 <h1>Your Bus Ticket Transaction History</h1>
 
                 <section id="content">
                     <ul>
-                        @foreach ($bus_ticket_transactions as $transaction)
+                        @foreach ($reports as $transaction)
                             <li class="transaction-record">
                                 <h2>{{ $transaction->busSchedule->originStation->name }} -
                                     {{ $transaction->busSchedule->destinationStation->name }} |
@@ -164,10 +160,10 @@
                     </ul>
                 </section>
             </article>
-        @elseif ($service == 'bpjs' || isset($bpjs_transactions))
+        @elseif ($service == 'bpjs')
             <article>
 
-                @if (!isset($bpjs_transactions) && session()->get("bpjs_transactions") == null)
+                @if ($reports == null)
                     <h2>First of all, we need to know your NIK</h2>
 
                     @if ($errors->any())
@@ -185,8 +181,8 @@
                     </form>
                 @else
                     @php
-                    $bpjs_transactions = isset($bpjs_transactions) ? $bpjs_transactions : session()->get("bpjs_transactions");
-                    $civil_information = isset($civil_information) ? $civil_information : session()->get("civil_information");
+                    $bpjs_transactions = $reports;
+                    $civil_information = $reports->civil_information;
                     @endphp
                     
                     <h1>Your BPJS Transaction History</h1>

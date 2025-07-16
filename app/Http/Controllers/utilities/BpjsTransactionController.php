@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\utilities;
 
 use App\Models\ActiveBpjs;
 use App\Enums\PaymentMethod;
-use App\Models\BpjsTransaction;
 use Illuminate\Http\Request;
+use App\Models\BpjsTransaction;
 use Illuminate\Validation\Rule;
 use App\Models\CivilInformation;
+use App\Http\Controllers\Controller;
 
 class BpjsTransactionController extends Controller
 {
@@ -58,28 +59,6 @@ class BpjsTransactionController extends Controller
         ];
         $transaction = BpjsTransaction::create($transactionAttribute);
 
-        return redirect("/bpjs/success")->with("bpjs", $bpjs)->with("form_input", $validated)->with("transaction", $transaction);
-    }
-
-    public function receipt()
-    {
-        return view("agent.bpjs_subscription.receipt");
-    }
-
-    public function report(Request $request)
-    {
-        $validated = $request->validate([
-            "civil_id" => "required|exists:civil_informations,NIK"
-        ]);
-
-        $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->with(["activeBpjs", "activeBpjs.bpjsClass"])->first();
-        $bpjs_transactions = BpjsTransaction::where("civil_information_id", "=", $civil_information->id)
-            ->get();
-
-        // TODO : make session persists over different requests
-        session()->put("bpjs_transactions", $bpjs_transactions);
-        session()->put("civil_information", $civil_information);
-
-        return view("report", ["bpjs_transactions" => $bpjs_transactions, "civil_information" => $civil_information]);
+        return redirect("/bpjs/receipt")->with("bpjs", $bpjs)->with("form_input", $validated)->with("transaction", $transaction);
     }
 }
