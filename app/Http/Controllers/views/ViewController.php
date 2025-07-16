@@ -39,7 +39,7 @@ class ViewController extends Controller
     {
         $service = $request->query("service") ? $request->query("service") : "";
         $reports = ReportController::getReport($service);
-
+        
         return view("report", ["service" => $service, "reports" => $reports]);
     }
 

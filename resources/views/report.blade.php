@@ -134,7 +134,7 @@
             <h2>Choose Your History</h2>
             <a href="/report?service=bus-ticket">Bus Ticket</a>
             <a href="/report?service=bpjs">BPJS</a>
-            <a href="">Film Ticket</a>
+            <a href="/report?service=film-ticket">Film Ticket</a>
             <a href="">Game Top Up</a>
             <a href="">Power Top Up</a>
         </aside>
@@ -181,10 +181,10 @@
                     </form>
                 @else
                     @php
-                    $bpjs_transactions = $reports;
-                    $civil_information = $reports->civil_information;
+                        $bpjs_transactions = $reports;
+                        $civil_information = $reports->civil_information;
                     @endphp
-                    
+
                     <h1>Your BPJS Transaction History</h1>
                     <h4>NIK : {{ $civil_information->NIK }}</h4>
                     <h4>Class : {{ $civil_information->activeBpjs->bpjsClass->class }}</h4>
@@ -203,6 +203,26 @@
                         </ul>
                     </section>
                 @endif
+            </article>
+        @elseif($service == 'film-ticket')
+            <article>
+                <section id="content">
+                    <ul>
+                        @foreach ($reports as $transaction)
+                            <li class="transaction-record">
+                                <h2>{{ $transaction->cinemaFilm->film->title }} -
+                                    {{ $transaction->cinemaFilm->cinema->name }}</h2>
+                                <span>{{ $transaction->created_at }}</span> <br>
+                                <span>Total : Rp.{{ number_format($transaction->total, 0, '.') }}</span> <br>
+                                <span>Ticket price :
+                                    Rp.{{ number_format($transaction->cinemaFilm->ticket_price) }}</span> <br>
+                                <span>Seats :
+                                    {{ $transaction->seats_coordinates }}
+                                </span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </section>
             </article>
         @else
             <article id="no-service-selected">

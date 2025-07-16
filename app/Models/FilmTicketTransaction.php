@@ -16,6 +16,6 @@ class FilmTicketTransaction extends Model
 
     public function CinemaFilm()
     {
-        return $this->hasOne(CinemaFilm::class);
+        return $this->belongsTo(CinemaFilm::class);
     }
 }

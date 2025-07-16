@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\utilities;
 
+use App\Models\FilmTicketTransaction;
 use Illuminate\Http\Request;
 use App\Models\BpjsTransaction;
 use App\Models\CivilInformation;
@@ -37,6 +38,15 @@ class ReportController extends Controller
         return redirect("/report?service=bpjs");
     }
 
+    private static function getFilmTicketTransaction()
+    {
+        $film_ticket_transactions = FilmTicketTransaction::where("user_id", "=", Auth::id())
+            ->with(["cinemaFilm", "cinemaFilm.cinema", "cinemaFilm.film"])
+            ->get();
+
+        return $film_ticket_transactions;
+    }
+
     public static function getReport(string $service)
     {
         $reports = null;
@@ -51,6 +61,9 @@ class ReportController extends Controller
                     $reports = $bpjsReports;
                     $reports->civil_information = session()->get("civil_information");
                 }
+                break;
+            case "film-ticket":
+                $reports = self::getFilmTicketTransaction();
                 break;
         }
 
