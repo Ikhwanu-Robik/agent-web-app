@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('film_ticket_transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("cinema_film_id");
+            $table->unsignedBigInteger("user_id");
             $table->string("seats_coordinates");
             $table->integer("total");
+            $table->string("method");
+            $table->string("status");
             $table->timestamps();
 
+            $table->foreign("user_id")->references("id")->on("users");
             $table->foreign("cinema_film_id")->references("id")->on("cinema_film");
         });
     }

@@ -9,6 +9,7 @@ use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\FilmTicketTransaction;
 
 class FilmTicketTransactionController extends Controller
@@ -102,13 +103,14 @@ class FilmTicketTransactionController extends Controller
         $cinemaFilm->save();
 
         if ($validated["payment_method"] == "cash") {
-            // TODO: add the column, verdamt!
-            // $transaction->payment_method = "cash";
+            $transaction->method = "cash";
+            $transaction->status = "finish";
         } else if ($validated["payment_method"] == "flip") {
             // call Flip's API
         }
 
         unset($transaction->cinema_film);
+        $transaction->user_id = Auth::id();
         $transaction->save();
 
         session()->reflash();
