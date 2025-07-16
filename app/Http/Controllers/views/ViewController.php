@@ -62,6 +62,11 @@ class ViewController extends Controller
         return view("agent.bpjs_subscription.bpjs_subscription");
     }
 
+    public function showBpjsReceipt()
+    {
+        return view("agent.bpjs_subscription.receipt");
+    }    
+
     public function filmTicket()
     {
         $films = Film::all();

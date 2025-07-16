@@ -59,11 +59,6 @@ class BpjsTransactionController extends Controller
         ];
         $transaction = BpjsTransaction::create($transactionAttribute);
 
-        return redirect("/bpjs/success")->with("bpjs", $bpjs)->with("form_input", $validated)->with("transaction", $transaction);
+        return redirect("/bpjs/receipt")->with("bpjs", $bpjs)->with("form_input", $validated)->with("transaction", $transaction);
     }
-
-    public function receipt()
-    {
-        return view("agent.bpjs_subscription.receipt");
-    }    
 }
