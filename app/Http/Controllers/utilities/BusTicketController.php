@@ -47,16 +47,6 @@ class BusTicketController extends Controller
         return redirect("/bus/ticket/payment")->with("transaction_data", $transaction)->with("vouchers", $valid_vouchers);
     }
 
-    public function payment()
-    {
-        return view("agent.bus_ticket.payment_method");
-    }
-
-    public function receipt()
-    {
-        return view("agent.bus_ticket.receipt");
-    }
-
     public function pay(Request $request)
     {
         $validated = $request->validate([

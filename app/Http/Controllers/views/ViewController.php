@@ -38,13 +38,23 @@ class ViewController extends Controller
     {
         $service = $request->query("service") ? $request->query("service") : "";
         $reports = ReportController::getReport($service);
-        
+
         return view("report", ["service" => $service, "reports" => $reports]);
     }
 
     public function busTicket()
     {
         return view("agent.bus_ticket.bus_ticket", ["bus_stations" => BusStation::all()]);
+    }
+
+    public function busPayment()
+    {
+        return view("agent.bus_ticket.payment_method");
+    }
+
+    public function busReceipt()
+    {
+        return view("agent.bus_ticket.receipt");
     }
 
     public function bpjs()
