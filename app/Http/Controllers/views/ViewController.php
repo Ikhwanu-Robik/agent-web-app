@@ -39,7 +39,7 @@ class ViewController extends Controller
     {
         $service = $request->query("service") ? $request->query("service") : "";
         $reports = ReportController::getReport($service);
-        
+
         return view("report", ["service" => $service, "reports" => $reports]);
     }
 
@@ -104,12 +104,24 @@ class ViewController extends Controller
         $film_ticket_transaction = session("film_ticket_transaction");
         $cinema_film = CinemaFilm::with(["cinema", "film"])->find($film_ticket_transaction->cinema_film_id);
         $film_ticket_transaction->cinema_film = $cinema_film;
+        $vouchers = Voucher::where("user_id", "=", Auth::id())->get();
+        $valid_vouchers = [];
+        foreach ($vouchers as $voucher) {
+            $valid_services = json_decode($voucher->valid_for);
+
+            foreach ($valid_services as $service) {
+                if ($service == "film_ticket") {
+                    array_push($valid_vouchers, $voucher);
+                }
+            }
+        }
 
         session()->reflash();
 
         return view("agent.film_ticket.film_ticket_payment", [
             "film_ticket_transaction" => $film_ticket_transaction,
-            "seat_coordinates" => session("seat_coordinates")
+            "seat_coordinates" => session("seat_coordinates"),
+            "vouchers" => $valid_vouchers
         ]);
     }
 

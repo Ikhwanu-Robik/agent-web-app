@@ -56,10 +56,10 @@ for these seats :
         <tr>
 
             @for ($col = 0; $col < $colCount; $col++)
-                    <td>
-                        <input type="checkbox" disabled
-                            {{ array_search($col . ',' . $row, $seat_coordinates) !== false ? 'checked' : '' }}>
-                    </td>
+                <td>
+                    <input type="checkbox" disabled
+                        {{ array_search($col . ',' . $row, $seat_coordinates) !== false ? 'checked' : '' }}>
+                </td>
             @endfor
 
         </tr>
@@ -75,7 +75,17 @@ for these seats :
         <option value="cash">Cash</option>
         <option value="flip">Flip</option>
     </select>
-    <button type="submit">Choose Payment Method</button>
+    <label for="voucher">Voucher</label>
+    <select name="voucher" id="voucher">
+        <option value="-1">No Voucher</option>
+        @foreach ($vouchers as $voucher)
+            <option value="{{ $voucher->id }}">{{ $voucher->off_percentage }}% - @foreach (json_decode($voucher->valid_for) as $valid_service)
+                    {{ $valid_service }},
+                @endforeach
+            </option>
+        @endforeach
+    </select>
+    <button type="submit">Pay</button>
 </form>
 
 </html>

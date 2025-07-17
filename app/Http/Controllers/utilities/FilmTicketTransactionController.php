@@ -4,6 +4,7 @@ namespace App\Http\Controllers\utilities;
 
 use App\Models\Film;
 use App\Models\Cinema;
+use App\Models\Voucher;
 use App\Models\CinemaFilm;
 use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
@@ -86,10 +87,29 @@ class FilmTicketTransactionController extends Controller
             "payment_method" => [
                 "required",
                 Rule::enum(PaymentMethod::class)
-            ]
+            ],
+            "voucher" => "required"
         ]);
 
+        $voucher = Voucher::find($validated["voucher"]);
+        $isVoucherValid = false;
+        if ($voucher) {
+            foreach (json_decode($voucher->valid_for) as $service) {
+                if ($service == "film_ticket") {
+                    $isVoucherValid = true;
+                }
+            }
+        }
+
+        $discount = 1;
+        if ($validated["voucher"] != -1 && $isVoucherValid) {
+            $discount = (100 - $voucher->off_percentage) / 100;
+
+            $voucher->delete();
+        }
+
         $transaction = session("film_ticket_transaction");
+        $transaction->total = $transaction->total * $discount;
 
         $cinemaFilm = CinemaFilm::find($transaction->cinema_film->id);
         $newSeats = json_decode($cinemaFilm->seats_status);
