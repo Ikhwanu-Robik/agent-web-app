@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\views\ViewController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\utilities\AuthController;
+use App\Http\Controllers\views\GeneralViewController;
 
 require("pages.php");
 require("admin.php");
@@ -15,9 +15,9 @@ Route::middleware("auth")->group(function () {
 });
 
 Route::middleware("guest")->group(function () {
-   Route::get("/login", [ViewController::class, "showLoginForm"])->name("login");
+   Route::get("/login", [GeneralViewController::class, "showLoginForm"])->name("login");
    Route::post("/login", [AuthController::class, "login"]);
 
-   Route::get("/register", [ViewController::class, "showRegisterForm"])->name("register");
+   Route::get("/register", [GeneralViewController::class, "showRegisterForm"])->name("register");
    Route::post("/register", [AuthController::class, "register"]);
 });

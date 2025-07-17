@@ -1,18 +1,23 @@
 <?php
 
+use App\Http\Controllers\views\GeneralViewController;
+use App\Http\Controllers\views\BusTicketViewController;
+use App\Http\Controllers\views\GameTopupViewController;
+use App\Http\Controllers\views\FilmTicketViewController;
+use App\Http\Controllers\views\PowerTopupViewController;
+use App\Http\Controllers\views\BpjsViewController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\views\ViewController;
 
 Route::middleware("auth")->group(function () {
-    Route::get('/', [ViewController::class, "home"]);
+    Route::get('/', [GeneralViewController::class, "home"]);
 
-    Route::get("/report", [ViewController::class, "report"]);
-    Route::get("/vouchers", [ViewController::class, "vouchers"]);
-    
-    Route::get("/bus/ticket", [ViewController::class, "busTicket"]);
-    Route::get("/bpjs", [ViewController::class, "bpjs"]);
-    Route::get("/film", [ViewController::class, "filmTicket"]);
-    Route::get("/game/topup", [ViewController::class, "game"]);
-    Route::get("/game/topup/package", [ViewController::class, "gamePackage"]);
-    Route::get("/power", [ViewController::class, "power"]);
+    Route::get("/report", [GeneralViewController::class, "report"]);
+    Route::get("/vouchers", [GeneralViewController::class, "vouchers"]);
+
+    Route::get("/bus/ticket", [BusTicketViewController::class, "busTicket"]);
+    Route::get("/bpjs", [BpjsViewController::class, "bpjs"]);
+    Route::get("/film", [FilmTicketViewController::class, "filmTicket"]);
+    Route::get("/game/topup", [GameTopupViewController::class, "game"]);
+    Route::get("/game/topup/package", [GameTopupViewController::class, "gamePackage"]);
+    Route::get("/power", [PowerTopupViewController::class, "power"]);
 });
