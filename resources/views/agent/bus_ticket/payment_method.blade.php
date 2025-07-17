@@ -1,9 +1,14 @@
-@php
-    $transaction = session('transaction_data');
-    $vouchers = session('vouchers');
-@endphp
+<!DOCTYPE html>
+<html lang="en">
 
-@if (session('transaction_data'))
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bus Ticket</title>
+</head>
+
+<body>
     <h2>
         You're About to Buy Bus Tiket for {{ $transaction->busSchedule->bus->name }}</h2>
 
@@ -17,8 +22,8 @@
         <h3>Choose your payment method</h3>
         <form action="/bus/ticket/pay" method="post" style="display:inline">
             @csrf
-            <input type="hidden" name="bus_schedule_id" value="{{ $transaction->bus_schedule_id }}"/>
-            <input type="hidden" name="ticket_amount" value="{{ $transaction->ticket_amount }}"/>
+            <input type="hidden" name="bus_schedule_id" value="{{ $transaction->bus_schedule_id }}" />
+            <input type="hidden" name="ticket_amount" value="{{ $transaction->ticket_amount }}" />
             <label for="payment_method">Payment Method</label>
             <select name="payment_method" id="payment_method">
                 <option value="cash">Cash</option>
@@ -38,11 +43,7 @@
             <button type="submit">PAY</button>
         </form>
     </div>
-@else
-    Oops, it seems there is no transaction data here!
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div>{{ $error }}</div>
-        @endforeach
-    @endif
-@endif
+
+</body>
+
+</html>
