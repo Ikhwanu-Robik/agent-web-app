@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BusController;
-use App\Http\Controllers\FilmController;
-use App\Http\Controllers\ViewController;
-use App\Http\Controllers\CinemaController;
-use App\Http\Controllers\VoucherController;
-use App\Http\Controllers\BpjsPriceController;
-use App\Http\Controllers\BusStationController;
-use App\Http\Controllers\CinemaFilmController;
-use App\Http\Controllers\BusScheduleController;
+use App\Http\Controllers\views\ViewController;
+use App\Http\Controllers\resources\BusController;
+use App\Http\Controllers\resources\FilmController;
+use App\Http\Controllers\resources\CinemaController;
+use App\Http\Controllers\resources\VoucherController;
+use App\Http\Controllers\resources\BpjsPriceController;
+use App\Http\Controllers\resources\BusStationController;
+use App\Http\Controllers\resources\CinemaFilmController;
+use App\Http\Controllers\resources\BusScheduleController;
 
 Route::middleware("auth")->group(function () {
    Route::get("/master", [ViewController::class, "master"]);
