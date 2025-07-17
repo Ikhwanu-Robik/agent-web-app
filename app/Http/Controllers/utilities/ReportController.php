@@ -38,6 +38,13 @@ class ReportController extends Controller
         return redirect("/report?service=bpjs");
     }
 
+    public static function updateBpjsReport() {
+        $civil_information = session()->get("civil_information");
+        $bpjs_transactions = BpjsTransaction::where("civil_information_id", "=", $civil_information->id)->get();
+
+        session()->put("bpjs_transactions", $bpjs_transactions);
+    }
+
     private static function getFilmTicketTransaction()
     {
         $film_ticket_transactions = FilmTicketTransaction::where("user_id", "=", Auth::id())
