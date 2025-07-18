@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\resources\GameTopUpPackageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\resources\BusController;
 use App\Http\Controllers\resources\FilmController;
@@ -100,6 +101,16 @@ Route::middleware("auth")->group(function () {
          Route::put("/edit/{game}", [GameController::class, "update"]);
          Route::get("/delete/{game}", [GameController::class, "delete"]);
          Route::delete("/delete/{game}", [GameController::class, "destroy"]);
+      });
+
+      Route::prefix("/games/packages")->group(function () {
+         Route::get("/", [GameTopUpPackageController::class, "index"]);
+         Route::get("/create", [GameTopUpPackageController::class, "create"]);
+         Route::post("/create", [GameTopUpPackageController::class, "store"]);
+         Route::get("/edit/{package}", [GameTopUpPackageController::class, "edit"]);
+         Route::put("/edit/{package}", [GameTopUpPackageController::class, "update"]);
+         Route::get("/delete/{package}", [GameTopUpPackageController::class, "delete"]);
+         Route::delete("/delete/{package}", [GameTopUpPackageController::class, "destroy"]);
       });
    });
 });
