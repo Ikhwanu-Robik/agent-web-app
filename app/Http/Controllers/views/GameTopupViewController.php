@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\views;
 
+use App\Models\Game;
 use App\Http\Controllers\Controller;
 
-class GameTopupViewController extends Controller {
-    public function game()
+class GameTopupViewController extends Controller
+{
+    public function selectGame()
     {
-        return view("agent.game_topup.game_topup");
+        $packages = session()->get("packages");
+        session()->reflash();
+
+        return view("agent.game_topup.packages", ["games" => Game::all(), "packages" => $packages]);
     }
 
     public function gamePackage()

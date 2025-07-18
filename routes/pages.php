@@ -17,7 +17,7 @@ Route::middleware("auth")->group(function () {
     Route::get("/bus/ticket", [BusTicketViewController::class, "busTicket"]);
     Route::get("/bpjs", [BpjsViewController::class, "bpjs"]);
     Route::get("/film", [FilmTicketViewController::class, "filmTicket"]);
-    Route::get("/game/topup", [GameTopupViewController::class, "game"]);
+    Route::get("/game/topup", [GameTopupViewController::class, "selectGame"]);
     Route::get("/game/topup/package", [GameTopupViewController::class, "gamePackage"]);
     Route::get("/power", [PowerTopupViewController::class, "power"]);
 });
