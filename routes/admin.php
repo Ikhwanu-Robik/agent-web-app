@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\resources\BusController;
 use App\Http\Controllers\resources\FilmController;
+use App\Http\Controllers\resources\GameController;
 use App\Http\Controllers\resources\CinemaController;
 use App\Http\Controllers\resources\VoucherController;
 use App\Http\Controllers\views\GeneralViewController;
@@ -89,6 +90,16 @@ Route::middleware("auth")->group(function () {
          Route::put("/edit/{film}", [FilmController::class, "update"]);
          Route::get("/delete/{film}", [FilmController::class, "delete"]);
          Route::delete("/delete/{film}", [FilmController::class, "destroy"]);
+      });
+
+      Route::prefix("/games")->group(function () {
+         Route::get("/", [GameController::class, "index"]);
+         Route::get("/create", [GameController::class, "create"]);
+         Route::post("/create", [GameController::class, "store"]);
+         Route::get("/edit/{game}", [GameController::class, "edit"]);
+         Route::put("/edit/{game}", [GameController::class, "update"]);
+         Route::get("/delete/{game}", [GameController::class, "delete"]);
+         Route::delete("/delete/{game}", [GameController::class, "destroy"]);
       });
    });
 });
