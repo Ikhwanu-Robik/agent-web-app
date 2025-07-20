@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TopUpTransaction extends Model
+class GameTopUpTransaction extends Model
 {
+    protected $table = "game_topup_transactions";
+
     protected $fillable = [
         'user_id',
         'package_id',
@@ -15,4 +17,8 @@ class TopUpTransaction extends Model
         'status',
         'total'
     ];
+
+    public function topUpPackage() {
+        return $this->belongsTo(GameTopUpPackage::class, "package_id", "id");
+    }
 }
