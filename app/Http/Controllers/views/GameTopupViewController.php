@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\views;
 
 use App\Models\Game;
-use App\Http\Controllers\Controller;
+use App\Models\Voucher;
 use App\Models\GameTopUpPackage;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class GameTopupViewController extends Controller
 {
@@ -36,17 +38,34 @@ class GameTopupViewController extends Controller
             return redirect("/game/topup");
         }
 
+        $vouchers = Voucher::where("user_id", "=", Auth::id())->get();
+        $valid_vouchers = [];
+        foreach ($vouchers as $voucher) {
+            $valid_services = json_decode($voucher->valid_for);
+
+            foreach ($valid_services as $service) {
+                if ($service == "game_top_up") {
+                    array_push($valid_vouchers, $voucher);
+                }
+            }
+        }
+
         session()->reflash();
-        
-        return view("agent.game_topup.payment", ["transaction" => $transaction, "package" => $package]);
+
+        return view("agent.game_topup.payment", [
+            "transaction" => $transaction,
+            "package" => $package,
+            "vouchers" => $valid_vouchers
+        ]);
     }
 
-    public function receipt() {
+    public function receipt()
+    {
         $transaction = session("transaction");
         if (!$transaction) {
             return redirect("/game/topup");
         }
-        
+
         $package = GameTopUpPackage::with("game")->findOr($transaction["package_id"], function () {
             return redirect("/game/topup");
         });

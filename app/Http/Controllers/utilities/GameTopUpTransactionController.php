@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\utilities;
 
 use Carbon\Carbon;
+use App\Models\Voucher;
 use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -54,10 +55,29 @@ class GameTopUpTransactionController extends Controller
     public function pay(Request $request, GameTopUpPackage $package)
     {
         $validated = $request->validate([
-            "payment_method" => ["required", Rule::enum(PaymentMethod::class)]
+            "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
+            "voucher" => "required|exists:vouchers,id"
         ]);
 
+        $voucher = Voucher::find($validated["voucher"]);
+        $isVoucherValid = false;
+        if ($voucher) {
+            foreach (json_decode($voucher->valid_for) as $service) {
+                if ($service == "game_top_up") {
+                    $isVoucherValid = true;
+                }
+            }
+        }
+
+        $discount = 1;
+        if ($validated["voucher"] != -1 && $isVoucherValid) {
+            $discount = (100 - $voucher->off_percentage) / 100;
+
+            $voucher->delete();
+        }
+
         $transactionAttr = session()->get("transaction");
+        $transactionAttr["total"] = $transactionAttr["total"] * $discount;
         $transactionAttr["method"] = $validated["payment_method"];
 
         if ($validated["payment_method"] == "cash") {

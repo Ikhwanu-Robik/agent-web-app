@@ -35,9 +35,17 @@
 
     <form action="{{ "/game/topup/package/" . $package->id . "/pay" }}" method="post">
         @csrf
-        <select name="payment_method" id="">
+        <label for="payment_method">payment_method</label>
+        <select name="payment_method" id="payment_method">
             <option value="cash">cash</option>
             <option value="flip">flip</option>
+        </select>
+        <label for="voucher">voucher</label>
+        <select name="voucher" id="voucher">
+            <option value="-1">no voucher</option>
+            @foreach ($vouchers as $voucher)
+                <option value="{{ $voucher->id }}">{{ $voucher->off_percentage }}%</option>
+            @endforeach
         </select>
         <button type="submit">Pay</button>
     </form>
