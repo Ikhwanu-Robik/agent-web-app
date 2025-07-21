@@ -135,7 +135,7 @@
             <a href="/report?service=bus-ticket">Bus Ticket</a>
             <a href="/report?service=bpjs">BPJS</a>
             <a href="/report?service=film-ticket">Film Ticket</a>
-            <a href="">Game Top Up</a>
+            <a href="/report?service=game-topup">Game Top Up</a>
             <a href="">Power Top Up</a>
         </aside>
 
@@ -218,6 +218,24 @@
                                     Rp.{{ number_format($transaction->cinemaFilm->ticket_price) }}</span> <br>
                                 <span>Seats :
                                     {{ $transaction->seats_coordinates }}
+                                </span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </section>
+            </article>
+        @elseif($service == 'game-topup')
+            <article>
+                <section id="content">
+                    <ul>
+                        @foreach ($reports as $transaction)
+                            <li class="transaction-record">
+                                <h2>{{ $transaction->topUpPackage->title }} -
+                                    {{ $transaction->topUpPackage->game->name }}</h2>
+                                <span>{{ $transaction->created_at }}</span> <br>
+                                <span>Total : Rp.{{ number_format($transaction->total, 0, '.') }}</span> <br>
+                                <span>
+                                    {{ $transaction->method }} - {{ $transaction->status }}
                                 </span>
                             </li>
                         @endforeach

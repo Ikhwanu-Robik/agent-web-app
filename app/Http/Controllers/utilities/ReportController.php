@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\utilities;
 
 use App\Models\FilmTicketTransaction;
+use App\Models\GameTopUpTransaction;
 use Illuminate\Http\Request;
 use App\Models\BpjsTransaction;
 use App\Models\CivilInformation;
@@ -54,6 +55,15 @@ class ReportController extends Controller
         return $film_ticket_transactions;
     }
 
+    private static function getGameTopupTransaction()
+    {
+        $game_topup_transactions = GameTopUpTransaction::where("user_id", "=", Auth::id())
+            ->with(["topUpPackage", "topUpPackage.game"])
+            ->get();
+
+        return $game_topup_transactions;
+    }
+
     public static function getReport(string $service)
     {
         $reports = null;
@@ -71,6 +81,9 @@ class ReportController extends Controller
                 break;
             case "film-ticket":
                 $reports = self::getFilmTicketTransaction();
+                break;
+            case "game-topup":
+                $reports = self::getGameTopupTransaction();
                 break;
         }
 
