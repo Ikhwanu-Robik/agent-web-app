@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\resources\GameTopUpPackageController;
-use App\Http\Controllers\resources\PowerVoltageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\resources\BusController;
 use App\Http\Controllers\resources\FilmController;
@@ -112,16 +111,6 @@ Route::middleware("auth")->group(function () {
          Route::put("/edit/{package}", [GameTopUpPackageController::class, "update"]);
          Route::get("/delete/{package}", [GameTopUpPackageController::class, "delete"]);
          Route::delete("/delete/{package}", [GameTopUpPackageController::class, "destroy"]);
-      });
-
-      Route::prefix("/power/voltages")->group(function () {
-         Route::get("/", [PowerVoltageController::class, "index"]);
-         Route::get("/create", [PowerVoltageController::class, "create"]);
-         Route::post("/create", [PowerVoltageController::class, "store"]);
-         Route::get("/edit/{power_voltage}", [PowerVoltageController::class, "edit"]);
-         Route::put("/edit/{power_voltage}", [PowerVoltageController::class, "update"]);
-         Route::get("/delete/{power_voltage}", [PowerVoltageController::class, "delete"]);
-         Route::delete("/delete/{power_voltage}", [PowerVoltageController::class, "destroy"]);
       });
    });
 });
