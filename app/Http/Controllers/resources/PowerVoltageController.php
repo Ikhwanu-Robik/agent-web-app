@@ -23,12 +23,12 @@ class PowerVoltageController extends Controller
     {
         $validated = $request->validate([
             'volts' => 'required|numeric',
-            'monthly_price' => 'required|decimal:0,6',
+            'price_per_kWh' => 'required|decimal:0,6',
         ]);
 
         PowerVoltage::create([
             'volts' => $validated['volts'],
-            'monthly_price' => $validated['monthly_price']
+            'price_per_kWh' => $validated['price_per_kWh']
         ]);
 
         return redirect("/master/power/voltages");
@@ -43,11 +43,11 @@ class PowerVoltageController extends Controller
     {
         $validated = $request->validate([
             'volts' => 'required|numeric',
-            'monthly_price' => 'required|decimal:0,6'
+            'price_per_kWh' => 'required|decimal:0,6'
         ]);
 
         $power_voltage->volts = $validated["volts"];
-        $power_voltage->monthly_price = $validated["monthly_price"];
+        $power_voltage->price_per_kWh = $validated["price_per_kWh"];
         $power_voltage->save();
 
         return redirect("/master/power/voltages");

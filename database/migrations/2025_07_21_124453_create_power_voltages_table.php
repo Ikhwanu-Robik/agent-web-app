@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('power_voltages', function (Blueprint $table) {
             $table->id();
             $table->integer("volts");
-            $table->double("monthly_price");
+            $table->double("price_per_kWh");
             $table->timestamps();
         });
     }

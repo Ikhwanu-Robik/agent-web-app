@@ -10,8 +10,8 @@
     @csrf
     <label for="volts">Volts</label>
     <input type="number" name="volts" id="volts">
-    <label for="monthly_price">Monthly Price</label>
-    <input type="number" name="monthly_price" id="monthly_price">
+    <label for="price_per_kWh">price_per_kWh</label>
+    <input type="number" name="price_per_kWh" id="price_per_kWh">
 
     <button type="submit">Add</button>
 </form>

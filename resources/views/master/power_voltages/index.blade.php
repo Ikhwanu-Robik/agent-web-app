@@ -10,7 +10,7 @@
     <tr>
         <th>ID</th>
         <th>volts</th>
-        <th>monthly_price</th>
+        <th>price_per_kWh</th>
         <th>Date Created</th>
         <th>Date Updated</th>
         <th>Actions</th>
@@ -19,7 +19,7 @@
         <tr>
             <td>{{ $power_voltage->id }}</td>
             <td>{{ $power_voltage->volts }}</td>
-            <td>{{ $power_voltage->monthly_price }}</td>
+            <td>{{ $power_voltage->price_per_kWh }}</td>
             <td>{{ $power_voltage->created_at }}</td>
             <td>{{ $power_voltage->updated_at }}</td>
             <td><a href="{{ '/master/power/voltages/edit/' . $power_voltage->id }}"><button>Update</button></a><a

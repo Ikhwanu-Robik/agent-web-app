@@ -8,6 +8,6 @@ class PowerVoltage extends Model
 {
     protected $fillable = [
         "volts",
-        "monthly_price"
+        "price_per_kWh"
     ];
 }
