@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class PowerTransaction extends Model
 {
     protected $fillable = [
-        "power_subscriber_id",
-        "kWh_usage",
-        "total"
+        "subscriber_number",
+        "total",
+        "method",
+        "status"
     ];
 }

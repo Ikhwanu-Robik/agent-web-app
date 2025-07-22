@@ -19,5 +19,5 @@ Route::middleware("auth")->group(function () {
     Route::get("/film", [FilmTicketViewController::class, "filmTicket"]);
     Route::get("/game/topup", [GameTopupViewController::class, "selectGame"]);
     Route::get("/game/topup/package", [GameTopupViewController::class, "gamePackage"]);
-    Route::get("/power", [PowerTopupViewController::class, "power"]);
+    Route::get("/power", [PowerTopupViewController::class, "showPowerTopUpForm"]);
 });
