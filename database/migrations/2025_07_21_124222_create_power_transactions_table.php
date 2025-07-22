@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId("power_subscriber_id")->constrained("power_subscribers");
             $table->integer("kWh_usage");
             $table->double("total");
+            $table->string("method");
+            $table->string("status");
             $table->timestamps();
         });
     }
