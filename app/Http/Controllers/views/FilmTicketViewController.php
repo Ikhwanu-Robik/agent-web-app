@@ -70,19 +70,14 @@ class FilmTicketViewController extends Controller
 
     public function showFilmReceipt()
     {
-        if (!session("film_ticket_transaction") || !session("seat_coordinates")) {
+        if (!session("transaction")) {
             return redirect("/film");
         }
 
-        $film_ticket_transaction = session("film_ticket_transaction");
-        $cinema_film = CinemaFilm::with(["cinema", "film"])->find($film_ticket_transaction->cinema_film_id);
-        $film_ticket_transaction->cinema_film = $cinema_film;
-        $film_ticket_transaction->payment_method = session("payment_method");
-        $film_ticket_transaction->payment_status = session("payment_status");
+        $film_ticket_transaction = session("transaction");
 
         return view("agent.film_ticket.receipt", [
-            "film_ticket_transaction" => $film_ticket_transaction,
-            "seat_coordinates" => session("seat_coordinates"),
+            "film_ticket_transaction" => $film_ticket_transaction
         ]);
     }
 }

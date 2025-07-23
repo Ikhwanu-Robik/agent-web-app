@@ -60,7 +60,7 @@
     @endif
 </table>
 
-for these seats : {{ json_encode($seat_coordinates) }}
+for these seats : {{ json_encode($film_ticket_transaction->seats_coordinates_array) }}
 <table>
 
     @php
@@ -74,7 +74,7 @@ for these seats : {{ json_encode($seat_coordinates) }}
             @for ($col = 0; $col < $colCount; $col++)
                 <td>
                     <input type="checkbox" disabled
-                        {{ array_search($col . ',' . $row, $seat_coordinates) !== false ? 'checked' : '' }}>
+                        {{ array_search($col . ',' . $row, $film_ticket_transaction->seats_coordinates_array) !== false ? 'checked' : '' }}>
                 </td>
             @endfor
 

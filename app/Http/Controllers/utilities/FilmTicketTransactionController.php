@@ -111,16 +111,16 @@ class FilmTicketTransactionController extends Controller
         $transaction = session("film_ticket_transaction");
         $transaction->total = $transaction->total * $discount;
 
-        $cinemaFilm = CinemaFilm::find($transaction->cinema_film->id);
-        $newSeats = json_decode($cinemaFilm->seats_status);
+        $cinema_film = CinemaFilm::find($transaction->cinema_film->id);
+        $newSeats = json_decode($cinema_film->seats_status);
         foreach (session("seat_coordinates") as $seat_coord) {
             $col = explode(",", $seat_coord)[0];
             $row = explode(",", $seat_coord)[1];
 
             $newSeats[$row][$col] = 1;
         }
-        $cinemaFilm->seats_status = json_encode($newSeats);
-        $cinemaFilm->save();
+        $cinema_film->seats_status = json_encode($newSeats);
+        $cinema_film->save();
 
         if ($validated["payment_method"] == "cash") {
             $transaction->method = "cash";
@@ -132,14 +132,14 @@ class FilmTicketTransactionController extends Controller
         unset($transaction->cinema_film);
         $transaction->user_id = Auth::id();
         $transaction->save();
-
-        session()->reflash();
-        session()->flash("payment_method", $validated["payment_method"]);
-        session()->flash("payment_status", "success");
+        
+        $transaction->cinema_film = $cinema_film;
+        $transaction->payment_method = $validated["payment_method"];
         if ($validated["voucher"] != -1 && $isVoucherValid) {
-            session()->flash("voucher", $voucher->off_percentage . "%");
+            $transaction->voucher = $voucher->off_percentage . "%";
         }
+        $transaction->seats_coordinates_array = session("seat_coordinates");
 
-        return redirect("/film/cinema/seats/transaction/success");
+        return redirect("/film/cinema/seats/transaction/success")->with("transaction", $transaction);
     }
 }
