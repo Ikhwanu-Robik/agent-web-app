@@ -60,6 +60,13 @@ class ReportController extends Controller
         session()->put("bpjs_transactions", $bpjs_transactions);
     }
 
+    public static function updatePowerTopUpReport() {
+        $old_transactions = session()->get("power_top_up_transactions");
+        $power_top_up_transactions = PowerTransaction::where("subscriber_number", "=", $old_transactions[0]->subscriber_number)->get();
+
+        session()->put("power_top_up_transactions", $power_top_up_transactions);
+    }
+
     private static function getFilmTicketTransaction()
     {
         $film_ticket_transactions = FilmTicketTransaction::where("user_id", "=", Auth::id())

@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use App\Models\PowerTransaction;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\utilities\ReportController;
 
 class PowerTransactionController extends Controller
 {
@@ -83,6 +84,8 @@ class PowerTransactionController extends Controller
         if ($validated["voucher"] != -1 && $isVoucherValid) {
             $transaction->voucher = $voucher->off_percentage . "%";
         }
+
+        ReportController::updatePowerTopUpReport();
 
         return redirect("/power/receipt")->with("transaction", $transaction);
     }
