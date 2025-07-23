@@ -135,8 +135,8 @@
             <a href="/report?service=bus-ticket">Bus Ticket</a>
             <a href="/report?service=bpjs">BPJS</a>
             <a href="/report?service=film-ticket">Film Ticket</a>
-            <a href="">Game Top Up</a>
-            <a href="">Power Top Up</a>
+            <a href="/report?service=game-topup">Game Top Up</a>
+            <a href="/report?service=power-top-up">Power Top Up</a>
         </aside>
 
         @if ($service == 'bus-ticket')
@@ -223,6 +223,58 @@
                         @endforeach
                     </ul>
                 </section>
+            </article>
+        @elseif($service == 'game-topup')
+            <article>
+                <section id="content">
+                    <ul>
+                        @foreach ($reports as $transaction)
+                            <li class="transaction-record">
+                                <h2>{{ $transaction->topUpPackage->title }} -
+                                    {{ $transaction->topUpPackage->game->name }}</h2>
+                                <span>{{ $transaction->created_at }}</span> <br>
+                                <span>Total : Rp.{{ number_format($transaction->total, 0, '.') }}</span> <br>
+                                <span>
+                                    {{ $transaction->method }} - {{ $transaction->status }}
+                                </span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </section>
+            </article>
+        @elseif($service == "power-top-up")
+            <article>
+                @if ($reports == null)
+                    <h2>First of all, we need to know your Power Subscriber Number</h2>
+
+                    @if ($errors->any())
+                        <div class="errors">
+                            @foreach ($errors->all() as $error)
+                                <div>{{ $error }}</div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <form action="/report/power" method="post">
+                        @csrf
+                        <input type="text" name="subscriber_number" id="subscriber_number" placeholder="power subscriber number">
+                        <button type="submit">Send</button>
+                    </form>
+                @else
+                    <h1>Your Power Top Up History</h1>
+                    <h4>NIK : {{ $reports[0]->subscriber_number }}</h4>
+
+                    <section id="content">
+                        <ul>
+                            @foreach ($reports as $transaction)
+                                <li class="transaction-record">
+                                    <h5>Rp.{{ number_format($transaction->total, 0, '.') }} |
+                                        {{ $transaction->method }}</h5>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </section>
+                @endif
             </article>
         @else
             <article id="no-service-selected">
