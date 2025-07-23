@@ -18,7 +18,7 @@ class PowerTopupViewController extends Controller
         }
         session()->reflash();
 
-        return view("agent.power_topup.payment_method");
+        return view("agent.power_topup.payment_method", ["vouchers" => session()->get("vouchers")]);
     }
 
     public function showReceipt()
