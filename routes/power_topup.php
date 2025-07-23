@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\utilities\PowerTransactionController;
+use App\Http\Controllers\utilities\ReportController;
 use App\Http\Controllers\views\PowerTopupViewController;
 
 Route::middleware("auth")->group(function () {
@@ -8,4 +9,6 @@ Route::middleware("auth")->group(function () {
     Route::get("/power/payment", [PowerTopupViewController::class, "showSelectPaymentMethodPage"]);
     Route::post("/power/buy", [PowerTransactionController::class, "finalizeTransaction"]);
     Route::get("/power/receipt", [PowerTopupViewController::class, "showReceipt"]);
+
+    Route::post("/report/power", [ReportController::class, "getPowerTopUpReport"]);
 });

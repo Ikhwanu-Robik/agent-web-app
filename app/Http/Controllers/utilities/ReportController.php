@@ -4,6 +4,7 @@ namespace App\Http\Controllers\utilities;
 
 use App\Models\FilmTicketTransaction;
 use App\Models\GameTopUpTransaction;
+use App\Models\PowerTransaction;
 use Illuminate\Http\Request;
 use App\Models\BpjsTransaction;
 use App\Models\CivilInformation;
@@ -39,7 +40,20 @@ class ReportController extends Controller
         return redirect("/report?service=bpjs");
     }
 
-    public static function updateBpjsReport() {
+    public function getPowerTopUpReport(Request $request)
+    {
+        $validated = $request->validate([
+            "subscriber_number" => "required|numeric"
+        ]);
+
+        $game_top_up_transactions = PowerTransaction::where("subscriber_number", "=", $validated["subscriber_number"])->get();
+        session()->put("power_top_up_transactions", $game_top_up_transactions);
+
+        return redirect("/report?service=power-top-up");
+    }
+
+    public static function updateBpjsReport()
+    {
         $civil_information = session()->get("civil_information");
         $bpjs_transactions = BpjsTransaction::where("civil_information_id", "=", $civil_information->id)->get();
 
@@ -84,6 +98,9 @@ class ReportController extends Controller
                 break;
             case "game-topup":
                 $reports = self::getGameTopupTransaction();
+                break;
+            case "power-top-up":
+                $reports = session()->get("power_top_up_transactions");
                 break;
         }
 
