@@ -49,7 +49,7 @@ class PowerTransactionController extends Controller
     {
         $validated = $request->validate([
             "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
-            "voucher" => "required|exists:vouchers,id"
+            "voucher" => "required|numeric"
         ]);
 
         $voucher = Voucher::find($validated["voucher"]);
@@ -80,6 +80,9 @@ class PowerTransactionController extends Controller
         }
 
         $transaction = PowerTransaction::create($transaction_attributes);
+        if ($validated["voucher"] != -1 && $isVoucherValid) {
+            $transaction->voucher = $voucher->off_percentage . "%";
+        }
 
         return redirect("/power/receipt")->with("transaction", $transaction);
     }

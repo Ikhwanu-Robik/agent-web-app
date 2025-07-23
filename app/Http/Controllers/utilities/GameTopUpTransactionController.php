@@ -87,6 +87,9 @@ class GameTopUpTransactionController extends Controller
         }
 
         $transaction = GameTopUpTransaction::create($transactionAttr);
+        if ($validated["voucher"] != -1 && $isVoucherValid) {
+            $transaction->voucher = $voucher->off_percentage . "%";
+        }
 
         return redirect("/game/topup/receipt")
             ->with("transaction", $transaction);

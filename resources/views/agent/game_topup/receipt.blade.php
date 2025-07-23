@@ -42,6 +42,13 @@
             <td>:</td>
             <td>{{ $transaction->status }}</td>
         </tr>
+        @if ($transaction->voucher)
+            <tr>
+                <td>Voucher</td>
+                <td>:</td>
+                <td>{{ $transaction->voucher }}</td>
+            </tr>
+        @endif
     </table>
 </body>
 

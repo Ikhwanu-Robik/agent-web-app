@@ -51,6 +51,13 @@
         <td>:</td>
         <td>{{ $film_ticket_transaction->payment_status }}</td>
     </tr>
+    @if (session()->has("voucher"))
+        <tr>
+            <td>Voucher</td>
+            <td>:</td>
+            <td>{{ session()->get("voucher") }}</td>
+        </tr>
+    @endif
 </table>
 
 for these seats : {{ json_encode($seat_coordinates) }}

@@ -136,6 +136,9 @@ class FilmTicketTransactionController extends Controller
         session()->reflash();
         session()->flash("payment_method", $validated["payment_method"]);
         session()->flash("payment_status", "success");
+        if ($validated["voucher"] != -1 && $isVoucherValid) {
+            session()->flash("voucher", $voucher->off_percentage . "%");
+        }
 
         return redirect("/film/cinema/seats/transaction/success");
     }

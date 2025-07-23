@@ -98,6 +98,9 @@ class BusTicketController extends Controller
 
         $transaction = BusTicketTransaction::create($attributes);
         $transaction->busSchedule = $bus_schedule;
+        if ($validated["voucher"] && $isVoucherValid) {
+            $transaction->voucher = $voucher->off_percentage . "%";
+        }
 
         return redirect("/bus/ticket/finished")->with("transaction_data", $transaction)->with("payment_method", $validated["payment_method"]);
     }

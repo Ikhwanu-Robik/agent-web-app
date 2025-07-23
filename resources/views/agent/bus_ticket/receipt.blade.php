@@ -22,6 +22,9 @@
         <span>{{ $transaction->ticket_amount }} Ticket{{ $transaction->ticket_amount > 1 ? 's' : '' }}</span> <br>
         <h3>Rp.{{ $transaction->total }}</h3>
         <h3>Paid with {{ $payment_method }}</h3>
+        @if ($transaction->voucher)
+            <span>Voucher : {{ $transaction->voucher }}</span>
+        @endif
     </div>
 </body>
 
