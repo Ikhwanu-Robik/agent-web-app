@@ -90,6 +90,6 @@ class CinemaFilmController extends Controller
         }
         CinemaFilm::where("id", "=", $cinema_film)->delete();
 
-        return redirect("/master/cinema/" . $cinema->id . "/films");
+        return redirect("/master/cinemas/" . $cinema->id . "/films");
     }
 }
