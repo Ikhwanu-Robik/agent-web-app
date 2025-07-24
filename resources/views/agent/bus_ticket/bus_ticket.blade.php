@@ -13,10 +13,6 @@
 <form action="/bus/schedules" method="post">
     @csrf
 
-    <label for="departure-date">Tanggal Berangkat</label>
-    <input type="date" name="departure_date" id="departure-date" value="{{ old('departure_date') }}">
-    <br>
-
     <label for="origin">Dari</label>
     <select name="origin" id="origin">
         @foreach ($bus_stations as $station)
