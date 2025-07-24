@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\resources;
 
-use App\Models\CinemaFilm;
+use Carbon\Carbon;
 use App\Models\Film;
 use App\Models\Cinema;
+use App\Models\CinemaFilm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class CinemaFilmController extends Controller
@@ -45,7 +47,7 @@ class CinemaFilmController extends Controller
             "cinema_id" => $cinema->id,
             "film_id" => $validated["film"],
             "ticket_price" => $validated["ticket_price"],
-            "airing_datetime" => $validated["datetime_airing"],
+            "airing_datetime" => Carbon::make($validated["datetime_airing"]),
             "seats_status" => $cinema->seats_structure
         ];
         CinemaFilm::create($attributes);

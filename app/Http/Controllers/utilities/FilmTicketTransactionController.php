@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\utilities;
 
 use Closure;
+use Carbon\Carbon;
 use App\Models\Film;
 use App\Models\Cinema;
 use App\Models\Voucher;
@@ -31,7 +32,10 @@ class FilmTicketTransactionController extends Controller
         // mark the cinema as 'matching'
         foreach ($cinemas as $cinema) {
             foreach ($cinema->films as $film) {
-                if ($film->film_schedule->film_id == $film_id) {
+                $isIdEqual = $film->film_schedule->film_id == $film_id;
+                $isDateTodayOrTomorrow = Carbon::parse($film->film_schedule->airing_datetime)->gt(Carbon::now());
+
+                if ($isIdEqual && $isDateTodayOrTomorrow) {
                     array_push($matching_cinemas, $cinema);
                 }
             }
