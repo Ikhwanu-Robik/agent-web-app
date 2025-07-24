@@ -12,6 +12,14 @@
     <h1>Beli Tiket Film</h1>
     <h2>Pilih Film</h2>
 
+    @if ($errors->any())
+        <div>
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+        </div>
+    @endif
+
     <form action="/film/cinema" method="post">
         @csrf
         <section id="find-cinema">

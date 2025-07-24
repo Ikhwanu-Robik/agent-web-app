@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\utilities;
 
+use Closure;
 use App\Models\Film;
 use App\Models\Cinema;
 use App\Models\Voucher;
@@ -9,23 +10,20 @@ use App\Models\CinemaFilm;
 use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\FilmTicketTransaction;
+use Illuminate\Support\Facades\Validator;
 
 class FilmTicketTransactionController extends Controller
 {
-    public function searchCinema(Request $request)
+    private function realSearchCinema($film_id)
     {
-        // $matchingCinemas = Cinema::join("cinema_film", "cinemas.id", "=", "cinema_film.cinema_id")->where("cinema_film.film_id", "=", $validated["film_id"])->get();
-        $validated = $request->validate([
-            "film_id" => "required|numeric|exists:films,id"
-        ]);
-
         $cinemas = Cinema::with("films")->get();
-        $searched_film = Film::find($validated["film_id"]);
+        $searched_film = Film::find($film_id);
 
-        $matchingCinemas = [];
+        $matching_cinemas = [];
 
         // foreach each cinema
         // and foreach the film they scheduled
@@ -33,8 +31,8 @@ class FilmTicketTransactionController extends Controller
         // mark the cinema as 'matching'
         foreach ($cinemas as $cinema) {
             foreach ($cinema->films as $film) {
-                if ($film->film_schedule->film_id == $validated["film_id"]) {
-                    array_push($matchingCinemas, $cinema);
+                if ($film->film_schedule->film_id == $film_id) {
+                    array_push($matching_cinemas, $cinema);
                 }
             }
         }
@@ -45,7 +43,9 @@ class FilmTicketTransactionController extends Controller
         // put it in temporary array, $matchingFilms
         // then replace the cinema's films with the
         // temporary array
-        foreach ($matchingCinemas as $cinema) {
+        // this is to ensure the matching_cinemas being
+        // returned only with the requested film
+        foreach ($matching_cinemas as $cinema) {
             $matchingFilms = [];
 
             foreach ($cinema->films as $film) {
@@ -57,7 +57,33 @@ class FilmTicketTransactionController extends Controller
             $cinema->films = $matchingFilms;
         }
 
-        return redirect("/film/cinema")->with("cinemas", $matchingCinemas);
+        return $matching_cinemas;
+    }
+
+    public function searchCinema(Request $request)
+    {
+        // $matchingCinemas = Cinema::join("cinema_film", "cinemas.id", "=", "cinema_film.cinema_id")->where("cinema_film.film_id", "=", $validated["film_id"])->get();
+        $validated = $request->validate([
+            "film_id" => "required|numeric|exists:films,id"
+        ]);
+
+        $matching_cinemas = self::realSearchCinema($validated["film_id"]);
+
+        $validator = Validator::make($request->all(), [
+            "film_id" => [
+                function (string $attribute, mixed $value, Closure $fail) {
+                    $matching_cinemas = self::realSearchCinema($value);
+
+                    if (count($matching_cinemas) == 0) {
+                        $fail("The film is not being aired in any cinema");
+                    }
+                }
+            ]
+        ]);
+
+        $validator->validate();
+
+        return redirect("/film/cinema")->with("cinemas", $matching_cinemas);
     }
 
     public function order(Request $request)
@@ -132,7 +158,7 @@ class FilmTicketTransactionController extends Controller
         unset($transaction->cinema_film);
         $transaction->user_id = Auth::id();
         $transaction->save();
-        
+
         $transaction->cinema_film = $cinema_film;
         $transaction->payment_method = $validated["payment_method"];
         if ($validated["voucher"] != -1 && $isVoucherValid) {
