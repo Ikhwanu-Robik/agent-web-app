@@ -56,7 +56,7 @@ class GameTopUpTransactionController extends Controller
     {
         $validated = $request->validate([
             "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
-            "voucher" => "required|exists:vouchers,id"
+            "voucher" => "required"
         ]);
 
         $voucher = Voucher::find($validated["voucher"]);
