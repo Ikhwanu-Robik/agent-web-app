@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\resources;
 
 use App\Models\Film;
+use Closure;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class FilmController extends Controller
 {
@@ -32,16 +34,22 @@ class FilmController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             "title" => "required|string",
-            "poster" => "required|image",
+            "poster" => [
+                "required",
+                "image",
+                function (string $attributes, mixed $value, Closure $fail) {
+                    if (!$value->isValid()) {
+                        $fail("{$attributes} not uploaded succesfully");
+                    }
+                }
+            ],
             "release_date" => "required|date",
             "duration" => "required|numeric"
         ]);
 
-        if (!$request->file("poster")->isValid()) {
-            return response("Poster not uploaded successfully", 422);
-        }
+        $validated = $validator->validated();
         $image_url = $request->file("poster")->storePublicly();
 
         $attributes = [
@@ -68,16 +76,22 @@ class FilmController extends Controller
      */
     public function update(Request $request, Film $film)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             "title" => "required|string",
-            "poster" => "required|image",
+            "poster" => [
+                "required",
+                "image",
+                function (string $attributes, mixed $value, Closure $fail) {
+                    if (!$value->isValid()) {
+                        $fail("{$attributes} not uploaded succesfully");
+                    }
+                }
+            ],
             "release_date" => "required|date",
             "duration" => "required|numeric"
         ]);
 
-        if (!$request->file("poster")->isValid()) {
-            return response("Poster not uploaded successfully", 422);
-        }
+        $validated = $validator->validated();
         Storage::disk("public")->delete($film->poster_image_url);
         $image_url = $request->file("poster")->storePublicly();
 
