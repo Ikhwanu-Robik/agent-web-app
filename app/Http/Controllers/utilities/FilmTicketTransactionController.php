@@ -33,7 +33,19 @@ class FilmTicketTransactionController extends Controller
             foreach ($cinema->films as $film) {
                 $isIdEqual = $film->film_schedule->film_id == $film_id;
                 $isDateTodayOrTomorrow = Carbon::parse($film->film_schedule->airing_datetime)->gt(Carbon::now());
-                $isSeatsStillAvailable = !str_contains($film->film_schedule->seats_status, "1");
+
+                $seats_status_array = json_decode($film->film_schedule->seats_status);
+                $totalSeats = count($seats_status_array) * count($seats_status_array[0]);
+                $filledSeats = 0;
+                foreach ($seats_status_array as $row) {
+                    foreach ($row as $col) {
+                        if ($col == 1) {
+                            $filledSeats++;
+                        }
+                    }
+                }
+
+                $isSeatsStillAvailable = $totalSeats != $filledSeats;
 
                 if ($isIdEqual && $isDateTodayOrTomorrow && $isSeatsStillAvailable) {
                     array_push($matching_cinemas, $cinema);
