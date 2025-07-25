@@ -48,7 +48,7 @@ for these seats :
 <table>
 
     @php
-        $seats_structure = json_decode($film_ticket_transaction->cinema_film->cinema->seats_structure);
+        $seats_structure = json_decode($film_ticket_transaction->cinema_film->seats_status);
         $rowCount = count($seats_structure);
         $colCount = count($seats_structure[0]);
     @endphp
