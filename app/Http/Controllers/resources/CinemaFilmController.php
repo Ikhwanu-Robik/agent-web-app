@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use App\Models\Film;
 use App\Models\Cinema;
 use App\Models\CinemaFilm;
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class CinemaFilmController extends Controller
 {
@@ -41,7 +43,7 @@ class CinemaFilmController extends Controller
             "film" => "required|exists:films,id",
             "ticket_price" => "required|numeric",
             "datetime_airing" => "required|date"
-        ]); 
+        ]);
 
         $attributes = [
             "cinema_id" => $cinema->id,
@@ -85,9 +87,16 @@ class CinemaFilmController extends Controller
             "schedule_id" => "required|numeric|exists:cinema_film,id"
         ]);
 
-        if (!$cinema_film) {
-            return response("The given schedule is invalid", 422);
-        }
+        $validator = Validator::make(["cinema_film" => $cinema_film], [
+            "cinema_film" => [
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (!$value) {
+                        $fail("The given {$attribute}_id is invalid");
+                    }
+                }
+            ]
+        ]);
+        $validator->validate();
         CinemaFilm::where("id", "=", $cinema_film)->delete();
 
         return redirect("/master/cinemas/" . $cinema->id . "/films");

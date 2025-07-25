@@ -2,6 +2,12 @@
 
 <a href="{{ '/master/cinemas/' . $cinemaWithFilms->id . '/films/schedule' }}"><button>Schedule Film Airing</button></a>
 
+@if ($errors->any())
+    @foreach ($errors->all() as $error)
+        <div>{{ $error }}</div>
+    @endforeach
+@endif
+
 @if (count($cinemaWithFilms->films) != 0)
     <h2>List of Film</h2>
     <table>
