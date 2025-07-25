@@ -49,7 +49,7 @@
     <tr>
         <td>Payment Status</td>
         <td>:</td>
-        <td>{{ $film_ticket_transaction->payment_status }}</td>
+        <td>{{ $film_ticket_transaction->status }}</td>
     </tr>
     @if (session()->has("voucher"))
         <tr>

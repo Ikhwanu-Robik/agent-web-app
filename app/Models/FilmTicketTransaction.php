@@ -11,6 +11,7 @@ class FilmTicketTransaction extends Model
     protected $fillable = [
         "cinema_film_id",
         "seats_coordinates",
+        "status",
         "total"
     ];
 
