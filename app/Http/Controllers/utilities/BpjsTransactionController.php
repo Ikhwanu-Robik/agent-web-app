@@ -21,8 +21,6 @@ class BpjsTransactionController extends Controller
         } else if ($transaction["payment_method"] == "flip") {
             // TODO : call flip api
         }
-
-        return response("Payment method invalid", 422);
     }
 
     public function pay(Request $request)

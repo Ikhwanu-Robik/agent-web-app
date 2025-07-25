@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\resources;
 
+use Closure;
 use App\Models\Game;
-use App\Models\GameTopUpPackage;
 use Illuminate\Http\Request;
+use App\Models\GameTopUpPackage;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class GameTopUpPackageController extends Controller
 {
@@ -74,9 +76,16 @@ class GameTopUpPackageController extends Controller
             "package" => "required|numeric|exists:game_topup_packages,id"
         ]);
 
-        if (!$package) {
-            return response("The given package is invalid", 422);
-        }
+        $validator = Validator::make(["package" => $package], [
+            "package" => [
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (!$value) {
+                        $fail("The given {$attribute} is invalid");
+                    }
+                }
+            ]
+        ]);
+        $validator->validate();
         $package->delete();
 
         return redirect("/master/games/packages");

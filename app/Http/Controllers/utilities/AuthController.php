@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\utilities;
 
+use Closure;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -26,16 +28,22 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             "name" => "required|string",
-            "profile_photo" => "required|image",
+            "profile_photo" => [
+                "required",
+                "image",
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (!$value->isValid()) {
+                        $fail("Photo profile is not uploaded successfully");
+                    }
+                }
+            ],
             "email" => "required|email|unique:users,email",
             "password" => "required"
         ]);
+        $validated = $validator->validated();
 
-        if (!$request->file("profile_photo")->isValid()) {
-            return response("Photo profil is not uploaded successfully", 422);
-        }
         $file_name = $request->file("profile_photo")->storePublicly();
         $validated["profile_photo"] = $file_name;
 

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\resources;
 
 use App\Models\Game;
+use Closure;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class GameController extends Controller
 {
@@ -76,9 +78,17 @@ class GameController extends Controller
             "game" => "required|numeric|exists:games,id"
         ]);
 
-        if (!$game) {
-            return response("The given game is invalid", 422);
-        }
+        $validator = Validator::make(["game" => $game], [
+            "game" => [
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (!$value) {
+                        $fail("The given {$attribute} is invalid");
+                    }
+                }
+            ]
+        ]);
+        $validator->validate();
+
         $game->delete();
 
         return redirect("/master/games");
