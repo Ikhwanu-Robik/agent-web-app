@@ -93,6 +93,10 @@ class CinemaFilmController extends Controller
                     if (!$value) {
                         $fail("The given {$attribute}_id is invalid");
                     }
+
+                    if (CinemaFilm::find($value)->first()->filmTicketTransaction) {
+                        $fail("The given {$attribute} is being referenced by a film ticket transaction");
+                    }
                 }
             ]
         ]);

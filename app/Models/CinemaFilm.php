@@ -16,11 +16,18 @@ class CinemaFilm extends Model
         "seats_status"
     ];
 
-    public function Cinema() {
+    public function Cinema()
+    {
         return $this->belongsTo(Cinema::class);
     }
 
-    public function Film() {
+    public function Film()
+    {
         return $this->belongsTo(Film::class);
+    }
+
+    public function filmTicketTransaction()
+    {
+        return $this->hasMany(FilmTicketTransaction::class);
     }
 }
