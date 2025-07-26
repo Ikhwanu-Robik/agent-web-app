@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('bpjs_transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("user_id")->constrained("users");
             $table->unsignedBigInteger("civil_information_id");
             $table->integer("month_bought");
             $table->integer("total");

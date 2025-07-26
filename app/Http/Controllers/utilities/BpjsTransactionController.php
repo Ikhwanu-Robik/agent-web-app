@@ -9,6 +9,8 @@ use App\Models\BpjsTransaction;
 use Illuminate\Validation\Rule;
 use App\Models\CivilInformation;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\utilities\ReportController;
 
 class BpjsTransactionController extends Controller
 {
@@ -50,6 +52,7 @@ class BpjsTransactionController extends Controller
         }
 
         $transactionAttribute = [
+            "user_id" => Auth::id(),
             "civil_information_id" => $civil_information->id,
             "month_bought" => $validated["month"],
             "total" => $total,

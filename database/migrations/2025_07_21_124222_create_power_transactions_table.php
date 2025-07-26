@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('power_transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("user_id")->constrained("users");
             $table->string("subscriber_number");
             $table->double("total");
             $table->string("method");

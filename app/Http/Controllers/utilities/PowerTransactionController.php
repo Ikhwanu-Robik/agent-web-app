@@ -71,6 +71,7 @@ class PowerTransactionController extends Controller
         }
 
         $transaction_attributes = session()->get("transaction_attributes");
+        $transaction_attributes["user_id"] = Auth::id();
         $transaction_attributes["total"] = $transaction_attributes["total"] * $discount;
         $transaction_attributes["method"] = $validated["payment_method"];
 

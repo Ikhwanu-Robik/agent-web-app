@@ -9,6 +9,7 @@ class BpjsTransaction extends Model
     protected $table = "bpjs_transactions";
 
     protected $fillable = [
+        "user_id",
         "civil_information_id",
         "month_bought",
         "total",
