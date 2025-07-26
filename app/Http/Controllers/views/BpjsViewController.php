@@ -4,14 +4,31 @@ namespace App\Http\Controllers\views;
 
 use App\Http\Controllers\Controller;
 
-class BpjsViewController extends Controller {
+class BpjsViewController extends Controller
+{
     public function bpjs()
     {
-        return view("agent.bpjs_subscription.bpjs_subscription");
+        $bpjs = session("bpjs");
+
+        return view("agent.bpjs_subscription.bpjs_subscription", ["bpjs" => $bpjs]);
     }
 
     public function showBpjsReceipt()
     {
-        return view("agent.bpjs_subscription.receipt");
+        $bpjs = session('bpjs');
+        $form_input = session('form_input');
+        $transaction = session('transaction');
+
+        session()->flash("bpjs", $bpjs);
+
+        if (!$transaction) {
+            return redirect("/bpjs")->with("bpjs", $bpjs);
+        }
+
+        return view("agent.bpjs_subscription.receipt", [
+            "bpjs" => $bpjs,
+            "form_input" => $form_input,
+            "transaction" => $transaction
+        ]);
     }
 }

@@ -14,12 +14,11 @@
     @csrf
     <label for="civil-id">NIK</label>
     <input type="number" name="civil_id" id="civil-id"
-        value="{{ session('bpjs') ? session('bpjs')->civilInformation->NIK : '' }}">
+        value="{{ $bpjs ? $bpjs->civilInformation->NIK : '' }}">
     <button type="submit">Cari data BPJS</button>
 </form>
 
-@if (session('bpjs'))
-    @php $bpjs = session("bpjs"); @endphp
+@if ($bpjs)
     <section id="bpjs-active-status">
         @if ($bpjs->isStillActive())
             Kamu BPJS kelas {{ $bpjs->bpjsClass->class }}, dengan biaya bulanan Rp.{{ number_format($bpjs->bpjsClass->price, 0, ".") }}. Kamu sudah membayar BPJS sampai {{ $bpjs->dueDate()->monthName . ' ' . $bpjs->dueDate()->year }}
