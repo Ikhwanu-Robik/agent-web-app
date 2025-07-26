@@ -8,5 +8,4 @@
     <li><a href="/master/films">Master Film</a></li>
     <li><a href="/master/games">Master Game</a></li>
     <li><a href="/master/games/packages">Master Game Package</a></li>
-    <li><a href="/master/power/voltages">Master Power Voltages</a></li>
 </ul>
