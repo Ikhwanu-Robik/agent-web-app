@@ -186,23 +186,9 @@
         </section>
         <section id="dashboard">
             <article class="statistics">
-                <h1>Transaction of the Month : <span id="most-bought-service">Top up Game</span></h1>
-                <span><span id="transaction-record">34</span> transaction records</span>
-                <span><span id="game-count">7</span>games top upped</span>
-                <span><span id="money-spent">Rp2.345.000,00</span>money spent </span>
-            </article>
-            <article class="charts">
-                <h2>Transaction Records</h2>
-                Top Up Game <br>
-                <div class="bar top-up-game"></div>
-                BPJS <br>
-                <div class="bar bpjs"></div>
-                Tiket Film <br>
-                <div class="bar film"></div>
-                Token Listrik <br>
-                <div class="bar electric"></div>
-                Tiket Bis <br>
-                <div class="bar bus"></div>
+                <h1>Transaction of the Month : <span id="most-bought-service">{{ $transaction_of_the_month["service"] }}</span></h1>
+                <span><span id="transaction-record">{{ $transaction_of_the_month["record_count"] }}</span> transaction records</span>
+                <span><span id="money-spent">Rp{{ number_format($transaction_of_the_month["money_spent"], 2, ",", ".") }}</span>money spent </span>
             </article>
         </section>
     </main>
