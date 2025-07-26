@@ -127,17 +127,21 @@ class ReportController extends Controller
     public static function updateBpjsReport()
     {
         $civil_information = session()->get("civil_information");
-        $bpjs_transactions = BpjsTransaction::where("civil_information_id", "=", $civil_information->id)->get();
-
-        session()->put("bpjs_transactions", $bpjs_transactions);
+        if ($civil_information) {
+            $bpjs_transactions = BpjsTransaction::where("civil_information_id", "=", $civil_information->id)->get();
+    
+            session()->put("bpjs_transactions", $bpjs_transactions);
+        }
     }
 
     public static function updatePowerTopUpReport()
     {
         $old_transactions = session()->get("power_top_up_transactions");
-        $power_top_up_transactions = PowerTransaction::where("subscriber_number", "=", $old_transactions[0]->subscriber_number)->get();
-
-        session()->put("power_top_up_transactions", $power_top_up_transactions);
+        if (count($old_transactions)) {
+            $power_top_up_transactions = PowerTransaction::where("subscriber_number", "=", $old_transactions[0]->subscriber_number)->get();
+    
+            session()->put("power_top_up_transactions", $power_top_up_transactions);
+        }
     }
 
     private static function getFilmTicketTransaction()
