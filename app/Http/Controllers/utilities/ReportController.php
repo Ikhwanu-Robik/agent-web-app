@@ -137,7 +137,7 @@ class ReportController extends Controller
     public static function updatePowerTopUpReport()
     {
         $old_transactions = session()->get("power_top_up_transactions");
-        if (count($old_transactions)) {
+        if ($old_transactions != null && count($old_transactions)) {
             $power_top_up_transactions = PowerTransaction::where("subscriber_number", "=", $old_transactions[0]->subscriber_number)->get();
     
             session()->put("power_top_up_transactions", $power_top_up_transactions);
