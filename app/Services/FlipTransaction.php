@@ -18,13 +18,13 @@ class FlipTransaction
             ->asForm()  // Set the request content type to x-www-form-urlencoded
             ->post('https://bigflip.id/big_sandbox_api/v2/pwf/bill', [
                 'title' => $title,
-                'type' => $flipBillType,
+                'type' => $flipBillType->value,
                 'amount' => $amount,
                 'expired_date' => '',
                 'redirect_url' => config('app.url') . $redirectUrl,
                 'is_address_required' => '',
                 'is_phone_number_required' => '',
-                'step' => $step,
+                'step' => $step->value,
                 'sender_name' => '',
                 'sender_email' => '',
                 'sender_phone_number' => '',
