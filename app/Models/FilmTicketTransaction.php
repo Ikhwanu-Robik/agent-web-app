@@ -11,8 +11,10 @@ class FilmTicketTransaction extends Model
     protected $fillable = [
         "cinema_film_id",
         "seats_coordinates",
+        "total",
+        "method",
         "status",
-        "total"
+        "flip_link_id"
     ];
 
     public function CinemaFilm()

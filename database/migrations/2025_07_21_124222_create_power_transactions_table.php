@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->double("total");
             $table->string("method");
             $table->string("status");
+            $table->string("flip_link_id")->unique()->nullable();
             $table->timestamps();
         });
     }

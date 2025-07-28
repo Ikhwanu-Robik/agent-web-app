@@ -14,11 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->unsignedBigInteger('package_id');
-            $table->string('flip_link_id')->unique()->nullable();
-            $table->string('flip_link_url')->unique()->nullable();
+            $table->integer("total");
             $table->string('method')->nullable();
             $table->string('status')->nullable();
-            $table->integer("total");
+            $table->string('flip_link_id')->unique()->nullable();
             $table->timestamps();
 
             $table->foreign("package_id")->references("id")->on("game_topup_packages");

@@ -13,7 +13,9 @@ class BpjsTransaction extends Model
         "civil_information_id",
         "month_bought",
         "total",
-        "method"
+        "method",
+        "status",
+        "flip_link_id"
     ];
 
     public function civilInformation()

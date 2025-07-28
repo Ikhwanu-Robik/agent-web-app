@@ -10,12 +10,11 @@ class GameTopUpTransaction extends Model
 
     protected $fillable = [
         'user_id',
-        'package_id',
-        'flip_link_id',
-        'flip_link_url',
+        'package_id',        
+        'total',
         'method',
         'status',
-        'total'
+        'flip_link_id',
     ];
 
     public function topUpPackage() {

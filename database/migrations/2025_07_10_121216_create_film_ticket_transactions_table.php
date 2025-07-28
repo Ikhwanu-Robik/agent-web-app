@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer("total");
             $table->string("method");
             $table->string("status");
+            $table->string("flip_link_id")->unique()->nullable();
             $table->timestamps();
 
             $table->foreign("user_id")->references("id")->on("users");

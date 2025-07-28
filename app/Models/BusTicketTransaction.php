@@ -10,12 +10,14 @@ class BusTicketTransaction extends Model
         "user_id",
         "bus_schedule_id",
         "ticket_amount",
-        "method",
         "total",
+        "method",
         "status",
+        "flip_link_id"
     ];
 
-    public function busSchedule() {
+    public function busSchedule()
+    {
         return $this->belongsTo(BusSchedule::class);
     }
 }

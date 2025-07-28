@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->integer("month_bought");
             $table->integer("total");
             $table->string("method");
+            $table->string("status");
+            $table->string("flip_link_id")->unique()->nullable();
             $table->timestamps();
 
             $table->foreign("civil_information_id")->references("id")->on("civil_informations");

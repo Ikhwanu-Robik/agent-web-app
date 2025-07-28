@@ -11,6 +11,7 @@ class PowerTransaction extends Model
         "subscriber_number",
         "total",
         "method",
-        "status"
+        "status",
+        "flip_link_id"
     ];
 }
