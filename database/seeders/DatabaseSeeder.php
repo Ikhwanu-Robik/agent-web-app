@@ -16,7 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CivilInformationSeeder::class,
             BpjsPriceSeeder::class,
-            ActiveBpjsSeeder::class
+            ActiveBpjsSeeder::class,
+            BusTicketTransactionSeeder::class,
+            FilmTicketTransaction::class,
+            GameTopUpTransaction::class
         ]);
     }
 }
