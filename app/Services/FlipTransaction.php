@@ -49,4 +49,14 @@ class FlipTransaction
 // }            
         return $response;
     }
+
+    public function getFlipPayment(string $bill_link_id)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Basic ' . config('app.flip_api_key'),
+            'Accept' => 'application/json'
+        ])->get("https://bigflip.id/big_sandbox_api/v2/pwf/{$bill_link_id}/payment");
+
+        return $response;
+    }
 }
