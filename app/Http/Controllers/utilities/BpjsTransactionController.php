@@ -41,7 +41,7 @@ class BpjsTransactionController extends Controller
             $status = "SUCCESS";
         } else if ($validated["payment_method"] == "flip") {
             $response = $flipTransaction->createFlipBill(
-                "title",
+                "BPJS - {$monthBought} months",
                 FlipBillType::SINGLE,
                 $total,
                 FlipStep::INPUT_DATA,
