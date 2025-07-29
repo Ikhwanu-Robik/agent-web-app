@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h1>Transaction Successful!</h1>
+    <h1>Transaction {{ $payment_method == 'cash' ? 'Successful' : 'Pending' }}</h1>
 
     <em>{{ $transaction->created_at }}</em> <br>
     <h2>Bus Tiket for {{ $transaction->busSchedule->bus->name }}</h2>
@@ -26,6 +26,10 @@
             <span>Voucher : {{ $transaction->voucher }}</span>
         @endif
     </div>
+
+    @if ($payment_method == 'flip')
+        <h3>To pay with Flip, click <a href="{{ "https://" . $flip_response["link_url"] }}">this link</a></h3>
+    @endif
 </body>
 
 </html>

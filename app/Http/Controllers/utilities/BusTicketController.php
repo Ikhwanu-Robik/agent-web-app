@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\utilities;
 
+use App\Enums\FlipStep;
 use App\Models\Voucher;
+use App\Enums\FlipBillType;
 use App\Models\BusSchedule;
 use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Services\FlipTransaction;
 use App\Http\Controllers\Controller;
 use App\Models\BusTicketTransaction;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class BusTicketController extends Controller
 {
     public function order(Request $request)
-    {
+    {        
         $validated = $request->validate([
             "schedule_id" => "required|exists:bus_schedules,id",
             "ticket_amount" => "required|numeric"
@@ -47,7 +50,7 @@ class BusTicketController extends Controller
         return redirect("/bus/ticket/payment")->with("transaction_data", $transaction)->with("vouchers", $valid_vouchers);
     }
 
-    public function pay(Request $request)
+    public function pay(Request $request, FlipTransaction $flipTransaction)
     {
         $validated = $request->validate([
             "bus_schedule_id" => "required|exists:bus_schedules,id",
@@ -73,27 +76,39 @@ class BusTicketController extends Controller
             $voucher->delete();
         }
 
-        $payment_method = null;
-        $status = "pending";
-        if ($validated["payment_method"] == "cash") {
-            $payment_method = "cash";
-            $status = "finished";
-        } else if ($validated["payment_method" == "flip"]) {
-            // call flip api
-        }
-
         $bus_schedule = BusSchedule::with(["bus", "originStation", "destinationStation"])->findOrFail($validated["bus_schedule_id"]);
         $total = $validated["ticket_amount"] * $bus_schedule->ticket_price * $discount;
         $bus_schedule->seats = $bus_schedule->seats - $validated["ticket_amount"];
+
+        $payment_method = null;
+        $status = "pending";
+        $flip_response = null;
+        if ($validated["payment_method"] == "cash") {
+            $payment_method = "cash";
+            $status = "finished";
+        } else if ($validated["payment_method"] == "flip") {
+            $response = $flipTransaction->createFlipBill(
+                "Bus Ticket - {$bus_schedule->bus->name} - {$bus_schedule->originStation->name} - {$bus_schedule->destinationStation->name}",
+                FlipBillType::SINGLE,
+                $total,
+                FlipStep::INPUT_DATA,
+                "/bus/ticket"
+            );
+
+            $payment_method = "flip";
+            $flip_response = $response;
+        }
+
         $bus_schedule->save();
 
-        $attributes = [
+        $attributes = [ 
             "user_id" => Auth::id(),
             "bus_schedule_id" => $validated["bus_schedule_id"],
             "ticket_amount" => $validated["ticket_amount"],
             "method" => $payment_method,
             "total" => $total,
-            "status" => $status
+            "status" => $status,
+            "flip_link_id" => $flip_response->successful() ? $flip_response["link_id"] : null
         ];
 
         $transaction = BusTicketTransaction::create($attributes);
@@ -102,6 +117,9 @@ class BusTicketController extends Controller
             $transaction->voucher = $voucher->off_percentage . "%";
         }
 
-        return redirect("/bus/ticket/finished")->with("transaction_data", $transaction)->with("payment_method", $validated["payment_method"]);
+        return redirect("/bus/ticket/finished")
+            ->with("transaction_data", $transaction)
+            ->with("payment_method", $validated["payment_method"])
+            ->with("flip_response", $flip_response);
     }
 }
