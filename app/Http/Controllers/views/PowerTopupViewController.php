@@ -24,10 +24,14 @@ class PowerTopupViewController extends Controller
     public function showReceipt()
     {
         $transaction = session()->get("transaction");
+        $flipResponse = session()->get("flip_response");
         if (!$transaction) {
             return redirect("/power");
         }
 
-        return view("agent.power_topup.receipt", ["transaction" => $transaction]);
+        return view("agent.power_topup.receipt", [
+            "transaction" => $transaction,
+            "flipResponse" => $flipResponse
+        ]);
     }
 }

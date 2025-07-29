@@ -1,4 +1,4 @@
-<h1>Transaction Successful</h1>
+<h1>Transaction {{ $transaction->method == "cash" ? "Successful" : "Pending" }}</h1>
 <em>{{ $transaction->created_at }}</em>
 
 <table border="1">
@@ -20,4 +20,8 @@
             <td>{{ $transaction->voucher }}</td>
         @endif
     </tr>
+
+    @if ($payment_method == 'flip')
+        <h3>To pay with Flip, click <a href="{{ "https://" . $flipResponse["link_url"] }}">this link</a></h3>
+    @endif
 </table>
