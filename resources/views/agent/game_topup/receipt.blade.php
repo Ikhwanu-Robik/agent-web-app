@@ -50,6 +50,10 @@
             </tr>
         @endif
     </table>
+
+    @if ($payment_method == 'flip')
+        <h3>To pay with Flip, click <a href="{{ "https://" . $flipResponse["link_url"] }}">this link</a></h3>
+    @endif
 </body>
 
 </html>

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\utilities;
 
 use Carbon\Carbon;
+use App\Enums\FlipStep;
 use App\Models\Voucher;
+use App\Enums\FlipBillType;
 use App\Enums\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\GameTopUpPackage;
+use App\Services\FlipTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -52,7 +55,7 @@ class GameTopUpTransactionController extends Controller
         return redirect("/game/topup/payment")->with("transaction", $transaction);
     }
 
-    public function pay(Request $request, GameTopUpPackage $package)
+    public function pay(Request $request, GameTopUpPackage $package, FlipTransaction $flipTransaction)
     {
         $validated = $request->validate([
             "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
@@ -79,19 +82,33 @@ class GameTopUpTransactionController extends Controller
         $transactionAttr = session()->get("transaction");
         $transactionAttr["total"] = $transactionAttr["total"] * $discount;
         $transactionAttr["method"] = $validated["payment_method"];
+        $transactionAttr["status"] = "PENDING";
+
+        $flipResponse = null;
 
         if ($validated["payment_method"] == "cash") {
-            $transactionAttr["status"] = "finish";
+            $transactionAttr["status"] = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
-            // call flip api
+            $response = $flipTransaction->createFlipBill(
+                "Game Top Up - {$package->game->name} - {$package->title} - {$package->items_count} {$package->game->currency}",
+                FlipBillType::SINGLE,
+                $transactionAttr["total"],
+                FlipStep::INPUT_DATA,
+                "/game/topup"
+            );
+
+            $flipResponse = $response;
         }
 
+        $transactionAttr["flip_link_id"] = $flipResponse ? $flipResponse["bill_link_id"] : null;
         $transaction = GameTopUpTransaction::create($transactionAttr);
+
         if ($validated["voucher"] != -1 && $isVoucherValid) {
             $transaction->voucher = $voucher->off_percentage . "%";
         }
 
         return redirect("/game/topup/receipt")
-            ->with("transaction", $transaction);
+            ->with("transaction", $transaction)
+            ->with("flip_response", $flipResponse);
     }
 }

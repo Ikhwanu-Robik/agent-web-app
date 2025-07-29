@@ -62,14 +62,20 @@ class GameTopupViewController extends Controller
     public function receipt()
     {
         $transaction = session("transaction");
+        $flipResponse = session("flip_response");
         if (!$transaction) {
             return redirect("/game/topup");
         }
 
-        $package = GameTopUpPackage::with("game")->findOr($transaction["package_id"], function () {
-            return redirect("/game/topup");
-        });
+        $package = GameTopUpPackage::with("game")
+            ->findOr($transaction["package_id"], function () {
+                return redirect("/game/topup");
+            });
 
-        return view("agent.game_topup.receipt", ["transaction" => $transaction, "package" => $package]);
+        return view("agent.game_topup.receipt", [
+            "transaction" => $transaction,
+            "package" => $package,
+            "flipResponse" => $flipResponse
+        ]);
     }
 }
