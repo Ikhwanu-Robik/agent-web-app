@@ -1,4 +1,4 @@
-<h1>Transaction {{ $transction->method == "cash" ? "Successful" : "Pending" }}</h1>
+<h1>Transaction {{ $transaction->method == "cash" ? "Successful" : "Pending" }}</h1>
 <em>{{ $transaction->created_at }}</em>
 
 <h2>Bayar BPJS untuk {{ $transaction->month_bought }} Bulan</h2>
@@ -20,6 +20,6 @@ Total pembayaran <b>Rp.{{ number_format($transaction->total, 0, '.') }}</b>
 <br>
 Metode pembayaran <b>{{ $transaction->method }}</b>
 
-@if ($payment_method == 'flip')
+@if ($transaction->method == 'flip')
     <h3>To pay with Flip, click <a href="{{ 'https://' . $flip_response['link_url'] }}">this link</a></h3>
 @endif

@@ -21,7 +21,7 @@
         @endif
     </tr>
 
-    @if ($payment_method == 'flip')
+    @if ($transaction->method == 'flip')
         <h3>To pay with Flip, click <a href="{{ "https://" . $flipResponse["link_url"] }}">this link</a></h3>
     @endif
 </table>
