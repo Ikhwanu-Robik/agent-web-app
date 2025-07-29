@@ -8,7 +8,7 @@
     <title>Film Ticket</title>
 </head>
 
-<h1>Transaction {{ $film_ticket_transaction->payment_method = 'cash' ? 'Successful' : 'Pending' }}</h1>
+<h1>Transaction {{ $film_ticket_transaction->method == 'cash' ? 'Successful' : 'Pending' }}</h1>
 <h2>You have bought a film ticket with the following data : </h2>
 <table>
     <tr>
@@ -83,7 +83,7 @@ for these seats : {{ json_encode($film_ticket_transaction->seats_coordinates_arr
 
 </table>
 
-@if ($film_ticket_transaction->payment_method == 'flip')
+@if ($film_ticket_transaction->method == 'flip')
     <h3>To pay with Flip, click <a href="{{ 'https://' . $flipResponse['link_url'] }}">this link</a></h3>
 @endif
 </body>
