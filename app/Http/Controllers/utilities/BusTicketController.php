@@ -81,11 +81,11 @@ class BusTicketController extends Controller
         $bus_schedule->seats = $bus_schedule->seats - $validated["ticket_amount"];
 
         $payment_method = null;
-        $status = "pending";
+        $status = "PENDING";
         $flip_response = null;
         if ($validated["payment_method"] == "cash") {
             $payment_method = "cash";
-            $status = "finished";
+            $status = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
             $response = $flipTransaction->createFlipBill(
                 "Bus Ticket - {$bus_schedule->bus->name} - {$bus_schedule->originStation->name} - {$bus_schedule->destinationStation->name}",
@@ -108,7 +108,7 @@ class BusTicketController extends Controller
             "method" => $payment_method,
             "total" => $total,
             "status" => $status,
-            "flip_link_id" => $flip_response->successful() ? $flip_response["link_id"] : null
+            "flip_link_id" => $flip_response ? $flip_response["link_id"] : null
         ];
 
         $transaction = BusTicketTransaction::create($attributes);
