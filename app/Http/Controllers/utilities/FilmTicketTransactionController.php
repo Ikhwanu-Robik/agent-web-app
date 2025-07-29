@@ -189,7 +189,7 @@ class FilmTicketTransactionController extends Controller
         unset($transaction->cinema_film);
 
         $transaction->user_id = Auth::id();
-        $transaction->flip_link_id = $flipResponse ? $flipResponse["bill_link_id"] : null;
+        $transaction->flip_link_id = $flipResponse ? $flipResponse["link_id"] : null;
         $transaction->save();
 
         $transaction->cinema_film = $cinema_film;

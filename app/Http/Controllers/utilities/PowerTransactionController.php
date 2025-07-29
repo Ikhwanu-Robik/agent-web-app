@@ -92,7 +92,7 @@ class PowerTransactionController extends Controller
             $flipResponse = $response;
         }
         
-        $transaction_attributes["flip_link_id"] = $flipResponse ? $flipResponse["bill_link_id"] : null;
+        $transaction_attributes["flip_link_id"] = $flipResponse ? $flipResponse["link_id"] : null;
 
         $transaction = PowerTransaction::create($transaction_attributes);
         if ($validated["voucher"] != -1 && $isVoucherValid) {

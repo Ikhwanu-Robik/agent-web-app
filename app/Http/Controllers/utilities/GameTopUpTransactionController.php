@@ -100,7 +100,7 @@ class GameTopUpTransactionController extends Controller
             $flipResponse = $response;
         }
 
-        $transactionAttr["flip_link_id"] = $flipResponse ? $flipResponse["bill_link_id"] : null;
+        $transactionAttr["flip_link_id"] = $flipResponse ? $flipResponse["link_id"] : null;
         $transaction = GameTopUpTransaction::create($transactionAttr);
 
         if ($validated["voucher"] != -1 && $isVoucherValid) {

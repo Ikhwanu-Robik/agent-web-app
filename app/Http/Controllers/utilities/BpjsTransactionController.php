@@ -66,7 +66,7 @@ class BpjsTransactionController extends Controller
             "total" => $total,
             "method" => $validated["payment_method"],
             "status" => $status,
-            "flip_link_id" => $flip_response ? $flip_response["bill_link_id"] : null
+            "flip_link_id" => $flip_response ? $flip_response["link_id"] : null
         ];
         $transaction = BpjsTransaction::create($transactionAttribute);
 
