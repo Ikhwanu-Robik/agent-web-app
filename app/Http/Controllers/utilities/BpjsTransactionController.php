@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\utilities;
 
+use App\Enums\FlipBillType;
+use App\Enums\FlipStep;
 use App\Models\ActiveBpjs;
 use App\Enums\PaymentMethod;
+use App\Services\FlipTransaction;
 use Illuminate\Http\Request;
 use App\Models\BpjsTransaction;
 use Illuminate\Validation\Rule;
@@ -14,18 +17,7 @@ use App\Http\Controllers\utilities\ReportController;
 
 class BpjsTransactionController extends Controller
 {
-    private function processPayment($transaction, $bpjs)
-    {
-        $price = $bpjs->bpjsClass->price;
-        if ($transaction["payment_method"] == "cash") {
-            $total = $transaction["month"] * $price;
-            return $total;
-        } else if ($transaction["payment_method"] == "flip") {
-            // TODO : call flip api
-        }
-    }
-
-    public function pay(Request $request)
+    public function pay(Request $request, FlipTransaction $flipTransaction)
     {
         $validated = $request->validate([
             "civil_id" => "required|exists:civil_informations,NIK",
@@ -41,7 +33,23 @@ class BpjsTransactionController extends Controller
         $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->with("activeBpjs")->first();
         $bpjs = ActiveBpjs::with("bpjsClass")->where("civil_information_id", "=", $civil_information->id)->first();
 
-        $total = $this->processPayment($validated, $bpjs);
+        $price = $bpjs->bpjsClass->price;
+        $total = $validated["month"] * $price;
+        $status = "PENDING";
+        $flip_response = null;
+        if ($validated["payment_method"] == "cash") {
+            $status = "SUCCESS";
+        } else if ($validated["payment_method"] == "flip") {
+            $response = $flipTransaction->createFlipBill(
+                "title",
+                FlipBillType::SINGLE,
+                $total,
+                FlipStep::INPUT_DATA,
+                "/bpjs"
+            );
+
+            $flip_response = $response;
+        }
 
         if ($bpjs->isStillActive()) {
             $bpjs->due_timestamp = $bpjs->due_timestamp + $monthBought;
@@ -56,12 +64,18 @@ class BpjsTransactionController extends Controller
             "civil_information_id" => $civil_information->id,
             "month_bought" => $validated["month"],
             "total" => $total,
-            "method" => $validated["payment_method"]
+            "method" => $validated["payment_method"],
+            "status" => $status,
+            "flip_link_id" => $flip_response ? $flip_response["bill_link_id"] : null
         ];
         $transaction = BpjsTransaction::create($transactionAttribute);
 
         ReportController::updateBpjsReport();
 
-        return redirect("/bpjs/receipt")->with("bpjs", $bpjs)->with("form_input", $validated)->with("transaction", $transaction);
+        return redirect("/bpjs/receipt")
+            ->with("bpjs", $bpjs)
+            ->with("form_input", $validated)
+            ->with("transaction", $transaction)
+            ->with("flip_response", $flip_response);
     }
 }

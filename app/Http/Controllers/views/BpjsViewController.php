@@ -18,6 +18,7 @@ class BpjsViewController extends Controller
         $bpjs = session('bpjs');
         $form_input = session('form_input');
         $transaction = session('transaction');
+        $flip_response = session("flip_response");
 
         session()->flash("bpjs", $bpjs);
 
@@ -28,7 +29,8 @@ class BpjsViewController extends Controller
         return view("agent.bpjs_subscription.receipt", [
             "bpjs" => $bpjs,
             "form_input" => $form_input,
-            "transaction" => $transaction
+            "transaction" => $transaction,
+            "flip_response" => $flip_response
         ]);
     }
 }
