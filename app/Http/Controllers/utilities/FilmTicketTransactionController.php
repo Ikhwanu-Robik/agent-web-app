@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\utilities;
 
+use App\Enums\FlipBillType;
+use App\Enums\FlipStep;
+use App\Services\FlipTransaction;
 use Closure;
 use Carbon\Carbon;
 use App\Models\Film;
@@ -123,7 +126,7 @@ class FilmTicketTransactionController extends Controller
             ->with("seat_coordinates", $validated["seat_coordinates"]);
     }
 
-    public function makeTransaction(Request $request)
+    public function makeTransaction(Request $request, FlipTransaction $flipTransaction)
     {
         $validated = $request->validate([
             "payment_method" => [
@@ -146,33 +149,47 @@ class FilmTicketTransactionController extends Controller
         $discount = 1;
         if ($validated["voucher"] != -1 && $isVoucherValid) {
             $discount = (100 - $voucher->off_percentage) / 100;
-
             $voucher->delete();
         }
 
         $transaction = session("film_ticket_transaction");
         $transaction->total = $transaction->total * $discount;
+        $transaction->status = "PENDING";
 
         $cinema_film = CinemaFilm::find($transaction->cinema_film->id);
         $newSeats = json_decode($cinema_film->seats_status);
+
         foreach (session("seat_coordinates") as $seat_coord) {
             $col = explode(",", $seat_coord)[0];
             $row = explode(",", $seat_coord)[1];
 
             $newSeats[$row][$col] = 1;
         }
+
         $cinema_film->seats_status = json_encode($newSeats);
         $cinema_film->save();
 
+        $flipResponse = null;
         if ($validated["payment_method"] == "cash") {
             $transaction->method = "cash";
-            $transaction->status = "finish";
+            $transaction->status = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
-            // call Flip's API
+            $transaction->method = "flip";
+            $response = $flipTransaction->createFlipBill(
+                "Film Ticket - {$cinema_film->film->name} - {$cinema_film->cinema->name}",
+                FlipBillType::SINGLE,
+                $transaction->total,
+                FlipStep::INPUT_DATA,
+                "/film/cinema"
+            );
+
+            $flipResponse = $response;
         }
 
         unset($transaction->cinema_film);
+
         $transaction->user_id = Auth::id();
+        $transaction->flip_link_id = $flipResponse ? $flipResponse["bill_link_id"] : null;
         $transaction->save();
 
         $transaction->cinema_film = $cinema_film;
@@ -182,6 +199,8 @@ class FilmTicketTransactionController extends Controller
         }
         $transaction->seats_coordinates_array = session("seat_coordinates");
 
-        return redirect("/film/cinema/seats/transaction/success")->with("transaction", $transaction);
+        return redirect("/film/cinema/seats/transaction/success")
+            ->with("transaction", $transaction)
+            ->with("flip_response", $flipResponse);
     }
 }

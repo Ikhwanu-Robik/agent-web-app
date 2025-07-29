@@ -75,9 +75,11 @@ class FilmTicketViewController extends Controller
         }
 
         $film_ticket_transaction = session("transaction");
+        $flipResponse = session("flip_response");
 
         return view("agent.film_ticket.receipt", [
-            "film_ticket_transaction" => $film_ticket_transaction
+            "film_ticket_transaction" => $film_ticket_transaction,
+            "flipResponse" => $flipResponse
         ]);
     }
 }

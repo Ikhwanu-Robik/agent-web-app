@@ -8,7 +8,7 @@
     <title>Film Ticket</title>
 </head>
 
-<h1>Transaction Successful</h1>
+<h1>Transaction {{ $transaction->payment_method = 'cash' ? 'Successful' : 'Pending' }}</h1>
 <h2>You have bought a film ticket with the following data : </h2>
 <table>
     <tr>
@@ -51,11 +51,11 @@
         <td>:</td>
         <td>{{ $film_ticket_transaction->status }}</td>
     </tr>
-    @if (session()->has("voucher"))
+    @if (session()->has('voucher'))
         <tr>
             <td>Voucher</td>
             <td>:</td>
-            <td>{{ session()->get("voucher") }}</td>
+            <td>{{ session()->get('voucher') }}</td>
         </tr>
     @endif
 </table>
@@ -82,4 +82,8 @@ for these seats : {{ json_encode($film_ticket_transaction->seats_coordinates_arr
     @endfor
 
 </table>
+
+@if ($payment_method == 'flip')
+    <h3>To pay with Flip, click <a href="{{ 'https://' . $flipResponse['link_url'] }}">this link</a></h3>
+@endif
 </body>
