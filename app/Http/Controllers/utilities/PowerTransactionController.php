@@ -86,7 +86,7 @@ class PowerTransactionController extends Controller
                 FlipBillType::SINGLE,
                 $transaction_attributes["total"],
                 FlipStep::INPUT_DATA,
-                "/power/topup"
+                "/power"
             );
 
             $flipResponse = $response;
