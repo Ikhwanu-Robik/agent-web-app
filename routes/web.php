@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FlipCallbackController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\utilities\AuthController;
 use App\Http\Controllers\views\GeneralViewController;
@@ -23,3 +24,5 @@ Route::middleware("guest")->group(function () {
    Route::get("/register", [GeneralViewController::class, "showRegisterForm"])->name("register");
    Route::post("/register", [AuthController::class, "register"]);
 });
+
+Route::post("/flipcallback", FlipCallbackController::class);
