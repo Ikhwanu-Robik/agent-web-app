@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use App\Http\Requests\StoreGameRequest;
+use Illuminate\Support\Facades\Storage;
 
 class Game extends Model
 {

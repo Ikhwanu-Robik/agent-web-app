@@ -51,6 +51,7 @@ class GameController extends Controller
 
     public function destroy(Request $request, Game $game)
     {
+        $game->deleteImage();
         $game->delete();
 
         return redirect("/master/games");

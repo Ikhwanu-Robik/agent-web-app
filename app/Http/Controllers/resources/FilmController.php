@@ -51,7 +51,7 @@ class FilmController extends Controller
 
     public function destroy(Request $request, Film $film)
     {
-        Storage::disk("public")->delete($film->poster_image_url);
+        $film->deleteImage();
         $film->delete();
 
         return redirect("/master/films");
