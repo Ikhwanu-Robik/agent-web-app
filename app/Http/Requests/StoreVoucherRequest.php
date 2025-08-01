@@ -53,7 +53,7 @@ class StoreVoucherRequest extends FormRequest
                     }
                 }
             ],
-            "user_id" => "required|numeric|max:100"
+            "user_id" => "required|numeric|exists:users,id"
         ];
     }
 }

@@ -53,7 +53,7 @@ class UpdateVoucherRequest extends FormRequest
                     }
                 }
             ],
-            "user_id" => "required|numeric"
+            "user_id" => "required|numeric|exists:users,id"
         ];
     }
 }
