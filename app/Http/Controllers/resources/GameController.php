@@ -25,14 +25,7 @@ class GameController extends Controller
 
     public function store(StoreGameRequest $storeGameRequest)
     {
-        $validated = $storeGameRequest->validated();
-        $path_name = $storeGameRequest->file('icon')->storePublicly('game_icons');
-
-        Game::create([
-            'name' => $validated['name'],
-            'icon' => $path_name,
-            'currency' => $validated['currency']
-        ]);
+        Game::createSpecial($storeGameRequest);
 
         return redirect("/master/games");
     }

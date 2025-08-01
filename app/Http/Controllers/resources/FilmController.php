@@ -25,16 +25,7 @@ class FilmController extends Controller
 
     public function store(StoreFilmRequest $storeFilmRequest)
     {
-        $validated = $storeFilmRequest->validated();
-        $image_url = $storeFilmRequest->file("poster")->storePublicly();
-
-        $attributes = [
-            "title" => $validated["title"],
-            "poster_image_url" => $image_url,
-            "release_date" => $validated["release_date"],
-            "duration" => $validated["duration"]
-        ];
-        Film::create($attributes);
+        Film::createSpecial($storeFilmRequest);
 
         return redirect("/master/films");
     }

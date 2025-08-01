@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Cinema;
 
 class CinemaFilm extends Model
 {
@@ -29,5 +31,17 @@ class CinemaFilm extends Model
     public function filmTicketTransaction()
     {
         return $this->hasMany(FilmTicketTransaction::class);
+    }
+
+    public static function createSpecial(array $attributesRaw, Cinema $cinema)
+    {
+        $attributes = [
+            "cinema_id" => $cinema->id,
+            "film_id" => $attributesRaw["film"],
+            "ticket_price" => $attributesRaw["ticket_price"],
+            "airing_datetime" => Carbon::make($attributesRaw["datetime_airing"]),
+            "seats_status" => $cinema->seats_structure
+        ];
+        CinemaFilm::create($attributes);
     }
 }

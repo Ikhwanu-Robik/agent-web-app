@@ -32,16 +32,7 @@ class CinemaFilmController extends Controller
 
     public function store(StoreCinemaFilmRequest $storeCinemaFilmRequest, Cinema $cinema)
     {
-        $validated = $storeCinemaFilmRequest->validated();
-
-        $attributes = [
-            "cinema_id" => $cinema->id,
-            "film_id" => $validated["film"],
-            "ticket_price" => $validated["ticket_price"],
-            "airing_datetime" => Carbon::make($validated["datetime_airing"]),
-            "seats_status" => $cinema->seats_structure
-        ];
-        CinemaFilm::create($attributes);
+        CinemaFilm::createSpecial($storeCinemaFilmRequest->validated(), $cinema);
 
         return redirect("/master/cinemas/" . $cinema->id . "/films");
     }

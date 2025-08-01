@@ -6,6 +6,7 @@ use App\Models\Cinema;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreFilmRequest;
 
 class Film extends Model
 {
@@ -35,6 +36,20 @@ class Film extends Model
         $image_url = $file->storePublicly();
         $this->poster_image_url = $image_url;
         $this->save();
+    }
+
+    public static function createSpecial(StoreFilmRequest $storeFilmRequest)
+    {
+        $validated = $storeFilmRequest->validated();
+        $image_url = $storeFilmRequest->file("poster")->storePublicly();
+
+        $attributes = [
+            "title" => $validated["title"],
+            "poster_image_url" => $image_url,
+            "release_date" => $validated["release_date"],
+            "duration" => $validated["duration"]
+        ];
+        Film::create($attributes);
     }
 
     public function updateSpecial(array $attributes)

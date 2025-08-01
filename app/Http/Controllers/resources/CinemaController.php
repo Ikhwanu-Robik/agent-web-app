@@ -25,20 +25,7 @@ class CinemaController extends Controller
 
     public function store(StoreCinemaRequest $storeCinemaRequest)
     {
-        $validated = $storeCinemaRequest->validated();
-
-        $seats_structure = [];
-        for ($row = 0; $row < $validated["seats_structure_height"]; $row++) {
-            for ($col = 0; $col < $validated["seats_structure_width"]; $col++) {
-                $seats_structure[$row][$col] = 0;
-            }
-        }
-
-        $attributes = [
-            "name" => $validated["name"],
-            "seats_structure" => json_encode($seats_structure)
-        ];
-        Cinema::create($attributes);
+        Cinema::createSpecial($storeCinemaRequest->validated());
 
         return redirect("/master/cinemas");
     }

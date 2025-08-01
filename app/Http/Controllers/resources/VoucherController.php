@@ -35,16 +35,7 @@ class VoucherController extends Controller
 
     public function store(StoreVoucherRequest $storeVoucherRequest)
     {
-        $validated = $storeVoucherRequest->validated();
-
-        $user = User::findOrFail($validated["user_id"], ["id"]);
-
-        $attributes = [
-            "off_percentage" => $validated["off_percentage"],
-            "valid_for" => json_encode($validated["valid_for"]),
-            "user_id" => $user->id
-        ];
-        Voucher::create($attributes);
+        Voucher::createSpecial($storeVoucherRequest->validated());
 
         return redirect("/master/vouchers");
     }

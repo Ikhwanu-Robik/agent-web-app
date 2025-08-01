@@ -20,6 +20,22 @@ class Cinema extends Model
             ->withPivot(["id", "film_id", "ticket_price", "airing_datetime", "seats_status"]);
     }
 
+    public static function createSpecial(array $attributesRaw)
+    {
+        $seats_structure = [];
+        for ($row = 0; $row < $attributesRaw["seats_structure_height"]; $row++) {
+            for ($col = 0; $col < $attributesRaw["seats_structure_width"]; $col++) {
+                $seats_structure[$row][$col] = 0;
+            }
+        }
+
+        $attributes = [
+            "name" => $attributesRaw["name"],
+            "seats_structure" => json_encode($seats_structure)
+        ];
+        Cinema::create($attributes);
+    }
+
     public function updateSpecial(array $attributes)
     {
         $this->name = $attributes["name"];
