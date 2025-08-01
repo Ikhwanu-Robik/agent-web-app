@@ -44,8 +44,6 @@ class BusScheduleController extends Controller
     {
         $schedule->update($updateBusScheduleRequest->validated());
 
-        $schedule->save();
-
         return redirect("/master/bus/schedules");
     }
 
