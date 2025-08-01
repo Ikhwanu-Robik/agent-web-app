@@ -46,15 +46,9 @@ class FilmController extends Controller
 
     public function update(UpdateFilmRequest $updateFilmRequest, Film $film)
     {
-        $validated = $updateFilmRequest->validated();
-        Storage::disk("public")->delete($film->poster_image_url);
-        $image_url = $updateFilmRequest->file("poster")->storePublicly();
-
-        $film->title = $validated["title"];
-        $film->poster_image_url = $image_url;
-        $film->release_date = $validated["release_date"];
-        $film->duration = $validated["duration"];
-        $film->save();
+        $film->deleteImage();
+        $film->saveImage($updateFilmRequest->file("poster"));
+        $film->updateSpecial($updateFilmRequest->validated());
 
         return redirect("/master/films");
     }

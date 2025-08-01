@@ -50,32 +50,7 @@ class CinemaController extends Controller
 
     public function update(UpdateCinemaRequest $updateCinemaRequest, Cinema $cinema)
     {
-        $validated = $updateCinemaRequest->validated();
-        $seats_structure = json_decode($cinema->seats_structure);
-
-        $cinema->name = $validated["name"];
-        if (isset($validated["seats_structure"])) {
-            $nSeats_structure = $seats_structure;
-
-            foreach ($validated["seats_structure"] as $filledCoordinate) {
-                $filledY = explode(",", $filledCoordinate)[0];
-                $filledX = explode(",", $filledCoordinate)[1];
-
-                $nSeats_structure[$filledY][$filledX] = 1;
-            }
-
-            $cinema->seats_structure = json_encode($nSeats_structure);
-        } else if (isset($validated["seats_structure_width"]) && isset($validated["seats_structure_height"])) {
-            $nSeats_structure = [];
-            for ($nRow = 0; $nRow < $validated["seats_structure_height"]; $nRow++) {
-                for ($nCol = 0; $nCol < $validated["seats_structure_width"]; $nCol++) {
-                    $nSeats_structure[$nRow][$nCol] = 0;
-                }
-            }
-
-            $cinema->seats_structure = json_encode($nSeats_structure);
-        }
-        $cinema->save();
+        $cinema->updateSpecial($updateCinemaRequest->validated());
 
         return redirect("/master/cinemas");
     }

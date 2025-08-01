@@ -42,15 +42,7 @@ class BusScheduleController extends Controller
 
     public function update(UpdateBusScheduleRequest $updateBusScheduleRequest, BusSchedule $schedule)
     {
-        $validated = $updateBusScheduleRequest->validated();
-
-        $schedule->bus_id = $validated["bus_id"];
-        $schedule->origin_station_id = $validated["origin_station_id"];
-        $schedule->destination_station_id = $validated["destination_station_id"];
-        $schedule->departure_date = $validated["departure_date"];
-        $schedule->departure_time = $validated["departure_time"];
-        $schedule->seats = $validated["seats"];
-        $schedule->ticket_price = $validated["ticket_price"];
+        $schedule->update($updateBusScheduleRequest->validated());
 
         $schedule->save();
 

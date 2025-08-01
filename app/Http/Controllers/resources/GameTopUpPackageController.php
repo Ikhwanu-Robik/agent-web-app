@@ -38,13 +38,7 @@ class GameTopUpPackageController extends Controller
 
     public function update(UpdateTopUpPackageRequest $updateTopUpPackageRequest, GameTopUpPackage $package)
     {
-        $validated = $updateTopUpPackageRequest->validated();
-
-        $package->game_id = $validated["game_id"];
-        $package->title = $validated["title"];
-        $package->items_count = $validated["items_count"];
-        $package->price = $validated["price"];
-        $package->save();
+        $package->update($updateTopUpPackageRequest->validated());
 
         return redirect("/master/games/packages");
     }

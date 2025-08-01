@@ -58,14 +58,7 @@ class VoucherController extends Controller
 
     public function update(UpdateVoucherRequest $updateVoucherRequest, Voucher $voucher)
     {
-        $validated = $updateVoucherRequest->validated();
-
-        $user = User::findOrFail($validated["user_id"]);
-
-        $voucher->off_percentage = $validated["off_percentage"];
-        $voucher->valid_for = json_encode($validated["valid_for"]);
-        $voucher->user_id = $user->id;
-        $voucher->saveOrFail();
+        $voucher->update($updateVoucherRequest->validated());
 
         return redirect("/master/vouchers");
     }

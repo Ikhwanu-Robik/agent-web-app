@@ -36,10 +36,7 @@ class BusStationController extends Controller
 
     public function update(UpdateBusStationRequest $updateBusStationRequest, BusStation $bus_station)
     {
-        $validated = $updateBusStationRequest->validated();
-
-        $bus_station->name = $validated["name"];
-        $bus_station->save();
+        $bus_station->update($updateBusStationRequest->validated());
 
         return redirect("/master/bus/station");
     }

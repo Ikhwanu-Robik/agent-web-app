@@ -34,10 +34,7 @@ class BusController extends Controller
 
     public function update(UpdateBusRequest $updateBusRequest, Bus $bus)
     {
-        $validated = $updateBusRequest->validated();
-
-        $bus->name = $validated["name"];
-        $bus->save();
+        $bus->update($updateBusRequest->validated());
 
         return redirect("/master/bus");
     }

@@ -44,15 +44,9 @@ class GameController extends Controller
 
     public function update(UpdateGameRequest $updateGameRequest, Game $game)
     {
-        $validated = $updateGameRequest->validated();
-
-        Storage::disk("public")->delete($game->icon);
-        $path_name = $updateGameRequest->file('icon')->storePublicly('game_icons');
-
-        $game->name = $validated["name"];
-        $game->icon = $path_name;
-        $game->currency = $validated["currency"];
-        $game->save();
+        $game->deleteImage();
+        $game->saveImage($updateGameRequest->file("icon"));
+        $game->updateSpecial($updateGameRequest->validated());
 
         return redirect("/master/games");
     }

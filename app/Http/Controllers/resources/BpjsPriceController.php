@@ -36,11 +36,7 @@ class BpjsPriceController extends Controller
 
     public function update(UpdateBpjsPriceRequest $updateBpjsPriceRequest, BpjsPrice $bpjs_price)
     {
-        $validated = $updateBpjsPriceRequest->validated();
-
-        $bpjs_price->class = $validated["class"];
-        $bpjs_price->price = $validated["price"];
-        $bpjs_price->save();
+        $bpjs_price->update($updateBpjsPriceRequest->validated());
 
         return redirect("/master/bpjs/prices");
     }
