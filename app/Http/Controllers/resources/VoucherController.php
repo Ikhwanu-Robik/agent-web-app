@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\resources;
 
-use Log;
-use Closure;
+use App\Http\Requests\StoreVoucherRequest;
+use App\Http\Requests\UpdateVoucherRequest;
 use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
@@ -33,40 +33,9 @@ class VoucherController extends Controller
         return view("master.vouchers.create", ["users" => $users, "valid_services" => self::$valid_services]);
     }
 
-    public function store(Request $request)
+    public function store(StoreVoucherRequest $storeVoucherRequest)
     {
-        $validated = $request->validate([
-            "off_percentage" => "required|numeric",
-            "valid_for" => [
-                "required",
-                "array",
-                function (string $attribute, mixed $value, Closure $fail) {
-                    // Check if all element of $input is also element of $valid_services
-                    $isAllInputValidServices = false;
-
-                    $validCount = 0;
-                    foreach ($value as $service) {
-                        foreach (self::$valid_services as $valid) {
-                            if ($service == $valid) {
-                                $validCount++;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (count($value) != $validCount) {
-                        $isAllInputValidServices = false;
-                    } else if (count($value) == $validCount) {
-                        $isAllInputValidServices = true;
-                    }
-
-                    if (!$isAllInputValidServices) {
-                        $fail("The " . $attribute . " contains invalid service");
-                    }
-                }
-            ],
-            "user_id" => "required|numeric|max:100"
-        ]);
+        $validated = $storeVoucherRequest->validated();
 
         $user = User::findOrFail($validated["user_id"], ["id"]);
 
@@ -80,67 +49,34 @@ class VoucherController extends Controller
         return redirect("/master/vouchers");
     }
 
-    public function edit(Request $request, Voucher $voucher) {
+    public function edit(Request $request, Voucher $voucher)
+    {
         $users = User::all(["id", "name"]);
 
-        return view("master.vouchers.edit", ["voucher" => $voucher, "valid_services" => self::$valid_services, "users" => $users] );
+        return view("master.vouchers.edit", ["voucher" => $voucher, "valid_services" => self::$valid_services, "users" => $users]);
     }
 
-    public function update(Request $request, Voucher $voucher) {
-         $validated = $request->validate([
-            "off_percentage" => "required|numeric|max:100",
-            "valid_for" => [
-               "required",
-               "array",
-               function (string $attribute, mixed $value, Closure $fail) {
-                    // Check if all element of $input is also element of $valid_services
-                    $isAllInputValidServices = false;
+    public function update(UpdateVoucherRequest $updateVoucherRequest, Voucher $voucher)
+    {
+        $validated = $updateVoucherRequest->validated();
 
-                    $validCount = 0;
-                    foreach ($value as $service) {
-                        foreach (self::$valid_services as $valid) {
-                            if ($service == $valid) {
-                                $validCount++;
-                                break;
-                            }
-                        }
-                    }
+        $user = User::findOrFail($validated["user_id"]);
 
-                    if (count($value) != $validCount) {
-                        $isAllInputValidServices = false;
-                    } else if (count($value) == $validCount) {
-                        $isAllInputValidServices = true;
-                    }
+        $voucher->off_percentage = $validated["off_percentage"];
+        $voucher->valid_for = json_encode($validated["valid_for"]);
+        $voucher->user_id = $user->id;
+        $voucher->saveOrFail();
 
-                    if (!$isAllInputValidServices) {
-                        $fail("The " . $attribute . " contains invalid service");
-                    }
-                }
-             ],
-            "user_id" => "required|numeric"
-         ]);
-
-         $user = User::findOrFail($validated["user_id"]);
-
-         $voucher->off_percentage = $validated["off_percentage"];
-         $voucher->valid_for = json_encode($validated["valid_for"]);
-         $voucher->user_id = $user->id;
-         $voucher->saveOrFail();
-
-         return redirect("/master/vouchers");
+        return redirect("/master/vouchers");
     }
 
     public function delete(Voucher $voucher)
     {
-       return view("master.vouchers.delete", ["voucher" => Voucher::with("user")->find($voucher->id)]);
+        return view("master.vouchers.delete", ["voucher" => Voucher::with("user")->find($voucher->id)]);
     }
 
     public function destroy(Request $request, Voucher $voucher)
     {
-        $validated = $request->validate([
-            "voucher" => "required|numeric|exists:vouchers,id"
-        ]);
-
         $voucher->delete();
 
         return redirect("/master/vouchers");

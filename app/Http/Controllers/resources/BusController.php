@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\resources;
 
+use App\Http\Requests\StoreBusRequest;
+use App\Http\Requests\UpdateBusRequest;
 use App\Models\Bus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,11 +20,9 @@ class BusController extends Controller
         return view("master.bus.create");
     }
 
-    public function store(Request $request)
+    public function store(StoreBusRequest $storeBusRequest)
     {
-        $validated = $request->validate(["name" => "required|string"]);
-
-        Bus::create($validated);
+        Bus::create($storeBusRequest->validated());
 
         return redirect("/master/bus");
     }
@@ -32,9 +32,9 @@ class BusController extends Controller
         return view("master.bus.edit", ["bus" => $bus]);
     }
 
-    public function update(Request $request, Bus $bus)
+    public function update(UpdateBusRequest $updateBusRequest, Bus $bus)
     {
-        $validated = $request->validate(["name" => "required|string"]);
+        $validated = $updateBusRequest->validated();
 
         $bus->name = $validated["name"];
         $bus->save();
@@ -48,10 +48,6 @@ class BusController extends Controller
 
     public function destroy(Request $request, Bus $bus)
     {
-        $validated = $request->validate([
-            "bus" => "required|numeric|exists:buses,id"
-        ]);
-
         $bus->delete();
 
         return redirect("/master/bus");

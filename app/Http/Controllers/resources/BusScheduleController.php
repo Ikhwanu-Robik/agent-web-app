@@ -5,8 +5,9 @@ namespace App\Http\Controllers\resources;
 use App\Models\Bus;
 use App\Models\BusStation;
 use App\Models\BusSchedule;
+use App\Http\Requests\StoreBusScheduleRequest;
+use App\Http\Requests\UpdateBusScheduleRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class BusScheduleController extends Controller
@@ -24,22 +25,9 @@ class BusScheduleController extends Controller
         return view("master.bus_schedule.create", ["buses" => $buses, "bus_stations" => $stations]);
     }
 
-    public function store(Request $request)
+    public function store(StoreBusScheduleRequest $storeBusScheduleRequest)
     {
-        $validated = $request->validate([
-            "bus_id" => "required|exists:buses,id",
-            "origin_station_id" => "required|exists:bus_stations,id",
-            "destination_station_id" => "required|exists:bus_stations,id|different:origin_station_id",
-            "departure_date" => "required|date",
-            "departure_time" => "required", // I should add further validation, but I can only think of using Regex
-            "seats" => "required|numeric",
-            "ticket_price" => "required|numeric"
-        ]);
-        // I need to validate that all record is unique
-        // Two records may have the same departure_date and/or departure_time IF
-        // Their bus is different
-
-        BusSchedule::create($validated);
+        BusSchedule::create($storeBusScheduleRequest->validated());
 
         return redirect("/master/bus/schedules");
     }
@@ -52,17 +40,9 @@ class BusScheduleController extends Controller
         return view("master.bus_schedule.edit", ["schedule" => $schedule, "buses" => $buses, "bus_stations" => $stations]);
     }
 
-    public function update(Request $request, BusSchedule $schedule)
+    public function update(UpdateBusScheduleRequest $updateBusScheduleRequest, BusSchedule $schedule)
     {
-        $validated = $request->validate([
-            "bus_id" => "required|exists:buses,id",
-            "origin_station_id" => "required|exists:bus_stations,id",
-            "destination_station_id" => "required|exists:bus_stations,id|different:origin_station_id",
-            "departure_date" => "required|date",
-            "departure_time" => "required", // I should add further validation, but I can only think of using Regex
-            "seats" => "required|numeric",
-            "ticket_price" => "required|numeric"
-        ]);
+        $validated = $updateBusScheduleRequest->validated();
 
         $schedule->bus_id = $validated["bus_id"];
         $schedule->origin_station_id = $validated["origin_station_id"];
@@ -84,10 +64,6 @@ class BusScheduleController extends Controller
 
     public function destroy(Request $request, BusSchedule $schedule)
     {
-        $validated = $request->validate([
-            "schedule" => "required|numeric|exists:bus_schedules,id"
-        ]);
-
         $schedule->delete();
 
         return redirect("/master/bus/schedules");

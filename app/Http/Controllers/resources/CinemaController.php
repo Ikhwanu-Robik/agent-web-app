@@ -6,12 +6,11 @@ use App\Models\Cinema;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCinemaRequest;
+use App\Http\Requests\UpdateCinemaRequest;
 
 class CinemaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $cinemas = Cinema::all();
@@ -19,24 +18,14 @@ class CinemaController extends Controller
         return view("master.cinema.cinema", ["cinemas" => $cinemas]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view("master.cinema.create");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreCinemaRequest $storeCinemaRequest)
     {
-        $validated = $request->validate([
-            "name" => "required|string",
-            "seats_structure_width" => "required|numeric",
-            "seats_structure_height" => "required|numeric"
-        ]);
+        $validated = $storeCinemaRequest->validated();
 
         $seats_structure = [];
         for ($row = 0; $row < $validated["seats_structure_height"]; $row++) {
@@ -54,29 +43,15 @@ class CinemaController extends Controller
         return redirect("/master/cinemas");
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Cinema $cinema)
     {
         return view("master.cinema.edit", ["cinema" => $cinema]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Cinema $cinema)
+    public function update(UpdateCinemaRequest $updateCinemaRequest, Cinema $cinema)
     {
+        $validated = $updateCinemaRequest->validated();
         $seats_structure = json_decode($cinema->seats_structure);
-        $oriRow = count($seats_structure);
-        $oriCol = count($seats_structure[0]);
-
-        $validated = $request->validate([
-            "name" => "required|string",
-            "seats_structure" => ["missing_unless:seats_structure_width,$oriCol", "missing_unless:seats_structure_height,$oriRow", "array"],
-            "seats_structure_width" => ["exclude_with:seats_structure", "required_with:seats_structure_height", "numeric"],
-            "seats_structure_height" => ["exclude_with:seats_structure", "required_with:seats_structure_width", "numeric"]
-        ]);
 
         $cinema->name = $validated["name"];
         if (isset($validated["seats_structure"])) {
@@ -110,15 +85,8 @@ class CinemaController extends Controller
         return view("master.cinema.delete", ["cinema" => $cinema]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Request $request, Cinema $cinema)
     {
-        $validated = $request->validate([
-            "cinema" => "required|numeric|exists:cinemas,id"
-        ]);
-
         $cinema->delete();
 
         return redirect("/master/cinemas");

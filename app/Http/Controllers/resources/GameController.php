@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\resources;
 
+use App\Http\Requests\StoreGameRequest;
+use App\Http\Requests\UpdateGameRequest;
 use App\Models\Game;
-use Closure;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class GameController extends Controller
 {
@@ -23,15 +23,10 @@ class GameController extends Controller
         return view('master.games.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreGameRequest $storeGameRequest)
     {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'icon' => 'required|image',
-            'currency' => 'required|string'
-        ]);
-
-        $path_name = $request->file('icon')->storePublicly('game_icons');
+        $validated = $storeGameRequest->validated();
+        $path_name = $storeGameRequest->file('icon')->storePublicly('game_icons');
 
         Game::create([
             'name' => $validated['name'],
@@ -47,17 +42,12 @@ class GameController extends Controller
         return view("master.games.edit", ["game" => $game]);
     }
 
-    public function update(Request $request, Game $game)
+    public function update(UpdateGameRequest $updateGameRequest, Game $game)
     {
-        $validated = $request->validate([
-            "name" => "required|string",
-            "icon" => "required|image",
-            "currency" => "required|string"
-        ]);
+        $validated = $updateGameRequest->validated();
 
-        // TODO: confirm deletion of the old image
         Storage::disk("public")->delete($game->icon);
-        $path_name = $request->file('icon')->storePublicly('game_icons');
+        $path_name = $updateGameRequest->file('icon')->storePublicly('game_icons');
 
         $game->name = $validated["name"];
         $game->icon = $path_name;
@@ -74,21 +64,6 @@ class GameController extends Controller
 
     public function destroy(Request $request, Game $game)
     {
-        $validated = $request->validate([
-            "game" => "required|numeric|exists:games,id"
-        ]);
-
-        $validator = Validator::make(["game" => $game], [
-            "game" => [
-                function (string $attribute, mixed $value, Closure $fail) {
-                    if (!$value) {
-                        $fail("The given {$attribute} is invalid");
-                    }
-                }
-            ]
-        ]);
-        $validator->validate();
-
         $game->delete();
 
         return redirect("/master/games");
