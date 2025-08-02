@@ -14,7 +14,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\businesses\ReportController;
 
-class PowerTransactionController extends Controller
+class PowerTopUpTransactionController extends Controller
 {
     public function prepareTransaction(Request $request)
     {
