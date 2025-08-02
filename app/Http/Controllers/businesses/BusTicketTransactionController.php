@@ -14,7 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BusTicketTransaction;
 use Illuminate\Support\Facades\Auth;
 
-class BusTicketController extends Controller
+class BusTicketTransactionController extends Controller
 {
     public function order(Request $request)
     {        
