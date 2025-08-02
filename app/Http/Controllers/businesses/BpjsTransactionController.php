@@ -17,6 +17,18 @@ use App\Http\Controllers\businesses\ReportController;
 
 class BpjsTransactionController extends Controller
 {
+    public function search(Request $request)
+    {
+        $validated = $request->validate([
+            "civil_id" => "required|exists:civil_informations,NIK"
+        ]);
+
+        $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->first();
+        $bpjs = ActiveBpjs::with("bpjsClass")->where("civil_information_id", "=", $civil_information->id)->first();
+
+        return redirect("/bpjs")->with("bpjs", $bpjs);
+    }
+
     public function pay(Request $request, FlipTransaction $flipTransaction)
     {
         $validated = $request->validate([
