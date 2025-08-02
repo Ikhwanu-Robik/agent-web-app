@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\utilities\GameTopUpTransactionController;
+use App\Http\Controllers\businesses\GameTopUpTransactionController;
 use App\Http\Controllers\views\GameTopupViewController;
 
 Route::middleware("auth")->group(function () {

@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\views\BpjsViewController;
-use App\Http\Controllers\utilities\ReportController;
-use App\Http\Controllers\utilities\ActiveBpjsController;
-use App\Http\Controllers\utilities\BpjsTransactionController;
+use App\Http\Controllers\businesses\ReportController;
+use App\Http\Controllers\businesses\ActiveBpjsController;
+use App\Http\Controllers\businesses\BpjsTransactionController;
 
 Route::middleware("auth")->group(function () {
     Route::post("/bpjs", [ActiveBpjsController::class, "search"]);

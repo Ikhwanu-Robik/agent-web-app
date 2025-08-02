@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\utilities;
+namespace App\Http\Controllers\businesses;
 
 use Carbon\Carbon;
 use App\Models\BusSchedule;

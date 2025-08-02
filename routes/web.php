@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\FlipCallbackController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\utilities\AuthController;
+use App\Http\Controllers\businesses\AuthController;
 use App\Http\Controllers\views\GeneralViewController;
 
 require("pages.php");

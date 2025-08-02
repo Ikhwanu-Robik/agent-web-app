@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\views\FilmTicketViewController;
-use App\Http\Controllers\utilities\FilmTicketTransactionController;
+use App\Http\Controllers\businesses\FilmTicketTransactionController;
 
 Route::middleware("auth")->group(function () {
     Route::post("/film/cinema", [FilmTicketTransactionController::class, "searchCinema"]);

@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\utilities\PowerTransactionController;
-use App\Http\Controllers\utilities\ReportController;
+use App\Http\Controllers\businesses\PowerTransactionController;
+use App\Http\Controllers\businesses\ReportController;
 use App\Http\Controllers\views\PowerTopupViewController;
 
 Route::middleware("auth")->group(function () {

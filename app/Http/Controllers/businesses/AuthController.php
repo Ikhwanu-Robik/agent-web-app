@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\utilities;
+namespace App\Http\Controllers\businesses;
 
 use Closure;
 use App\Models\User;
