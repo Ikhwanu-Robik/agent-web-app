@@ -110,17 +110,9 @@ class FilmTicketTransactionController extends Controller
         $validated = $payFilmTicketRequest->validated();
 
         $voucher = Voucher::find($validated["voucher"]);
-        $isVoucherValid = false;
-        if ($voucher) {
-            foreach (json_decode($voucher->valid_for) as $service) {
-                if ($service == "film_ticket") {
-                    $isVoucherValid = true;
-                }
-            }
-        }
 
         $discount = 1;
-        if ($validated["voucher"] != -1 && $isVoucherValid) {
+        if ($voucher) {
             $discount = (100 - $voucher->off_percentage) / 100;
             $voucher->delete();
         }
@@ -167,7 +159,7 @@ class FilmTicketTransactionController extends Controller
 
         $transaction->cinema_film = $cinema_film;
         $transaction->payment_method = $validated["payment_method"];
-        if ($validated["voucher"] != -1 && $isVoucherValid) {
+        if ($voucher) {
             $transaction->voucher = $voucher->off_percentage . "%";
         }
         $transaction->seats_coordinates_array = session("seat_coordinates");

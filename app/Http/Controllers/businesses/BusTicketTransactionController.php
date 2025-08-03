@@ -33,7 +33,7 @@ class BusTicketTransactionController extends Controller
     }
 
     public function order(OrderBusTicketRequest $orderBusTicketRequest)
-    {        
+    {
         $validated = $orderBusTicketRequest->validated();
 
         $bus_schedule = BusSchedule::find($validated["schedule_id"]);
@@ -66,19 +66,10 @@ class BusTicketTransactionController extends Controller
     public function pay(PayBusTicketRequest $payBusTicketRequest, FlipTransaction $flipTransaction)
     {
         $validated = $payBusTicketRequest->validated();
-
         $voucher = Voucher::find($validated["voucher"]);
-        $isVoucherValid = false;
-        if ($voucher) {
-            foreach (json_decode($voucher->valid_for) as $service) {
-                if ($service == "bus_ticket") {
-                    $isVoucherValid = true;
-                }
-            }
-        }
 
         $discount = 1;
-        if ($validated["voucher"] != -1 && $isVoucherValid) {
+        if ($voucher) {
             $discount = (100 - $voucher->off_percentage) / 100;
 
             $voucher->delete();
@@ -109,7 +100,7 @@ class BusTicketTransactionController extends Controller
 
         $bus_schedule->save();
 
-        $attributes = [ 
+        $attributes = [
             "user_id" => Auth::id(),
             "bus_schedule_id" => $validated["bus_schedule_id"],
             "ticket_amount" => $validated["ticket_amount"],
@@ -121,7 +112,7 @@ class BusTicketTransactionController extends Controller
 
         $transaction = BusTicketTransaction::create($attributes);
         $transaction->busSchedule = $bus_schedule;
-        if ($validated["voucher"] && $isVoucherValid) {
+        if ($voucher) {
             $transaction->voucher = $voucher->off_percentage . "%";
         }
 

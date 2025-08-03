@@ -48,17 +48,9 @@ class PowerTopUpTransactionController extends Controller
         $validated = $finalizePowerTopUpRequest->validated();
 
         $voucher = Voucher::find($validated["voucher"]);
-        $isVoucherValid = false;
-        if ($voucher) {
-            foreach (json_decode($voucher->valid_for) as $service) {
-                if ($service == "power") {
-                    $isVoucherValid = true;
-                }
-            }
-        }
 
         $discount = 1;
-        if ($validated["voucher"] != -1 && $isVoucherValid) {
+        if ($voucher) {
             $discount = (100 - $voucher->off_percentage) / 100;
 
             $voucher->delete();
@@ -88,7 +80,7 @@ class PowerTopUpTransactionController extends Controller
         $transaction_attributes["flip_link_id"] = $flipResponse ? $flipResponse["link_id"] : null;
 
         $transaction = PowerTransaction::create($transaction_attributes);
-        if ($validated["voucher"] != -1 && $isVoucherValid) {
+        if ($voucher) {
             $transaction->voucher = $voucher->off_percentage . "%";
         }
 

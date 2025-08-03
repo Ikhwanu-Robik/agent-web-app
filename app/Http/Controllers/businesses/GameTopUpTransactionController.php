@@ -42,17 +42,9 @@ class GameTopUpTransactionController extends Controller
         $validated = $payGamePackageRequest->validated();
 
         $voucher = Voucher::find($validated["voucher"]);
-        $isVoucherValid = false;
-        if ($voucher) {
-            foreach (json_decode($voucher->valid_for) as $service) {
-                if ($service == "game_top_up") {
-                    $isVoucherValid = true;
-                }
-            }
-        }
 
         $discount = 1;
-        if ($validated["voucher"] != -1 && $isVoucherValid) {
+        if ($validated["voucher"] != -1) {
             $discount = (100 - $voucher->off_percentage) / 100;
 
             $voucher->delete();
@@ -82,7 +74,7 @@ class GameTopUpTransactionController extends Controller
         $transactionAttr["flip_link_id"] = $flipResponse ? $flipResponse["link_id"] : null;
         $transaction = GameTopUpTransaction::create($transactionAttr);
 
-        if ($validated["voucher"] != -1 && $isVoucherValid) {
+        if ($validated["voucher"] != -1) {
             $transaction->voucher = $voucher->off_percentage . "%";
         }
 

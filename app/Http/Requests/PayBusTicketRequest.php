@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Enums\PaymentMethod;
+use App\Models\Voucher;
+use Closure;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -27,7 +29,28 @@ class PayBusTicketRequest extends FormRequest
             "bus_schedule_id" => "required|exists:bus_schedules,id",
             "ticket_amount" => "required|numeric",
             "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
-            "voucher" => "required"
+            "voucher" => [
+                "required",
+                function (string $attribute, mixed $value, Closure $fail) {
+                    $voucher = Voucher::find($value);
+                    // the voucher need not be found in vouchers table
+                    // because if the user does not use any voucher,
+                    // the $value will be -1
+                    // in which case, the voucher do not need
+                    // to be validated
+                    $isVoucherValid = false;
+                    if ($voucher) {
+                        foreach (json_decode($voucher->valid_for) as $service) {
+                            if ($service == "bus_ticket") {
+                                $isVoucherValid = true;
+                            }
+                        }
+                        if (!$isVoucherValid) {
+                            $fail("The {$attribute} is not valid for this service");
+                        }
+                    }
+                }
+            ]
         ];
     }
 }
