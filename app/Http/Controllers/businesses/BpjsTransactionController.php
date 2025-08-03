@@ -4,13 +4,13 @@ namespace App\Http\Controllers\businesses;
 
 use App\Enums\FlipBillType;
 use App\Enums\FlipStep;
+use App\Facades\TransactionReport;
 use App\Models\ActiveBpjs;
 use App\Services\FlipTransaction;
 use App\Models\BpjsTransaction;
 use App\Models\CivilInformation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\businesses\ReportController;
 use App\Http\Requests\GetBpjsDataRequest;
 use App\Http\Requests\PayBpjsTransactionRequest;
 
@@ -72,7 +72,7 @@ class BpjsTransactionController extends Controller
         ];
         $transaction = BpjsTransaction::create($transactionAttribute);
 
-        ReportController::updateBpjsReport();
+        TransactionReport::updateBpjsReport();
 
         return redirect("/bpjs/receipt")
             ->with("bpjs", $bpjs)

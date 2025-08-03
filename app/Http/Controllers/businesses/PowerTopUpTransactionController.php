@@ -4,6 +4,7 @@ namespace App\Http\Controllers\businesses;
 
 use App\Enums\FlipBillType;
 use App\Enums\FlipStep;
+use App\Facades\TransactionReport;
 use App\Http\Requests\FinalizePowerTopUpRequest;
 use App\Http\Requests\PreparePowerTopUpRequest;
 use App\Models\Voucher;
@@ -11,7 +12,6 @@ use App\Services\FlipTransaction;
 use App\Models\PowerTransaction;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\businesses\ReportController;
 
 class PowerTopUpTransactionController extends Controller
 {
@@ -92,7 +92,7 @@ class PowerTopUpTransactionController extends Controller
             $transaction->voucher = $voucher->off_percentage . "%";
         }
 
-        ReportController::updatePowerTopUpReport();
+        TransactionReport::updatePowerTopUpReport();
 
         return redirect("/power/receipt")
             ->with("transaction", $transaction)

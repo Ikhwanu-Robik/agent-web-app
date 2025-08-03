@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\views;
 
+use App\Facades\TransactionReport;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\businesses\ReportController;
 
 class GeneralViewController extends Controller
 {
@@ -22,7 +22,7 @@ class GeneralViewController extends Controller
 
     public function home()
     {
-        $transaction_of_the_month = ReportController::getTransactionOfTheMonth();
+        $transaction_of_the_month = TransactionReport::getTransactionOfTheMonth();
         
         return view("home", ["transaction_of_the_month" => $transaction_of_the_month]);
     }
@@ -37,7 +37,7 @@ class GeneralViewController extends Controller
     public function report(Request $request)
     {
         $service = $request->query("service") ? $request->query("service") : "";
-        $reports = ReportController::getReport($service);
+        $reports = TransactionReport::getReport($service);
 
         return view("report", ["service" => $service, "reports" => $reports]);
     }

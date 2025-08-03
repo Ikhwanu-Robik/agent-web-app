@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\views\BpjsViewController;
-use App\Http\Controllers\businesses\ReportController;
+use App\Http\Controllers\Businesses\ReportController;
 use App\Http\Controllers\businesses\BpjsTransactionController;
 
 Route::middleware("auth")->group(function () {
