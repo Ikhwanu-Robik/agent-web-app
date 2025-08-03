@@ -4,11 +4,10 @@ namespace App\Http\Controllers\businesses;
 
 use App\Enums\FlipBillType;
 use App\Enums\FlipStep;
+use App\Http\Requests\FinalizePowerTopUpRequest;
+use App\Http\Requests\PreparePowerTopUpRequest;
 use App\Models\Voucher;
-use App\Enums\PaymentMethod;
 use App\Services\FlipTransaction;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Models\PowerTransaction;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,12 +15,9 @@ use App\Http\Controllers\businesses\ReportController;
 
 class PowerTopUpTransactionController extends Controller
 {
-    public function prepareTransaction(Request $request)
+    public function prepareTransaction(PreparePowerTopUpRequest $preparePowerTopUpRequest)
     {
-        $validated = $request->validate([
-            "subscriber_number" => "required|numeric",
-            "nominal" => "required|numeric"
-        ]);
+        $validated = $preparePowerTopUpRequest->validated();
 
         // pretend calling external api to validate subscriber_number
         // POST https://pln.co.id/api/subcibers/validate
@@ -47,12 +43,9 @@ class PowerTopUpTransactionController extends Controller
         return redirect("/power/payment")->with("transaction_attributes", $transaction_attributes)->with("vouchers", $valid_vouchers);
     }
 
-    public function finalizeTransaction(Request $request, FlipTransaction $flipTransaction)
+    public function finalizeTransaction(FinalizePowerTopUpRequest $finalizePowerTopUpRequest, FlipTransaction $flipTransaction)
     {
-        $validated = $request->validate([
-            "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
-            "voucher" => "required|numeric"
-        ]);
+        $validated = $finalizePowerTopUpRequest->validated();
 
         $voucher = Voucher::find($validated["voucher"]);
         $isVoucherValid = false;
@@ -76,7 +69,7 @@ class PowerTopUpTransactionController extends Controller
         $transaction_attributes["total"] = $transaction_attributes["total"] * $discount;
         $transaction_attributes["method"] = $validated["payment_method"];
         $transaction_attributes["status"] = "PENDING";
-        
+
         $flipResponse = null;
         if ($validated["payment_method"] == "cash") {
             $transaction_attributes["status"] = "SUCCESSFUL";
@@ -91,7 +84,7 @@ class PowerTopUpTransactionController extends Controller
 
             $flipResponse = $response;
         }
-        
+
         $transaction_attributes["flip_link_id"] = $flipResponse ? $flipResponse["link_id"] : null;
 
         $transaction = PowerTransaction::create($transaction_attributes);

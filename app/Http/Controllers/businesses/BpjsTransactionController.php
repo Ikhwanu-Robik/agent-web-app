@@ -5,23 +5,20 @@ namespace App\Http\Controllers\businesses;
 use App\Enums\FlipBillType;
 use App\Enums\FlipStep;
 use App\Models\ActiveBpjs;
-use App\Enums\PaymentMethod;
 use App\Services\FlipTransaction;
-use Illuminate\Http\Request;
 use App\Models\BpjsTransaction;
-use Illuminate\Validation\Rule;
 use App\Models\CivilInformation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\businesses\ReportController;
+use App\Http\Requests\GetBpjsDataRequest;
+use App\Http\Requests\PayBpjsTransactionRequest;
 
 class BpjsTransactionController extends Controller
 {
-    public function search(Request $request)
+    public function search(GetBpjsDataRequest $getBpjsDataRequest)
     {
-        $validated = $request->validate([
-            "civil_id" => "required|exists:civil_informations,NIK"
-        ]);
+        $validated = $getBpjsDataRequest->validated();
 
         $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->first();
         $bpjs = ActiveBpjs::with("bpjsClass")->where("civil_information_id", "=", $civil_information->id)->first();
@@ -29,16 +26,9 @@ class BpjsTransactionController extends Controller
         return redirect("/bpjs")->with("bpjs", $bpjs);
     }
 
-    public function pay(Request $request, FlipTransaction $flipTransaction)
+    public function pay(PayBpjsTransactionRequest $payBpjsTransactionRequest, FlipTransaction $flipTransaction)
     {
-        $validated = $request->validate([
-            "civil_id" => "required|exists:civil_informations,NIK",
-            "month" => "required|numeric|min:1",
-            "payment_method" => [
-                "required",
-                Rule::enum(PaymentMethod::class)
-            ]
-        ]);
+        $validated = $payBpjsTransactionRequest->validated();
 
         $monthBought = $validated["month"] * 30 * 24 * 60 * 60;
 

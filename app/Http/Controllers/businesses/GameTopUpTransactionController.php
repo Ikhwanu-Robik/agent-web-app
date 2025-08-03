@@ -2,49 +2,31 @@
 
 namespace App\Http\Controllers\businesses;
 
-use Carbon\Carbon;
+use App\Http\Requests\BuyGamePackageRequest;
+use App\Http\Requests\GetGamePackagesRequest;
 use App\Enums\FlipStep;
+use App\Http\Requests\PayGamePackageRequest;
 use App\Models\Voucher;
 use App\Enums\FlipBillType;
-use App\Enums\PaymentMethod;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Models\GameTopUpPackage;
 use App\Services\FlipTransaction;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\GameTopUpTransaction;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class GameTopUpTransactionController extends Controller
 {
-    public function getGamePackages(Request $request)
+    public function getGamePackages(GetGamePackagesRequest $getGamePackagesRequest)
     {
-        $validated = $request->validate([
-            "game_id" => "required|exists:games,id"
-        ]);
+        $validated = $getGamePackagesRequest->validated();
         $packages = GameTopUpPackage::with("game")->where("game_id", "=", $validated["game_id"])->get();
 
         return redirect("/game/topup")->with("packages", $packages)->with("selected_game_id", $validated["game_id"]);
     }
 
-    public function buyPackage(Request $request, GameTopUpPackage $package)
+    public function buyPackage(BuyGamePackageRequest $buyGamePackageRequest, GameTopUpPackage $package)
     {
-        $validator = Validator::make($request->all(), [
-            "game_id" => "required|exists:games,id",
-            "game_topup_package_id" => "required|exists:game_topup_packages,id"
-        ]);
-
-        $validated = $validator->validated();
-        $package = GameTopUpPackage::find($validated["game_topup_package_id"]);
-
-        $validator->after(function ($validator, $validated, $package) {
-            if ($package->game_id != $validated["game_id"]) {
-                $validator->errors()->add("game_topup_package_id", "game topup package id must belong to the given game");
-            }
-        });
+        $validated = $buyGamePackageRequest->validated();
 
         $transaction = [
             "user_id" => Auth::id(),
@@ -55,12 +37,9 @@ class GameTopUpTransactionController extends Controller
         return redirect("/game/topup/payment")->with("transaction", $transaction);
     }
 
-    public function pay(Request $request, GameTopUpPackage $package, FlipTransaction $flipTransaction)
+    public function pay(PayGamePackageRequest $payGamePackageRequest, GameTopUpPackage $package, FlipTransaction $flipTransaction)
     {
-        $validated = $request->validate([
-            "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
-            "voucher" => "required"
-        ]);
+        $validated = $payGamePackageRequest->validated();
 
         $voucher = Voucher::find($validated["voucher"]);
         $isVoucherValid = false;

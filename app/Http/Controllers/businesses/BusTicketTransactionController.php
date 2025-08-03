@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\businesses;
 
+use App\Http\Requests\GetBusScheduleRequest;
+use App\Http\Requests\OrderBusTicketRequest;
+use App\Http\Requests\PayBusTicketRequest;
 use Carbon\Carbon;
 use App\Enums\FlipStep;
 use App\Models\Voucher;
 use App\Enums\FlipBillType;
 use App\Models\BusSchedule;
-use App\Enums\PaymentMethod;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Services\FlipTransaction;
 use App\Http\Controllers\Controller;
 use App\Models\BusTicketTransaction;
@@ -17,13 +17,9 @@ use Illuminate\Support\Facades\Auth;
 
 class BusTicketTransactionController extends Controller
 {
-    public function search(Request $request)
+    public function search(GetBusScheduleRequest $getBusScheduleRequest)
     {
-        $validated = $request->validate([
-            "origin" => "required|exists:bus_stations,id",
-            "destination" => "required|exists:bus_stations,id",
-            "ticket_amount" => "required|numeric"
-        ]);
+        $validated = $getBusScheduleRequest->validated();
 
         $query = BusSchedule::where("departure_date", ">=", Carbon::now())
             ->where("origin_station_id", "=", $validated["origin"])
@@ -36,12 +32,9 @@ class BusTicketTransactionController extends Controller
         return back()->with("matching_schedules", $matching_schedules)->with("redirect_status", "successful redirection")->withInput();
     }
 
-    public function order(Request $request)
+    public function order(OrderBusTicketRequest $orderBusTicketRequest)
     {        
-        $validated = $request->validate([
-            "schedule_id" => "required|exists:bus_schedules,id",
-            "ticket_amount" => "required|numeric"
-        ]);
+        $validated = $orderBusTicketRequest->validated();
 
         $bus_schedule = BusSchedule::find($validated["schedule_id"]);
 
@@ -70,14 +63,9 @@ class BusTicketTransactionController extends Controller
         return redirect("/bus/ticket/payment")->with("transaction_data", $transaction)->with("vouchers", $valid_vouchers);
     }
 
-    public function pay(Request $request, FlipTransaction $flipTransaction)
+    public function pay(PayBusTicketRequest $payBusTicketRequest, FlipTransaction $flipTransaction)
     {
-        $validated = $request->validate([
-            "bus_schedule_id" => "required|exists:bus_schedules,id",
-            "ticket_amount" => "required|numeric",
-            "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
-            "voucher" => "required"
-        ]);
+        $validated = $payBusTicketRequest->validated();
 
         $voucher = Voucher::find($validated["voucher"]);
         $isVoucherValid = false;

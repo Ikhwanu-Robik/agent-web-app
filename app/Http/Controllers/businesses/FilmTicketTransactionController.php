@@ -4,24 +4,22 @@ namespace App\Http\Controllers\businesses;
 
 use App\Enums\FlipBillType;
 use App\Enums\FlipStep;
+use App\Http\Requests\GetAiringCinemaRequest;
+use App\Http\Requests\OrderFilmTicketRequest;
+use App\Http\Requests\PayFilmTicketRequest;
 use App\Services\FlipTransaction;
-use Closure;
 use Carbon\Carbon;
 use App\Models\Film;
 use App\Models\Cinema;
 use App\Models\Voucher;
 use App\Models\CinemaFilm;
-use App\Enums\PaymentMethod;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\FilmTicketTransaction;
-use Illuminate\Support\Facades\Validator;
 
 class FilmTicketTransactionController extends Controller
 {
-    private function realSearchCinema($film_id)
+    public static function realSearchCinema($film_id)
     {
         $cinemas = Cinema::with("films")->get();
         $searched_film = Film::find($film_id);
@@ -79,38 +77,19 @@ class FilmTicketTransactionController extends Controller
         return $matching_cinemas;
     }
 
-    public function searchCinema(Request $request)
+    public function searchCinema(GetAiringCinemaRequest $getAiringCinemaRequest)
     {
         // $matchingCinemas = Cinema::join("cinema_film", "cinemas.id", "=", "cinema_film.cinema_id")->where("cinema_film.film_id", "=", $validated["film_id"])->get();
-        $validated = $request->validate([
-            "film_id" => "required|numeric|exists:films,id"
-        ]);
+        $validated = $getAiringCinemaRequest->validated();
 
         $matching_cinemas = self::realSearchCinema($validated["film_id"]);
-
-        $validator = Validator::make($request->all(), [
-            "film_id" => [
-                function (string $attribute, mixed $value, Closure $fail) {
-                    $matching_cinemas = self::realSearchCinema($value);
-
-                    if (count($matching_cinemas) == 0) {
-                        $fail("The film is not being aired in any cinema");
-                    }
-                }
-            ]
-        ]);
-
-        $validator->validate();
 
         return redirect("/film/cinema")->with("cinemas", $matching_cinemas);
     }
 
-    public function order(Request $request)
+    public function order(OrderFilmTicketRequest $orderFilmTicketRequest)
     {
-        $validated = $request->validate([
-            "cinema_film_id" => "required|exists:cinema_film,id",
-            "seat_coordinates" => "required|array"
-        ]);
+        $validated = $orderFilmTicketRequest->validated();
 
         $cinemaFilm = CinemaFilm::with("cinema", "film")->find($validated["cinema_film_id"]);
 
@@ -126,15 +105,9 @@ class FilmTicketTransactionController extends Controller
             ->with("seat_coordinates", $validated["seat_coordinates"]);
     }
 
-    public function makeTransaction(Request $request, FlipTransaction $flipTransaction)
+    public function makeTransaction(PayFilmTicketRequest $payFilmTicketRequest, FlipTransaction $flipTransaction)
     {
-        $validated = $request->validate([
-            "payment_method" => [
-                "required",
-                Rule::enum(PaymentMethod::class)
-            ],
-            "voucher" => "required"
-        ]);
+        $validated = $payFilmTicketRequest->validated();
 
         $voucher = Voucher::find($validated["voucher"]);
         $isVoucherValid = false;

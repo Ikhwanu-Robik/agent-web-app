@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers\businesses;
 
-use Closure;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
-
-    public function login(Request $request)
+    public function login(LoginRequest $loginRequest)
     {
-        $validated = $request->validate([
-            "email" => "required|email|exists:users,email",
-            "password" => "required"
-        ]);
+        $validated = $loginRequest->validated();
 
         if (Auth::attempt($validated)) {
             return redirect("/");
@@ -26,25 +22,11 @@ class AuthController extends Controller
         return redirect()->back()->with("auth_fail", "email or password is wrong");
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $registerRequest)
     {
-        $validator = Validator::make($request->all(), [
-            "name" => "required|string",
-            "profile_photo" => [
-                "required",
-                "image",
-                function (string $attribute, mixed $value, Closure $fail) {
-                    if (!$value->isValid()) {
-                        $fail("Photo profile is not uploaded successfully");
-                    }
-                }
-            ],
-            "email" => "required|email|unique:users,email",
-            "password" => "required"
-        ]);
-        $validated = $validator->validated();
+        $validated = $registerRequest->validated();
 
-        $file_name = $request->file("profile_photo")->storePublicly();
+        $file_name = $registerRequest->file("profile_photo")->storePublicly();
         $validated["profile_photo"] = $file_name;
 
         User::create($validated);
