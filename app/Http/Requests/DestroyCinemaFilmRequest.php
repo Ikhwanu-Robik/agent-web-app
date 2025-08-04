@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Closure;
-use App\Models\CinemaFilm;
+use App\Rules\ScheduleHasNoTransaction;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DestroyCinemaFilmRequest extends FormRequest
@@ -25,15 +24,8 @@ class DestroyCinemaFilmRequest extends FormRequest
     {
         return [
             "schedule_id" => [
-                function (string $attribute, mixed $value, Closure $fail) {
-                    if (!$value) {
-                        $fail("The given {$attribute} is invalid");
-                    }
-
-                    if (CinemaFilm::has("filmTicketTransaction")->find($value)) {
-                        $fail("The given {$attribute} is being referenced by a film ticket transaction");
-                    }
-                }
+                "required",
+                new ScheduleHasNoTransaction
             ]
         ];
     }

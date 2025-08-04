@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Controllers\resources\VoucherController;
-use Closure;
+use App\Rules\AllServicesAreValid;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateVoucherRequest extends FormRequest
@@ -28,30 +27,7 @@ class UpdateVoucherRequest extends FormRequest
             "valid_for" => [
                 "required",
                 "array",
-                function (string $attribute, mixed $value, Closure $fail) {
-                    // Check if all element of $input is also element of $valid_services
-                    $isAllInputValidServices = false;
-
-                    $validCount = 0;
-                    foreach ($value as $service) {
-                        foreach (VoucherController::$valid_services as $valid) {
-                            if ($service == $valid) {
-                                $validCount++;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (count($value) != $validCount) {
-                        $isAllInputValidServices = false;
-                    } else if (count($value) == $validCount) {
-                        $isAllInputValidServices = true;
-                    }
-
-                    if (!$isAllInputValidServices) {
-                        $fail("The " . $attribute . " contains invalid service");
-                    }
-                }
+                new AllServicesAreValid
             ],
             "user_id" => "required|numeric|exists:users,id"
         ];

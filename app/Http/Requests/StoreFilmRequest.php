@@ -27,11 +27,6 @@ class StoreFilmRequest extends FormRequest
             "poster" => [
                 "required",
                 "image",
-                function (string $attributes, mixed $value, Closure $fail) {
-                    if (!$value->isValid()) {
-                        $fail("{$attributes} not uploaded succesfully");
-                    }
-                }
             ],
             "release_date" => "required|date",
             "duration" => "required|numeric"

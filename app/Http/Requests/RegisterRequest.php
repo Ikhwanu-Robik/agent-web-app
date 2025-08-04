@@ -27,11 +27,6 @@ class RegisterRequest extends FormRequest
             "profile_photo" => [
                 "required",
                 "image",
-                function (string $attribute, mixed $value, Closure $fail) {
-                    if (!$value->isValid()) {
-                        $fail("Photo profile is not uploaded successfully");
-                    }
-                }
             ],
             "email" => "required|email|unique:users,email",
             "password" => "required"
