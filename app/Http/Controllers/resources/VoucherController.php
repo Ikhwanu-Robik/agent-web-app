@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\resources;
 
+use App\Enums\ValidServices;
 use App\Http\Requests\StoreVoucherRequest;
 use App\Http\Requests\UpdateVoucherRequest;
 use App\Models\User;
@@ -30,7 +31,7 @@ class VoucherController extends Controller
     {
         $users = User::all(["id", "name"]);
 
-        return view("master.vouchers.create", ["users" => $users, "valid_services" => self::$valid_services]);
+        return view("master.vouchers.create", ["users" => $users, "valid_services" => array_column(ValidServices::cases(), "value")]);
     }
 
     public function store(StoreVoucherRequest $storeVoucherRequest)
@@ -44,7 +45,7 @@ class VoucherController extends Controller
     {
         $users = User::all(["id", "name"]);
 
-        return view("master.vouchers.edit", ["voucher" => $voucher, "valid_services" => self::$valid_services, "users" => $users]);
+        return view("master.vouchers.edit", ["voucher" => $voucher, "valid_services" => array_column(ValidServices::cases(), "value"), "users" => $users]);
     }
 
     public function update(UpdateVoucherRequest $updateVoucherRequest, Voucher $voucher)
