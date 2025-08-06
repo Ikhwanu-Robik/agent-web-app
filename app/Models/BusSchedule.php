@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Bus;
+use App\Models\BusStation;
 use Illuminate\Database\Eloquent\Model;
 
 class BusSchedule extends Model
@@ -27,5 +29,21 @@ class BusSchedule extends Model
 
     public function destinationStation() {
         return $this->belongsTo(BusStation::class, "destination_station_id");
+    }
+
+    public static function search(array $validated)
+    {
+        $query = self::where("departure_date", ">=", Carbon::now())
+            ->where("origin_station_id", "=", $validated["origin"])
+            ->where("destination_station_id", "=", $validated["destination"])
+            ->where("seats", ">=", $validated["ticket_amount"]);
+
+        return $query->get();
+    }
+
+    public function reduceAvailableTicket(int $reduction_amount)
+    {
+        $this->seats = $this->seats - $reduction_amount;
+        $this->save();
     }
 }

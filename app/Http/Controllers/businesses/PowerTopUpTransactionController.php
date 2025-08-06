@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\businesses;
 
-use App\Enums\FlipBillType;
-use App\Enums\FlipStep;
 use App\Facades\TransactionReport;
 use App\Http\Requests\FinalizePowerTopUpRequest;
 use App\Http\Requests\PreparePowerTopUpRequest;
@@ -11,7 +9,6 @@ use App\Models\Voucher;
 use App\Services\FlipTransaction;
 use App\Models\PowerTransaction;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class PowerTopUpTransactionController extends Controller
 {
@@ -23,71 +20,27 @@ class PowerTopUpTransactionController extends Controller
         // POST https://pln.co.id/api/subcibers/validate
         // { "subscriber_number": $validated["subscriber_number"] }
 
-        $transaction_attributes = [
-            "subscriber_number" => $validated["subscriber_number"],
-            "total" => $validated["nominal"]
-        ];
+        $transaction = PowerTransaction::createOrder($validated);
 
-        $vouchers = Voucher::where("user_id", "=", Auth::id())->get();
-        $valid_vouchers = [];
-        foreach ($vouchers as $voucher) {
-            $valid_services = json_decode($voucher->valid_for);
+        $valid_vouchers = Voucher::getValidVouchers("power");
 
-            foreach ($valid_services as $service) {
-                if ($service == "power") {
-                    array_push($valid_vouchers, $voucher);
-                }
-            }
-        }
-
-        return redirect("/power/payment")->with("transaction_attributes", $transaction_attributes)->with("vouchers", $valid_vouchers);
+        return redirect("/power/payment")
+            ->with("transaction", $transaction)
+            ->with("vouchers", $valid_vouchers);
     }
 
     public function finalizeTransaction(FinalizePowerTopUpRequest $finalizePowerTopUpRequest, FlipTransaction $flipTransaction)
     {
         $validated = $finalizePowerTopUpRequest->validated();
 
-        $voucher = Voucher::find($validated["voucher"]);
+        $transaction = session("transaction");
 
-        $discount = 1;
-        if ($voucher) {
-            $discount = (100 - $voucher->off_percentage) / 100;
-
-            $voucher->delete();
-        }
-
-        $transaction_attributes = session()->get("transaction_attributes");
-        $transaction_attributes["user_id"] = Auth::id();
-        $transaction_attributes["total"] = $transaction_attributes["total"] * $discount;
-        $transaction_attributes["method"] = $validated["payment_method"];
-        $transaction_attributes["status"] = "PENDING";
-
-        $flipResponse = null;
-        if ($validated["payment_method"] == "cash") {
-            $transaction_attributes["status"] = "SUCCESSFUL";
-        } else if ($validated["payment_method"] == "flip") {
-            $response = $flipTransaction->createFlipBill(
-                "Power Top Up",
-                FlipBillType::SINGLE,
-                $transaction_attributes["total"],
-                FlipStep::INPUT_DATA,
-                "/power"
-            );
-
-            $flipResponse = $response;
-        }
-
-        $transaction_attributes["flip_link_id"] = $flipResponse ? $flipResponse["link_id"] : null;
-
-        $transaction = PowerTransaction::create($transaction_attributes);
-        if ($voucher) {
-            $transaction->voucher = $voucher->off_percentage . "%";
-        }
+        $paymentData = $transaction->processPayment($flipTransaction, $validated);
 
         TransactionReport::updatePowerTopUpReport();
 
         return redirect("/power/receipt")
             ->with("transaction", $transaction)
-            ->with("flip_response", $flipResponse);
+            ->with("flip_response", $paymentData["flipResponse"]);
     }
 }

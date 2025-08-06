@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 
 class ActiveBpjs extends Model
@@ -25,11 +24,22 @@ class ActiveBpjs extends Model
         return $this->belongsTo(BpjsPrice::class, "class_id", "id");
     }
 
-    public function isStillActive() {
+    public function isStillActive()
+    {
         return $this->due_timestamp > now()->unix();
     }
 
-    public function dueDate() {
+    public function dueDate()
+    {
         return Carbon::createFromTimestamp($this->due_timestamp);
+    }
+
+    public static function search(string $NIK)
+    {
+        $civil_information = CivilInformation::where("NIK", "=", $NIK)->first();
+        $bpjs = self::with("bpjsClass")
+            ->where("civil_information_id", "=", $civil_information->id)
+            ->first();
+        return $bpjs;
     }
 }

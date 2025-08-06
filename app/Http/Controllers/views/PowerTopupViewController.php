@@ -13,12 +13,12 @@ class PowerTopupViewController extends Controller
 
     public function showSelectPaymentMethodPage()
     {
-        if (!session()->has("transaction_attributes")) {
+        if (!session()->has("transaction")) {
             return redirect("/power");
         }
         session()->reflash();
 
-        return view("agent.power_topup.payment_method", ["vouchers" => session()->get("vouchers")]);
+        return view("agent.power_topup.payment_method", ["vouchers" => session("vouchers")]);
     }
 
     public function showReceipt()

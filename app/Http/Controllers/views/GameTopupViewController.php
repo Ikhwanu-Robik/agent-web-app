@@ -30,7 +30,7 @@ class GameTopupViewController extends Controller
     public function selectPaymentMethod()
     {
         $transaction = session("transaction");
-        $package = GameTopUpPackage::with("game")->findOr($transaction["package_id"], function () {
+        $package = GameTopUpPackage::with("game")->findOr($transaction->package_id, function () {
             return redirect("/game/topup");
         });
 

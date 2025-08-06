@@ -14,26 +14,29 @@ class BusTicketViewController extends Controller
 
     public function busPayment()
     {
-        $transaction_data = session()->get("transaction_data");
+        $transaction = session()->get("transaction");
         $vouchers = session()->get("vouchers");
 
         session()->reflash();
 
-        return view("agent.bus_ticket.payment_method", ["transaction" => $transaction_data, "vouchers" => $vouchers]);
+        return view("agent.bus_ticket.payment_method", [
+            "transaction" => $transaction,
+            "vouchers" => $vouchers
+        ]);
     }
 
     public function busReceipt()
     {
-        $transaction_data = session()->get("transaction_data");
-        $payment_method = session()->get("payment_method");
-        $flip_response = session()->get("flip_response");
+        $transaction = session("transaction");
+        $payment_method = session("payment_method");
+        $flip_response = session("flip_response");
 
-        if (!$transaction_data) {
+        if (!$transaction) {
             return redirect("/bus/ticket");
         }
 
         return view("agent.bus_ticket.receipt", [
-            "transaction" => $transaction_data,
+            "transaction" => $transaction,
             "payment_method" => $payment_method,
             "flip_response" => $flip_response
         ]);
