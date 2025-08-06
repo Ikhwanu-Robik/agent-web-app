@@ -42,6 +42,12 @@ class FilmTicketTransaction extends Model
         return $filmTicketTransaction;
     }
 
+    public function appendCinemaDetails(): void
+    {
+        $cinema_film = CinemaFilm::with(["cinema", "film"])->find($this->cinema_film_id);
+        $this->cinema_film = $cinema_film;
+    }
+
     public function calculateTotal($voucher_id)
     {
         // calculate the final percentage of price to be paid

@@ -25,6 +25,7 @@ class FilmTicketTransactionController extends Controller
     {
         $validated = $orderFilmTicketRequest->validated();
         $filmTicketTransaction = FilmTIcketTransaction::createOrder($validated);
+        $filmTicketTransaction->appendCinemaDetails();
 
         return redirect("/film/cinema/payment")
             ->with("film_ticket_transaction", $filmTicketTransaction)

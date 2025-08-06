@@ -7,7 +7,6 @@ use App\Models\Voucher;
 use App\Models\CinemaFilm;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class FilmTicketViewController extends Controller
 {
@@ -45,19 +44,8 @@ class FilmTicketViewController extends Controller
         }
 
         $film_ticket_transaction = session("film_ticket_transaction");
-        $cinema_film = CinemaFilm::with(["cinema", "film"])->find($film_ticket_transaction->cinema_film_id);
-        $film_ticket_transaction->cinema_film = $cinema_film;
-        $vouchers = Voucher::where("user_id", "=", Auth::id())->get();
-        $valid_vouchers = [];
-        foreach ($vouchers as $voucher) {
-            $valid_services = json_decode($voucher->valid_for);
-
-            foreach ($valid_services as $service) {
-                if ($service == "film_ticket") {
-                    array_push($valid_vouchers, $voucher);
-                }
-            }
-        }
+        
+        $valid_vouchers = Voucher::getValidVouchers("film_ticket");
 
         session()->reflash();
 
