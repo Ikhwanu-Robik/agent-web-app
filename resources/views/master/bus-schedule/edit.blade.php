@@ -27,7 +27,7 @@
 
     <label for="origin_station">Origin Station</label>
     <select name="origin_station_id" id="origin_station">
-        @foreach ($bus_stations as $station)
+        @foreach ($busStations as $station)
             @if ($station->id == $schedule->originStation->id)
                 <option value="{{ $station->id }}" selected>{{ $station->name }}</option>
             @else
@@ -38,7 +38,7 @@
 
     <label for="destination_station">Destination Station</label>
     <select name="destination_station_id" id="destination_station">
-        @foreach ($bus_stations as $station)
+        @foreach ($busStations as $station)
             @if ($station->id == $schedule->destinationStation->id)
                 <option value="{{ $station->id }}" selected>{{ $station->name }}</option>
             @else

@@ -21,5 +21,5 @@ Total pembayaran <b>Rp.{{ number_format($transaction->total, 0, '.') }}</b>
 Metode pembayaran <b>{{ $transaction->method }}</b>
 
 @if ($transaction->method == 'flip')
-    <h3>To pay with Flip, click <a href="{{ 'https://' . $flip_response['link_url'] }}">this link</a></h3>
+    <h3>To pay with Flip, click <a href="{{ 'https://' . $flipResponse['link_url'] }}">this link</a></h3>
 @endif

@@ -10,13 +10,13 @@
     </div>
 @endif
 
-<form action="{{ "/master/bpjs/prices/edit/" . $bpjs_price->id }}" method="post">
+<form action="{{ "/master/bpjs/prices/edit/" . $bpjsPrice->id }}" method="post">
     @csrf
     @method("PUT")
     <label for="class">Class</label>
-    <input type="number" name="class" id="class" value="{{ $bpjs_price->class }}">
+    <input type="number" name="class" id="class" value="{{ $bpjsPrice->class }}">
     <label for="price">Monthy pay</label>
-    <input type="number" name="price" id="price" value="{{ $bpjs_price->price }}">
+    <input type="number" name="price" id="price" value="{{ $bpjsPrice->price }}">
     
     <button type="submit">Save</button>
 </form>

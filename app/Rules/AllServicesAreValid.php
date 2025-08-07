@@ -2,10 +2,9 @@
 
 namespace App\Rules;
 
-use App\Enums\ValidServices;
 use Closure;
+use App\Enums\ValidService;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Http\Controllers\resources\VoucherController;
 
 class AllServicesAreValid implements ValidationRule
 {
@@ -21,7 +20,7 @@ class AllServicesAreValid implements ValidationRule
 
         $validCount = 0;
         foreach ($value as $service) {
-            foreach (array_column(ValidServices::cases(), "value") as $valid) {
+            foreach (array_column(ValidService::cases(), "value") as $valid) {
                 if ($service == $valid) {
                     $validCount++;
                     break;

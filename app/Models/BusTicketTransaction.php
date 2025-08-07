@@ -29,13 +29,13 @@ class BusTicketTransaction extends Model
 
     public static function createOrder(array $validated)
     {
-        $bus_schedule = BusSchedule::find($validated["schedule_id"]);
+        $busSchedule = BusSchedule::find($validated["schedule_id"]);
 
         $attribute = [
             "user_id" => Auth::id(),
             "bus_schedule_id" => $validated["schedule_id"],
             "ticket_amount" => $validated["ticket_amount"],
-            "total" => $validated["ticket_amount"] * $bus_schedule->ticket_price,
+            "total" => $validated["ticket_amount"] * $busSchedule->ticket_price,
             "method" => null,
             "status" => null,
             "flip_link_id" => null
@@ -47,14 +47,14 @@ class BusTicketTransaction extends Model
 
     public function appendBusScheduleDetails()
     {
-        $bus_schedule_detail = BusSchedule::with(["bus", "originStation", "destinationStation"])
+        $busScheduleDetail = BusSchedule::with(["bus", "originStation", "destinationStation"])
             ->findOrFail($this->bus_schedule_id);
-        $this->busSchedule = $bus_schedule_detail;
+        $this->busSchedule = $busScheduleDetail;
     }
 
-    public function calculateTotal($bus_schedule, $ticket_amount, $voucher_id)
+    public function calculateTotal($busSchedule, $ticketAmount, $voucherId)
     {
-        $voucher = Voucher::find($voucher_id);
+        $voucher = Voucher::find($voucherId);
 
         // get the final price percentage
         // delete the voucher
@@ -66,7 +66,7 @@ class BusTicketTransaction extends Model
         }
 
         // get the final price in nominal
-        $total = $ticket_amount * $bus_schedule->ticket_price * $discount;
+        $total = $ticketAmount * $busSchedule->ticket_price * $discount;
 
         $this->total = $total;
 
@@ -75,24 +75,24 @@ class BusTicketTransaction extends Model
 
     public function processPayment(FlipTransaction $flipTransaction, array $validated)
     {
-        $bus_schedule = BusSchedule::with(["bus", "originStation", "destinationStation"])
+        $busSchedule = BusSchedule::with(["bus", "originStation", "destinationStation"])
             ->findOrFail($validated["bus_schedule_id"]);
         
         $voucher = $this->calculateTotal(
-            $bus_schedule,
+            $busSchedule,
             $validated["ticket_amount"],
             $validated["voucher"]
         );
 
 
-        $flip_response = null;
+        $flipResponse = null;
         $this->status = "PENDING";
         if ($validated["payment_method"] == "cash") {
             $this->method = "cash";
             $this->status = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
             $response = $flipTransaction->createFlipBill(
-                "Bus Ticket - {$bus_schedule->bus->name} - {$bus_schedule->originStation->name} - {$bus_schedule->destinationStation->name}",
+                "Bus Ticket - {$busSchedule->bus->name} - {$busSchedule->origin_station->name} - {$busSchedule->destination_station->name}",
                 FlipBillType::SINGLE,
                 $this->total,
                 FlipStep::INPUT_DATA,
@@ -102,17 +102,17 @@ class BusTicketTransaction extends Model
             $this->method = "flip";
             $this->flip_link_id = $response["flip_link_id"];
 
-            $flip_response = $response;
+            $flipResponse = $response;
         }
 
         $paymentData = [
-            "flip_response" => $flip_response,
+            "flip_response" => $flipResponse,
         ];
 
         unset($this->busSchedule);
         $this->save();
 
-        $this->busSchedule = $bus_schedule;
+        $this->busSchedule = $busSchedule;
         if ($voucher) {
             $this->voucher = $voucher->off_percentage . "%";
         }

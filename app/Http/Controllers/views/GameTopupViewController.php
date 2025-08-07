@@ -12,50 +12,41 @@ class GameTopupViewController extends Controller
 {
     public function selectGame()
     {
-        $packages = session()->get("packages");
+        $packages = session("packages");
         session()->reflash();
 
-        return view("agent.game_topup.packages", [
+        return view("agent.game-topup.packages", [
             "games" => Game::all(),
             "packages" => $packages,
-            "selected_game_id" => session("selected_game_id")
+            "selectedGameId" => session("selected_game_id")
         ]);
     }
 
     public function gamePackage()
     {
-        return view("agent.game_topup.game_topup_package");
+        return view("agent.game-topup.game-topup-package");
     }
 
     public function selectPaymentMethod()
     {
         $transaction = session("transaction");
-        $package = GameTopUpPackage::with("game")->findOr($transaction->package_id, function () {
-            return redirect("/game/topup");
-        });
+        $package = GameTopUpPackage::with("game")
+            ->findOr($transaction->package_id, function () {
+                return redirect("/game/topup");
+            });
 
         if (!$transaction) {
             return redirect("/game/topup");
         }
 
-        $vouchers = Voucher::where("user_id", "=", Auth::id())->get();
-        $valid_vouchers = [];
-        foreach ($vouchers as $voucher) {
-            $valid_services = json_decode($voucher->valid_for);
-
-            foreach ($valid_services as $service) {
-                if ($service == "game_top_up") {
-                    array_push($valid_vouchers, $voucher);
-                }
-            }
-        }
+        $validVouchers = Voucher::getValidVouchers("game_top_up");
 
         session()->reflash();
 
-        return view("agent.game_topup.payment", [
+        return view("agent.game-topup.payment", [
             "transaction" => $transaction,
             "package" => $package,
-            "vouchers" => $valid_vouchers
+            "vouchers" => $validVouchers
         ]);
     }
 
@@ -72,7 +63,7 @@ class GameTopupViewController extends Controller
                 return redirect("/game/topup");
             });
 
-        return view("agent.game_topup.receipt", [
+        return view("agent.game-topup.receipt", [
             "transaction" => $transaction,
             "package" => $package,
             "flipResponse" => $flipResponse

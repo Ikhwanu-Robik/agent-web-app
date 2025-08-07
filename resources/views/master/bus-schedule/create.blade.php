@@ -22,14 +22,14 @@
 
     <label for="origin_station">Origin Station</label>
     <select name="origin_station_id" id="origin_station">
-        @foreach ($bus_stations as $station)
+        @foreach ($busStations as $station)
             <option value="{{ $station->id }}">{{ $station->name }}</option>
         @endforeach
     </select>
 
     <label for="destination_station">Destination Station</label>
     <select name="destination_station_id" id="destination_station">
-        @foreach ($bus_stations as $station)
+        @foreach ($busStations as $station)
             <option value="{{ $station->id }}">{{ $station->name }}</option>
         @endforeach
     </select>

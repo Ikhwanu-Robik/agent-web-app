@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateGameRequest;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 
 class GameController extends Controller
 {

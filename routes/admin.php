@@ -32,10 +32,10 @@ Route::middleware("auth")->group(function () {
          Route::get("/", [BusStationController::class, "index"]);
          Route::get("/create", [BusStationController::class, "create"]);
          Route::post("/create", [BusStationController::class, "store"]);
-         Route::get("/edit/{bus_station}", [BusStationController::class, "edit"]);
-         Route::put("/edit/{bus_station}", [BusStationController::class, "update"]);
-         Route::get("/delete/{bus_station}", [BusStationController::class, "delete"]);
-         Route::delete("/delete/{bus_station}", [BusStationController::class, "destroy"]);
+         Route::get("/edit/{busStation}", [BusStationController::class, "edit"]);
+         Route::put("/edit/{busStation}", [BusStationController::class, "update"]);
+         Route::get("/delete/{busStation}", [BusStationController::class, "delete"]);
+         Route::delete("/delete/{busStation}", [BusStationController::class, "destroy"]);
       });
 
       Route::prefix("/bus")->group(function () {
@@ -62,10 +62,10 @@ Route::middleware("auth")->group(function () {
          Route::get("/", [BpjsPriceController::class, "index"]);
          Route::get("/create", [BpjsPriceController::class, "create"]);
          Route::post("/create", [BpjsPriceController::class, "store"]);
-         Route::get("/edit/{bpjs_price}", [BpjsPriceController::class, "edit"]);
-         Route::put("/edit/{bpjs_price}", [BpjsPriceController::class, "update"]);
-         Route::get("/delete/{bpjs_price}", [BpjsPriceController::class, "delete"]);
-         Route::delete("/delete/{bpjs_price}", [BpjsPriceController::class, "destroy"]);
+         Route::get("/edit/{bpjsPrice}", [BpjsPriceController::class, "edit"]);
+         Route::put("/edit/{bpjsPrice}", [BpjsPriceController::class, "update"]);
+         Route::get("/delete/{bpjsPrice}", [BpjsPriceController::class, "delete"]);
+         Route::delete("/delete/{bpjsPrice}", [BpjsPriceController::class, "destroy"]);
       });
 
       Route::prefix("/cinemas")->group(function () {
@@ -80,7 +80,7 @@ Route::middleware("auth")->group(function () {
          Route::get("/{cinema}/films", [CinemaFilmController::class, "index"]);
          Route::get("/{cinema}/films/schedule", [CinemaFilmController::class, "create"]);
          Route::post("/{cinema}/films/schedule", [CinemaFilmController::class, "store"]);
-         Route::delete("/{cinema}/films/schedule/{cinema_film}", [CinemaFilmController::class, "destroy"]);
+         Route::delete("/{cinema}/films/schedule/{cinemaFilm}", [CinemaFilmController::class, "destroy"]);
       });
 
       Route::prefix("/films")->group(function () {

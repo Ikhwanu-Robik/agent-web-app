@@ -10,15 +10,15 @@ class BpjsViewController extends Controller
     {
         $bpjs = session("bpjs");
 
-        return view("agent.bpjs_subscription.bpjs_subscription", ["bpjs" => $bpjs]);
+        return view("agent.bpjs-subscription.bpjs-subscription", ["bpjs" => $bpjs]);
     }
 
     public function showBpjsReceipt()
     {
         $bpjs = session('bpjs');
-        $form_input = session('form_input');
+        $formInput = session('form_input');
         $transaction = session('transaction');
-        $flip_response = session("flip_response");
+        $flipResponse = session("flip_response");
 
         session()->flash("bpjs", $bpjs);
 
@@ -26,11 +26,11 @@ class BpjsViewController extends Controller
             return redirect("/bpjs")->with("bpjs", $bpjs);
         }
 
-        return view("agent.bpjs_subscription.receipt", [
+        return view("agent.bpjs-subscription.receipt", [
             "bpjs" => $bpjs,
-            "form_input" => $form_input,
+            "formInput" => $formInput,
             "transaction" => $transaction,
-            "flip_response" => $flip_response
+            "flipResponse" => $flipResponse
         ]);
     }
 }

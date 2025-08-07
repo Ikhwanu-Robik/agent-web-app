@@ -8,48 +8,48 @@
     <title>Film Ticket</title>
 </head>
 
-<h1>Transaction {{ $film_ticket_transaction->method == 'cash' ? 'Successful' : 'Pending' }}</h1>
+<h1>Transaction {{ $filmTicketTransaction->method == 'cash' ? 'Successful' : 'Pending' }}</h1>
 <h2>You have bought a film ticket with the following data : </h2>
 <table>
     <tr>
         <td>Film title</td>
         <td>:</td>
-        <td>{{ $film_ticket_transaction->cinema_film->film->title }}</td>
+        <td>{{ $filmTicketTransaction->cinema_film->film->title }}</td>
     </tr>
     <tr>
         <td>Cinema</td>
         <td>:</td>
-        <td>{{ $film_ticket_transaction->cinema_film->cinema->name }}</td>
+        <td>{{ $filmTicketTransaction->cinema_film->cinema->name }}</td>
     </tr>
     <tr>
         <td>Airing time</td>
         <td>:</td>
-        <td>{{ $film_ticket_transaction->cinema_film->airing_datetime }}</td>
+        <td>{{ $filmTicketTransaction->cinema_film->airing_datetime }}</td>
     </tr>
     <tr>
         <td>Ticket price</td>
         <td>:</td>
-        <td>Rp.{{ number_format($film_ticket_transaction->cinema_film->ticket_price, 0, '.') }}</td>
+        <td>Rp.{{ number_format($filmTicketTransaction->cinema_film->ticket_price, 0, '.') }}</td>
     </tr>
     <tr>
         <td>Ticket bought</td>
         <td>:</td>
-        <td>{{ count(json_decode($film_ticket_transaction->seats_coordinates)) }}</td>
+        <td>{{ count(json_decode($filmTicketTransaction->seats_coordinates)) }}</td>
     </tr>
     <tr>
         <td>Total</td>
         <td>:</td>
-        <td>Rp.{{ number_format($film_ticket_transaction->total, 0, '.') }}</td>
+        <td>Rp.{{ number_format($filmTicketTransaction->total, 0, '.') }}</td>
     </tr>
     <tr>
         <td>Payment Method</td>
         <td>:</td>
-        <td>{{ $film_ticket_transaction->payment_method }}</td>
+        <td>{{ $filmTicketTransaction->payment_method }}</td>
     </tr>
     <tr>
         <td>Payment Status</td>
         <td>:</td>
-        <td>{{ $film_ticket_transaction->status }}</td>
+        <td>{{ $filmTicketTransaction->status }}</td>
     </tr>
     @if (session()->has('voucher'))
         <tr>
@@ -60,13 +60,13 @@
     @endif
 </table>
 
-for these seats : {{ json_encode($film_ticket_transaction->seats_coordinates_array) }}
+for these seats : {{ json_encode($filmTicketTransaction->seats_coordinates_array) }}
 <table>
 
     @php
-        $seats_structure = json_decode($film_ticket_transaction->cinema_film->cinema->seats_structure);
-        $rowCount = count($seats_structure);
-        $colCount = count($seats_structure[0]);
+        $seatsStructure = json_decode($filmTicketTransaction->cinema_film->cinema->seats_structure);
+        $rowCount = count($seatsStructure);
+        $colCount = count($seatsStructure[0]);
     @endphp
     @for ($row = 0; $row < $rowCount; $row++)
         <tr>
@@ -74,7 +74,7 @@ for these seats : {{ json_encode($film_ticket_transaction->seats_coordinates_arr
             @for ($col = 0; $col < $colCount; $col++)
                 <td>
                     <input type="checkbox" disabled
-                        {{ array_search($col . ',' . $row, $film_ticket_transaction->seats_coordinates_array) !== false ? 'checked' : '' }}>
+                        {{ array_search($col . ',' . $row, $filmTicketTransaction->seats_coordinates_array) !== false ? 'checked' : '' }}>
                 </td>
             @endfor
 
@@ -83,7 +83,7 @@ for these seats : {{ json_encode($film_ticket_transaction->seats_coordinates_arr
 
 </table>
 
-@if ($film_ticket_transaction->method == 'flip')
+@if ($filmTicketTransaction->method == 'flip')
     <h3>To pay with Flip, click <a href="{{ 'https://' . $flipResponse['link_url'] }}">this link</a></h3>
 @endif
 </body>

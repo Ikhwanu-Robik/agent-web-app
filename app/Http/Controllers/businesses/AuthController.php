@@ -26,8 +26,8 @@ class AuthController extends Controller
     {
         $validated = $registerRequest->validated();
 
-        $file_name = $registerRequest->file("profile_photo")->storePublicly();
-        $validated["profile_photo"] = $file_name;
+        $fileName = $registerRequest->file("profile_photo")->storePublicly();
+        $validated["profile_photo"] = $fileName;
 
         User::create($validated);
 

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ValidServices: string
+enum ValidService: string
 {
     case BUS_TICKET = "bus_ticket";
 

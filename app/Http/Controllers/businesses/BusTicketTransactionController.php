@@ -15,10 +15,10 @@ class BusTicketTransactionController extends Controller
 {
     public function search(GetBusScheduleRequest $getBusScheduleRequest)
     {
-        $matching_schedules = BusSchedule::search($getBusScheduleRequest->validated());
+        $matchingSchedules = BusSchedule::search($getBusScheduleRequest->validated());
 
         return back()
-            ->with("matching_schedules", $matching_schedules)
+            ->with("matching_schedules", $matchingSchedules)
             ->with("redirect_status", "successful redirection")
             ->withInput();
     }
@@ -30,11 +30,11 @@ class BusTicketTransactionController extends Controller
         $transaction = BusTicketTransaction::createOrder($validated);
         $transaction->appendBusScheduleDetails();
 
-        $valid_vouchers = Voucher::getValidVouchers("bus_ticket");
+        $validVouchers = Voucher::getValidVouchers("bus_ticket");
 
         return redirect("/bus/ticket/payment")
             ->with("transaction", $transaction)
-            ->with("vouchers", $valid_vouchers);
+            ->with("vouchers", $validVouchers);
     }
 
     public function pay(PayBusTicketRequest $payBusTicketRequest, FlipTransaction $flipTransaction)

@@ -22,19 +22,19 @@ class Game extends Model
 
     public function saveImage(UploadedFile $file)
     {
-        $path_name = $file->storePublicly('game_icons');
-        $this->icon = $path_name;
+        $pathName = $file->storePublicly('game_icons');
+        $this->icon = $pathName;
         $this->save();
     }
 
     public static function createSpecial(StoreGameRequest $storeGameRequest)
     {
         $validated = $storeGameRequest->validated();
-        $path_name = $storeGameRequest->file('icon')->storePublicly('game_icons');
+        $pathName = $storeGameRequest->file('icon')->storePublicly('game_icons');
 
         Game::create([
             'name' => $validated['name'],
-            'icon' => $path_name,
+            'icon' => $pathName,
             'currency' => $validated['currency']
         ]);
     }

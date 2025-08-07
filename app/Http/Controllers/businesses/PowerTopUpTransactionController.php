@@ -22,11 +22,11 @@ class PowerTopUpTransactionController extends Controller
 
         $transaction = PowerTransaction::createOrder($validated);
 
-        $valid_vouchers = Voucher::getValidVouchers("power");
+        $validVouchers = Voucher::getValidVouchers("power");
 
         return redirect("/power/payment")
             ->with("transaction", $transaction)
-            ->with("vouchers", $valid_vouchers);
+            ->with("vouchers", $validVouchers);
     }
 
     public function finalizeTransaction(FinalizePowerTopUpRequest $finalizePowerTopUpRequest, FlipTransaction $flipTransaction)

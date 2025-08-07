@@ -33,19 +33,19 @@ class Film extends Model
 
     public function saveImage(UploadedFile $file)
     {
-        $image_url = $file->storePublicly();
-        $this->poster_image_url = $image_url;
+        $imageUrl = $file->storePublicly();
+        $this->poster_image_url = $imageUrl;
         $this->save();
     }
 
     public static function createSpecial(StoreFilmRequest $storeFilmRequest)
     {
         $validated = $storeFilmRequest->validated();
-        $image_url = $storeFilmRequest->file("poster")->storePublicly();
+        $imageUrl = $storeFilmRequest->file("poster")->storePublicly();
 
         $attributes = [
             "title" => $validated["title"],
-            "poster_image_url" => $image_url,
+            "poster_image_url" => $imageUrl,
             "release_date" => $validated["release_date"],
             "duration" => $validated["duration"]
         ];

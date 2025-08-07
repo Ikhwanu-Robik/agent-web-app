@@ -13,7 +13,7 @@
     <input type="number" name="off_percentage" id="discount" max="100" value="{{ $voucher->off_percentage }}"> <br>
     <label for="valid_for">Valid for : </label>
     <ul>
-        @foreach ($valid_services as $service)
+        @foreach ($validServices as $service)
             <li>
                 <label for="{{ $service }}">{{ $service }}</label>
                 <input type="checkbox" name="valid_for[]" id="{{ $service }}" value="{{ $service }}" multiple

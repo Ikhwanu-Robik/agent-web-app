@@ -34,9 +34,9 @@ class PowerTransaction extends Model
         return $transaction;
     }
 
-    public function calculateTotal($voucher_id)
+    public function calculateTotal($voucherId)
     {
-        $voucher = Voucher::find($voucher_id);
+        $voucher = Voucher::find($voucherId);
         $discount = 1;
         if ($voucher) {
             $discount = (100 - $voucher->off_percentage) / 100;
@@ -70,7 +70,7 @@ class PowerTransaction extends Model
             $flipResponse = $response;
         }
 
-        $transaction_attributes["flip_link_id"] = $flipResponse ? $flipResponse["link_id"] : null;
+        $this->flip_link_id = $flipResponse ? $flipResponse["link_id"] : null;
 
         self::save();
 

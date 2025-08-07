@@ -181,18 +181,18 @@
                     </form>
                 @else
                     @php
-                        $bpjs_transactions = $reports;
-                        $civil_information = $reports->civil_information;
+                        $bpjsTransactions = $reports;
+                        $civilInformation = $reports->civil_information;
                     @endphp
 
                     <h1>Your BPJS Transaction History</h1>
-                    <h4>NIK : {{ $civil_information->NIK }}</h4>
-                    <h4>Class : {{ $civil_information->activeBpjs->bpjsClass->class }}</h4>
-                    <h4>Active until : {{ $civil_information->activeBpjs->dueDate() }}</h4>
+                    <h4>NIK : {{ $civilInformation->NIK }}</h4>
+                    <h4>Class : {{ $civilInformation->activeBpjs->bpjsClass->class }}</h4>
+                    <h4>Active until : {{ $civilInformation->activeBpjs->dueDate() }}</h4>
 
                     <section id="content">
                         <ul>
-                            @foreach ($bpjs_transactions as $transaction)
+                            @foreach ($bpjsTransactions as $transaction)
                                 <li class="transaction-record">
                                     <h5>+ {{ $transaction->month_bought }}
                                         month{{ $transaction->month_bought > 1 ? 's' : '' }}</h5>
@@ -242,7 +242,7 @@
                     </ul>
                 </section>
             </article>
-        @elseif($service == "power-top-up")
+        @elseif($service == 'power-top-up')
             <article>
                 @if ($reports == null)
                     <h2>First of all, we need to know your Power Subscriber Number</h2>
@@ -257,7 +257,8 @@
 
                     <form action="/report/power" method="post">
                         @csrf
-                        <input type="text" name="subscriber_number" id="subscriber_number" placeholder="power subscriber number">
+                        <input type="text" name="subscriber_number" id="subscriber_number"
+                            placeholder="power subscriber number">
                         <button type="submit">Send</button>
                     </form>
                 @else

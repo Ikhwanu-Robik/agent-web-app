@@ -15,7 +15,7 @@
         <th>Date Updated</th>
         <th>Actions</th>
     </tr>
-    @foreach ($bpjs_prices as $bpjs)
+    @foreach ($bpjsPrices as $bpjs)
         <tr>
             <td>{{ $bpjs->id }}</td>
             <td>{{ $bpjs->class }}</td>

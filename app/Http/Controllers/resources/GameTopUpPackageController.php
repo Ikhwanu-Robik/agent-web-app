@@ -4,7 +4,6 @@ namespace App\Http\Controllers\resources;
 
 use App\Http\Requests\StoreTopUpPackageRequest;
 use App\Http\Requests\UpdateTopUpPackageRequest;
-use Closure;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use App\Models\GameTopUpPackage;

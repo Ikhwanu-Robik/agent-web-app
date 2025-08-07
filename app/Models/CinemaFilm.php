@@ -47,17 +47,17 @@ class CinemaFilm extends Model
 
     public function updateAvailableSeats(FilmTicketTransaction $transaction)
     {
-        $cinema_film = CinemaFilm::find($transaction->cinema_film->id);
-        $newSeats = json_decode($cinema_film->seats_status);
+        $cinemaFilm = CinemaFilm::find($transaction->cinema_film->id);
+        $newSeats = json_decode($cinemaFilm->seats_status);
 
-        foreach (session("seat_coordinates") as $seat_coord) {
-            $col = explode(",", $seat_coord)[0];
-            $row = explode(",", $seat_coord)[1];
+        foreach (session("seat_coordinates") as $seatCoord) {
+            $col = explode(",", $seatCoord)[0];
+            $row = explode(",", $seatCoord)[1];
 
             $newSeats[$row][$col] = 1;
         }
 
-        $cinema_film->seats_status = json_encode($newSeats);
-        $cinema_film->save();
+        $cinemaFilm->seats_status = json_encode($newSeats);
+        $cinemaFilm->save();
     }
 }

@@ -15,9 +15,9 @@ class FilmBeingAiredSomewhere implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $matching_cinemas = Cinema::findAiring($value);
+        $matchingCinemas = Cinema::findAiring($value);
 
-        if (count($matching_cinemas) == 0) {
+        if (count($matchingCinemas) == 0) {
             $fail("The film is not being aired in any cinema");
         }
     }

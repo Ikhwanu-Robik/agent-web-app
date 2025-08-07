@@ -36,9 +36,9 @@ class ActiveBpjs extends Model
 
     public static function search(string $NIK)
     {
-        $civil_information = CivilInformation::where("NIK", "=", $NIK)->first();
+        $civilInformation = CivilInformation::where("NIK", "=", $NIK)->first();
         $bpjs = self::with("bpjsClass")
-            ->where("civil_information_id", "=", $civil_information->id)
+            ->where("civil_information_id", "=", $civilInformation->id)
             ->first();
         return $bpjs;
     }

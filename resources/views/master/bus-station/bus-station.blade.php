@@ -14,7 +14,7 @@
         <th>Date Updated</th>
         <th>Actions</th>
     </tr>
-    @foreach ($bus_stations as $station)
+    @foreach ($busStations as $station)
         <tr>
             <td>{{ $station->id }}</td>
             <td>{{ $station->name }}</td>

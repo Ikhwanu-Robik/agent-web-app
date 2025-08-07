@@ -12,14 +12,14 @@ class BusStationController extends Controller
 {
     public function index()
     {
-        $bus_stations = BusStation::all();
+        $busStations = BusStation::all();
 
-        return view("master.bus_station.bus_station", ["bus_stations" => $bus_stations]);
+        return view("master.bus-station.bus-station", ["busStations" => $busStations]);
     }
 
     public function create()
     {
-        return view("master.bus_station.create");
+        return view("master.bus-station.create");
     }
 
     public function store(StoreBusStationRequest $storeBusStationRequest)
@@ -29,25 +29,25 @@ class BusStationController extends Controller
         return redirect("/master/bus/station");
     }
 
-    public function edit(BusStation $bus_station)
+    public function edit(BusStation $busStation)
     {
-        return view("master.bus_station.edit", ["bus_station" => $bus_station]);
+        return view("master.bus-station.edit", ["busStation" => $busStation]);
     }
 
-    public function update(UpdateBusStationRequest $updateBusStationRequest, BusStation $bus_station)
+    public function update(UpdateBusStationRequest $updateBusStationRequest, BusStation $busStation)
     {
-        $bus_station->update($updateBusStationRequest->validated());
+        $busStation->update($updateBusStationRequest->validated());
 
         return redirect("/master/bus/station");
     }
 
-    public function delete(BusStation $bus_station) {
-        return view("master.bus_station.delete", ["bus_station" => $bus_station]);
+    public function delete(BusStation $busStation) {
+        return view("master.bus-station.delete", ["busStation" => $busStation]);
     }
 
-    public function destroy(Request $request, BusStation $bus_station)
+    public function destroy(Request $request, BusStation $busStation)
     {
-        $bus_station->delete();
+        $busStation->delete();
 
         return redirect("/master/bus/station");
     }

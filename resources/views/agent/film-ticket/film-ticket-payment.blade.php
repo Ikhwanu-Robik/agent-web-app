@@ -14,43 +14,43 @@
     <tr>
         <td>Film title</td>
         <td>:</td>
-        <td>{{ $film_ticket_transaction->cinema_film->film->title }}</td>
+        <td>{{ $filmTicketTransaction->cinema_film->film->title }}</td>
     </tr>
     <tr>
         <td>Cinema</td>
         <td>:</td>
-        <td>{{ $film_ticket_transaction->cinema_film->cinema->name }}</td>
+        <td>{{ $filmTicketTransaction->cinema_film->cinema->name }}</td>
     </tr>
     <tr>
         <td>Airing time</td>
         <td>:</td>
-        <td>{{ $film_ticket_transaction->cinema_film->airing_datetime }}</td>
+        <td>{{ $filmTicketTransaction->cinema_film->airing_datetime }}</td>
     </tr>
     <tr>
         <td>Ticket price</td>
         <td>:</td>
-        <td>Rp.{{ number_format($film_ticket_transaction->cinema_film->ticket_price, 0, '.') }}</td>
+        <td>Rp.{{ number_format($filmTicketTransaction->cinema_film->ticket_price, 0, '.') }}</td>
     </tr>
     <tr>
         <td>Ticket bought</td>
         <td>:</td>
-        <td>{{ count(json_decode($film_ticket_transaction->seats_coordinates)) }}</td>
+        <td>{{ count(json_decode($filmTicketTransaction->seats_coordinates)) }}</td>
     </tr>
     <tr>
         <td>Total</td>
         <td>:</td>
-        <td>Rp.{{ number_format($film_ticket_transaction->total, 0, '.') }}</td>
+        <td>Rp.{{ number_format($filmTicketTransaction->total, 0, '.') }}</td>
     </tr>
 </table>
 
 for these seats :
-{{ json_encode($seat_coordinates) }}
+{{ json_encode($seatCoordinates) }}
 <table>
 
     @php
-        $seats_structure = json_decode($film_ticket_transaction->cinema_film->seats_status);
-        $rowCount = count($seats_structure);
-        $colCount = count($seats_structure[0]);
+        $seatsStructure = json_decode($filmTicketTransaction->cinema_film->seats_status);
+        $rowCount = count($seatsStructure);
+        $colCount = count($seatsStructure[0]);
     @endphp
     @for ($row = 0; $row < $rowCount; $row++)
         <tr>
@@ -58,7 +58,7 @@ for these seats :
             @for ($col = 0; $col < $colCount; $col++)
                 <td>
                     <input type="checkbox" disabled
-                        {{ array_search($col . ',' . $row, $seat_coordinates) !== false ? 'checked' : '' }}>
+                        {{ array_search($col . ',' . $row, $seatCoordinates) !== false ? 'checked' : '' }}>
                 </td>
             @endfor
 
@@ -79,8 +79,8 @@ for these seats :
     <select name="voucher" id="voucher">
         <option value="-1">No Voucher</option>
         @foreach ($vouchers as $voucher)
-            <option value="{{ $voucher->id }}">{{ $voucher->off_percentage }}% - @foreach (json_decode($voucher->valid_for) as $valid_service)
-                    {{ $valid_service }},
+            <option value="{{ $voucher->id }}">{{ $voucher->off_percentage }}% - @foreach (json_decode($voucher->valid_for) as $validService)
+                    {{ $validService }},
                 @endforeach
             </option>
         @endforeach

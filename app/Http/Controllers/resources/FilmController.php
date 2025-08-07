@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateFilmRequest;
 use App\Models\Film;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 
 class FilmController extends Controller
 {

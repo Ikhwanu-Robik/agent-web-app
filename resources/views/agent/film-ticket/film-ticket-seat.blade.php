@@ -22,21 +22,21 @@
     </div>
     @endif
 
-    <h3>{{ $film_schedule->film->title }}</h3>
-    <span>{{ $film_schedule->cinema->name }}</span> <br>
-    <span>{{ $film_schedule->airing_datetime }}</span> <br>
-    <span>Rp.{{ number_format($film_schedule->ticket_price, 0, '.') }}</span>
+    <h3>{{ $filmSchedule->film->title }}</h3>
+    <span>{{ $filmSchedule->cinema->name }}</span> <br>
+    <span>{{ $filmSchedule->airing_datetime }}</span> <br>
+    <span>Rp.{{ number_format($filmSchedule->ticket_price, 0, '.') }}</span>
 
     <div id="seats">
         <span>Pilih Kursi</span>
 
         <form action="/film/cinema/seats/book" method="post">
             @csrf
-            <input type="hidden" name="cinema_film_id" value="{{ $film_schedule->id }}">
+            <input type="hidden" name="cinema_film_id" value="{{ $filmSchedule->id }}">
 
             <table>
 
-                @foreach (json_decode($film_schedule->seats_status) as $indexY => $row)
+                @foreach (json_decode($filmSchedule->seats_status) as $indexY => $row)
                     <tr>
 
                         @foreach ($row as $indexX => $col)

@@ -22,9 +22,9 @@ class GeneralViewController extends Controller
 
     public function home()
     {
-        $transaction_of_the_month = TransactionReport::getTransactionOfTheMonth();
+        $transactionOfTheMonth = TransactionReport::getTransactionOfTheMonth();
         
-        return view("home", ["transaction_of_the_month" => $transaction_of_the_month]);
+        return view("home", ["transactionOfTheMonth" => $transactionOfTheMonth]);
     }
 
     public function vouchers()

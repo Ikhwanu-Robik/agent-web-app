@@ -14,7 +14,7 @@ class BusScheduleController extends Controller
 {
     public function index()
     {
-        return view("master.bus_schedule.bus_schedule", ["bus_schedules" => BusSchedule::all()]);
+        return view("master.bus-schedule.bus-schedule", ["busSchedules" => BusSchedule::all()]);
     }
 
     public function create()
@@ -22,7 +22,7 @@ class BusScheduleController extends Controller
         $buses = Bus::all();
         $stations = BusStation::all();
 
-        return view("master.bus_schedule.create", ["buses" => $buses, "bus_stations" => $stations]);
+        return view("master.bus-schedule.create", ["buses" => $buses, "busStations" => $stations]);
     }
 
     public function store(StoreBusScheduleRequest $storeBusScheduleRequest)
@@ -37,7 +37,7 @@ class BusScheduleController extends Controller
         $buses = Bus::all();
         $stations = BusStation::all();
 
-        return view("master.bus_schedule.edit", ["schedule" => $schedule, "buses" => $buses, "bus_stations" => $stations]);
+        return view("master.bus-schedule.edit", ["schedule" => $schedule, "buses" => $buses, "busStations" => $stations]);
     }
 
     public function update(UpdateBusScheduleRequest $updateBusScheduleRequest, BusSchedule $schedule)
@@ -49,7 +49,7 @@ class BusScheduleController extends Controller
 
     public function delete(BusSchedule $schedule)
     {
-        return view("master.bus_schedule.delete", ["schedule" => $schedule]);
+        return view("master.bus-schedule.delete", ["schedule" => $schedule]);
     }
 
     public function destroy(Request $request, BusSchedule $schedule)

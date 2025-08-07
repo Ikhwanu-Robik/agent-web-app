@@ -24,16 +24,16 @@ class Cinema extends Model
 
     public static function createSpecial(array $attributesRaw)
     {
-        $seats_structure = [];
+        $seatsStructure = [];
         for ($row = 0; $row < $attributesRaw["seats_structure_height"]; $row++) {
             for ($col = 0; $col < $attributesRaw["seats_structure_width"]; $col++) {
-                $seats_structure[$row][$col] = 0;
+                $seatsStructure[$row][$col] = 0;
             }
         }
 
         $attributes = [
             "name" => $attributesRaw["name"],
-            "seats_structure" => json_encode($seats_structure)
+            "seats_structure" => json_encode($seatsStructure)
         ];
         Cinema::create($attributes);
     }
@@ -41,23 +41,23 @@ class Cinema extends Model
     public function updateSpecial(array $attributes)
     {
         $this->name = $attributes["name"];
-        $new_seats_structure = [];
+        $newSeatsStructure = [];
         for ($nRow = 0; $nRow < $attributes["seats_structure_height"]; $nRow++) {
             for ($nCol = 0; $nCol < $attributes["seats_structure_width"]; $nCol++) {
-                $new_seats_structure[$nRow][$nCol] = 0;
+                $newSeatsStructure[$nRow][$nCol] = 0;
             }
         }
 
-        $this->seats_structure = json_encode($new_seats_structure);
+        $this->seats_structure = json_encode($newSeatsStructure);
         $this->save();
     }
 
     public static function findAiring(int $film_id)
     {
         $cinemas = self::with("films")->get();
-        $searched_film = Film::find($film_id);
+        $searchedFilm = Film::find($film_id);
 
-        $matching_cinemas = [];
+        $matchingCinemas = [];
 
         // foreach each cinema
         // and foreach the film they scheduled
@@ -68,10 +68,10 @@ class Cinema extends Model
                 $isIdEqual = $film->film_schedule->film_id == $film_id;
                 $isDateTodayOrTomorrow = Carbon::parse($film->film_schedule->airing_datetime)->gt(Carbon::now());
 
-                $seats_status_array = json_decode($film->film_schedule->seats_status);
-                $totalSeats = count($seats_status_array) * count($seats_status_array[0]);
+                $seatsStatusArray = json_decode($film->film_schedule->seats_status);
+                $totalSeats = count($seatsStatusArray) * count($seatsStatusArray[0]);
                 $filledSeats = 0;
-                foreach ($seats_status_array as $row) {
+                foreach ($seatsStatusArray as $row) {
                     foreach ($row as $col) {
                         if ($col == 1) {
                             $filledSeats++;
@@ -82,7 +82,7 @@ class Cinema extends Model
                 $isSeatsStillAvailable = $totalSeats != $filledSeats;
 
                 if ($isIdEqual && $isDateTodayOrTomorrow && $isSeatsStillAvailable) {
-                    array_push($matching_cinemas, $cinema);
+                    array_push($matchingCinemas, $cinema);
                 }
             }
         }
@@ -95,11 +95,11 @@ class Cinema extends Model
         // temporary array
         // this is to ensure the matching_cinemas being
         // returned only with the requested film
-        foreach ($matching_cinemas as $cinema) {
+        foreach ($matchingCinemas as $cinema) {
             $matchingFilms = [];
 
             foreach ($cinema->films as $film) {
-                if ($film->title == $searched_film->title) {
+                if ($film->title == $searchedFilm->title) {
                     array_push($matchingFilms, $film);
                 }
             }
@@ -107,6 +107,6 @@ class Cinema extends Model
             $cinema->films = $matchingFilms;
         }
 
-        return $matching_cinemas;
+        return $matchingCinemas;
     }
 }

@@ -186,9 +186,9 @@
         </section>
         <section id="dashboard">
             <article class="statistics">
-                <h1>Transaction of the Month : <span id="most-bought-service">{{ $transaction_of_the_month["service"] }}</span></h1>
-                <span><span id="transaction-record">{{ $transaction_of_the_month["record_count"] }}</span> transaction records</span>
-                <span><span id="money-spent">Rp{{ number_format($transaction_of_the_month["money_spent"], 2, ",", ".") }}</span>money spent </span>
+                <h1>Transaction of the Month : <span id="most-bought-service">{{ $transactionOfTheMonth["service"] }}</span></h1>
+                <span><span id="transaction-record">{{ $transactionOfTheMonth["record_count"] }}</span> transaction records</span>
+                <span><span id="money-spent">Rp{{ number_format($transactionOfTheMonth["money_spent"], 2, ",", ".") }}</span>money spent </span>
             </article>
         </section>
     </main>

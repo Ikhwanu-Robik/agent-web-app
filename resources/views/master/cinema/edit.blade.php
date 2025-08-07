@@ -12,9 +12,9 @@
     <label for="name">Name</label>
     <input type="text" name="name" id="name" value="{{ $cinema->name }}">
     @php
-        $seats_structure = json_decode($cinema->seats_structure);
-        $row = count($seats_structure);
-        $col = count($seats_structure[0]);
+        $seatsStructure = json_decode($cinema->seats_structure);
+        $row = count($seatsStructure);
+        $col = count($seatsStructure[0]);
     @endphp
     <h3>Change seat size</h3>
     <label for="seats_structure_col">Seats columns</label>

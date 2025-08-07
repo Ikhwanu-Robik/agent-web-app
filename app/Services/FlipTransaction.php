@@ -50,12 +50,12 @@ class FlipTransaction
         return $response;
     }
 
-    public function getFlipPayment(string $bill_link_id)
+    public function getFlipPayment(string $billLinkId)
     {
         $response = Http::withHeaders([
             'Authorization' => 'Basic ' . config('flip.api_key'),
             'Accept' => 'application/json'
-        ])->get("https://bigflip.id/big_sandbox_api/v2/pwf/{$bill_link_id}/payment");
+        ])->get("https://bigflip.id/big_sandbox_api/v2/pwf/{$billLinkId}/payment");
 
         return $response;
     }

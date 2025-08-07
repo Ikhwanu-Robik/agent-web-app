@@ -14,7 +14,7 @@ class FilmTicketViewController extends Controller
     {
         $films = Film::all();
 
-        return view("agent.film_ticket.film_ticket", ["films" => $films]);
+        return view("agent.film-ticket.film-ticket", ["films" => $films]);
     }
 
     public function showAiringCinemaPage()
@@ -24,7 +24,7 @@ class FilmTicketViewController extends Controller
             return redirect("/film");
         }
 
-        return view("agent.film_ticket.film_ticket_cinema", ["cinemas" => $cinemas]);
+        return view("agent.film-ticket.film-ticket-cinema", ["cinemas" => $cinemas]);
     }
 
     public function showFilmBookSeatPage(Request $request)
@@ -34,7 +34,7 @@ class FilmTicketViewController extends Controller
         ]);
 
         $cinemaFilm = CinemaFilm::with(["cinema", "film"])->find($validated["cinema_film_id"]);
-        return view("agent.film_ticket.film_ticket_seat", ["film_schedule" => $cinemaFilm]);
+        return view("agent.film-ticket.film-ticket-seat", ["filmSchedule" => $cinemaFilm]);
     }
 
     public function showFilmPaymentPage()
@@ -43,16 +43,16 @@ class FilmTicketViewController extends Controller
             return redirect("/film");
         }
 
-        $film_ticket_transaction = session("film_ticket_transaction");
+        $filmTicketTransaction = session("film_ticket_transaction");
         
-        $valid_vouchers = Voucher::getValidVouchers("film_ticket");
+        $validVouchers = Voucher::getValidVouchers("film_ticket");
 
         session()->reflash();
 
-        return view("agent.film_ticket.film_ticket_payment", [
-            "film_ticket_transaction" => $film_ticket_transaction,
-            "seat_coordinates" => session("seat_coordinates"),
-            "vouchers" => $valid_vouchers
+        return view("agent.film-ticket.film-ticket-payment", [
+            "filmTicketTransaction" => $filmTicketTransaction,
+            "seatCoordinates" => session("seat_coordinates"),
+            "vouchers" => $validVouchers
         ]);
     }
 
@@ -62,11 +62,11 @@ class FilmTicketViewController extends Controller
             return redirect("/film");
         }
 
-        $film_ticket_transaction = session("transaction");
+        $filmTicketTransaction = session("transaction");
         $flipResponse = session("flip_response");
 
-        return view("agent.film_ticket.receipt", [
-            "film_ticket_transaction" => $film_ticket_transaction,
+        return view("agent.film-ticket.receipt", [
+            "filmTicketTransaction" => $filmTicketTransaction,
             "flipResponse" => $flipResponse
         ]);
     }

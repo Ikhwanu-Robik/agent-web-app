@@ -33,8 +33,8 @@
             <select name="voucher" id="voucher">
                 <option value="-1">No Voucher</option>
                 @foreach ($vouchers as $voucher)
-                    <option value="{{ $voucher->id }}">{{ $voucher->off_percentage }}% - @foreach (json_decode($voucher->valid_for) as $valid_service)
-                            {{ $valid_service }},
+                    <option value="{{ $voucher->id }}">{{ $voucher->off_percentage }}% - @foreach (json_decode($voucher->valid_for) as $validService)
+                            {{ $validService }},
                         @endforeach
                     </option>
                 @endforeach

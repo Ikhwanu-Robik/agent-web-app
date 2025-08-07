@@ -24,8 +24,8 @@ class BpjsTransactionController extends Controller
     {
         $validated = $payBpjsTransactionRequest->validated();
 
-        $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->first();
-        $bpjs = ActiveBpjs::search($civil_information->NIK);
+        $civilInformation = CivilInformation::where("NIK", "=", $validated["civil_id"])->first();
+        $bpjs = ActiveBpjs::search($civilInformation->NIK);
 
         $transaction = BpjsTransaction::pay($payBpjsTransactionRequest->validated());
 

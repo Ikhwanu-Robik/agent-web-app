@@ -3,15 +3,10 @@
 namespace App\Http\Controllers\resources;
 
 use App\Http\Requests\DestroyCinemaFilmRequest;
-use Closure;
-use Carbon\Carbon;
 use App\Models\Film;
 use App\Models\Cinema;
 use App\Models\CinemaFilm;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreCinemaFilmRequest;
 
 class CinemaFilmController extends Controller
@@ -37,9 +32,9 @@ class CinemaFilmController extends Controller
         return redirect("/master/cinemas/" . $cinema->id . "/films");
     }
 
-    public function destroy(DestroyCinemaFilmRequest $destroyCinemaFilmRequest, Cinema $cinema, string $cinema_film)
+    public function destroy(DestroyCinemaFilmRequest $destroyCinemaFilmRequest, Cinema $cinema, string $cinemaFilm)
     {
-        CinemaFilm::where("id", "=", $cinema_film)->delete();
+        CinemaFilm::where("id", "=", $cinemaFilm)->delete();
 
         return redirect("/master/cinemas/" . $cinema->id . "/films");
     }

@@ -20,7 +20,7 @@
         <th>Date Updated</th>
         <th>Actions</th>
     </tr>
-    @foreach ($bus_schedules as $schedule)
+    @foreach ($busSchedules as $schedule)
         <tr>
             <td>{{ $schedule->id }}</td>
             <td>{{ $schedule->bus->name }}</td>

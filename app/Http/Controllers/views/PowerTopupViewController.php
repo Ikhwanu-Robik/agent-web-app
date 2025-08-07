@@ -8,7 +8,7 @@ class PowerTopupViewController extends Controller
 {
     public function showPowerTopUpForm()
     {
-        return view("agent.power_topup.form");
+        return view("agent.power-topup.form");
     }
 
     public function showSelectPaymentMethodPage()
@@ -18,18 +18,18 @@ class PowerTopupViewController extends Controller
         }
         session()->reflash();
 
-        return view("agent.power_topup.payment_method", ["vouchers" => session("vouchers")]);
+        return view("agent.power-topup.payment-method", ["vouchers" => session("vouchers")]);
     }
 
     public function showReceipt()
     {
-        $transaction = session()->get("transaction");
-        $flipResponse = session()->get("flip_response");
+        $transaction = session("transaction");
+        $flipResponse = session("flip_response");
         if (!$transaction) {
             return redirect("/power");
         }
 
-        return view("agent.power_topup.receipt", [
+        return view("agent.power-topup.receipt", [
             "transaction" => $transaction,
             "flipResponse" => $flipResponse
         ]);

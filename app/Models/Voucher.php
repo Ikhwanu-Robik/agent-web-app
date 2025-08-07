@@ -28,20 +28,20 @@ class Voucher extends Model
         ]);
     }
 
-    public static function getValidVouchers(string $service_name)
+    public static function getValidVouchers(string $serviceName)
     {
         $vouchers = Voucher::where("user_id", "=", Auth::id())->get();
-        $valid_vouchers = [];
+        $validVouchers = [];
         foreach ($vouchers as $voucher) {
-            $valid_services = json_decode($voucher->valid_for);
+            $validServices = json_decode($voucher->valid_for);
 
-            foreach ($valid_services as $service) {
-                if ($service == $service_name) {
-                    array_push($valid_vouchers, $voucher);
+            foreach ($validServices as $service) {
+                if ($service == $serviceName) {
+                    array_push($validVouchers, $voucher);
                 }
             }
         }
 
-        return $valid_vouchers;
+        return $validVouchers;
     }
 }

@@ -15,7 +15,7 @@
 
     <label for="origin">Dari</label>
     <select name="origin" id="origin">
-        @foreach ($bus_stations as $station)
+        @foreach ($busStations as $station)
             <option value="{{ $station->id }}"
                 {{ session('_old_input') && session('_old_input')['origin'] == $station->id ? 'selected' : '' }}>
                 {{ $station->name }}</option>
@@ -23,7 +23,7 @@
     </select>
     <label for="destination">Tujuan</label>
     <select name="destination" id="destination">
-        @foreach ($bus_stations as $station)
+        @foreach ($busStations as $station)
             <option value="{{ $station->id }}"
                 {{ session('_old_input') && session('_old_input')['destination'] == $station->id ? 'selected' : '' }}>
                 {{ $station->name }}</option>

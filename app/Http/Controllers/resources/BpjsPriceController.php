@@ -12,14 +12,14 @@ class BpjsPriceController extends Controller
 {
     public function index()
     {
-        $bpjs_prices = BpjsPrice::all();
+        $bpjsPrices = BpjsPrice::all();
 
-        return view("master.bpjs_price.bpjs_price", ["bpjs_prices" => $bpjs_prices]);
+        return view("master.bpjs-price.bpjs-price", ["bpjsPrices" => $bpjsPrices]);
     }
 
     public function create()
     {
-        return view("master.bpjs_price.create");
+        return view("master.bpjs-price.create");
     }
 
     public function store(StoreBpjsPriceRequest $storeBpjsPriceRequest)
@@ -29,26 +29,26 @@ class BpjsPriceController extends Controller
         return redirect("/master/bpjs/prices");
     }
 
-    public function edit(BpjsPrice $bpjs_price)
+    public function edit(BpjsPrice $bpjsPrice)
     {
-        return view("master.bpjs_price.edit", ["bpjs_price" => $bpjs_price]);
+        return view("master.bpjs-price.edit", ["bpjsPrice" => $bpjsPrice]);
     }
 
-    public function update(UpdateBpjsPriceRequest $updateBpjsPriceRequest, BpjsPrice $bpjs_price)
+    public function update(UpdateBpjsPriceRequest $updateBpjsPriceRequest, BpjsPrice $bpjsPrice)
     {
-        $bpjs_price->update($updateBpjsPriceRequest->validated());
+        $bpjsPrice->update($updateBpjsPriceRequest->validated());
 
         return redirect("/master/bpjs/prices");
     }
 
-    public function delete(BpjsPrice $bpjs_price)
+    public function delete(BpjsPrice $bpjsPrice)
     {
-        return view("master.bpjs_price.delete", ["bpjs_price" => $bpjs_price]);
+        return view("master.bpjs-price.delete", ["bpjsPrice" => $bpjsPrice]);
     }
 
-    public function destroy(Request $request, BpjsPrice $bpjs_price)
+    public function destroy(Request $request, BpjsPrice $bpjsPrice)
     {
-        $bpjs_price->delete();
+        $bpjsPrice->delete();
 
         return redirect("/master/bpjs/prices");
     }

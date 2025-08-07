@@ -33,13 +33,13 @@ class BpjsTransaction extends Model
     {
         $monthBought = $validated["month"] * 30 * 24 * 60 * 60;
 
-        $civil_information = CivilInformation::where("NIK", "=", $validated["civil_id"])->first();
-        $bpjs = ActiveBpjs::search($civil_information->NIK);
+        $civilInformation = CivilInformation::where("NIK", "=", $validated["civil_id"])->first();
+        $bpjs = ActiveBpjs::search($civilInformation->NIK);
 
         $price = $bpjs->bpjsClass->price;
         $total = $validated["month"] * $price;
         $status = "PENDING";
-        $flip_response = null;
+        $flipResponse = null;
         if ($validated["payment_method"] == "cash") {
             $status = "SUCCESS";
         } else if ($validated["payment_method"] == "flip") {
@@ -51,7 +51,7 @@ class BpjsTransaction extends Model
                 "/bpjs"
             );
 
-            $flip_response = $response;
+            $flipResponse = $response;
         }
 
         if ($bpjs->isStillActive()) {
@@ -64,15 +64,15 @@ class BpjsTransaction extends Model
 
         $transactionAttribute = [
             "user_id" => Auth::id(),
-            "civil_information_id" => $civil_information->id,
+            "civil_information_id" => $civilInformation->id,
             "month_bought" => $validated["month"],
             "total" => $total,
             "method" => $validated["payment_method"],
             "status" => $status,
-            "flip_link_id" => $flip_response ? $flip_response["link_id"] : null
+            "flip_link_id" => $flipResponse ? $flipResponse["link_id"] : null
         ];
         $transaction = self::create($transactionAttribute);
-        $transaction["flip_response"] = $flip_response;
+        $transaction["flip_response"] = $flipResponse;
 
         return $transaction;
     }
