@@ -5,34 +5,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Film Ticket</title>
+    <title>Vouchers</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        header {
+            width: 100vw;
+            height: 10vh;
+            background-color: rgb(37, 104, 175);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2em;
+        }
+
+        header>div {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 1em;
+        }
+
+        header>div>#profile_photo:hover+#username {
+            display: block;
+        }
+
+        header>div>#username {
+            position: absolute;
+            top: 4em;
+            left: 1em;
+            background-color: white;
+            padding: 0.1em;
+            border: 1px solid black;
+            border-radius: 5%;
+            display: none;
+        }
+
+        header>div>#profile_photo {
+            height: 80%;
+            border-radius: 50%
+        }
+
+        header>div>.nav-button {
+            text-decoration: none;
+            padding: 1em;
+            color: white;
+            font-weight: bold;
+        }
+
+        header>div>.nav-button:hover {
+            background-color: rgb(15, 80, 151);
+        }
+
+        header>form>#logout-button {
+            padding: 0.5em 1em;
+            font-weight: bold;
+            color: white;
+            background-color: rgb(10, 60, 114);
+            border: none;
+        }
+
+        #voucher-container {
+            display: flex;
+            gap: 1em;
+            margin: 0.5em;
+        }
+
+        .voucher {
+            background-color: rgb(255, 255, 98);
+            padding: 1em;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Beli Tiket Film</h1>
-    <h2>Pilih Film</h2>
+    @include('components.header')
 
-    @if ($errors->any())
-        <div>
-            @foreach ($errors->all() as $error)
-                <div>{{ $error }}</div>
-            @endforeach
-        </div>
-    @endif
+    <main>
+        <h1>Beli Tiket Film</h1>
+        <h2>Pilih Film</h2>
 
-    <form action="/film/cinema" method="post">
-        @csrf
-        <section id="find-cinema">
-            <label for="film">Judul Film</label>
-            <select name="film_id" id="film">
-                @foreach ($films as $film)
-                    <option value="{{ $film->id }}">{{ $film->title }}</option>
+        @if ($errors->any())
+            <div>
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
                 @endforeach
-            </select>
+            </div>
+        @endif
 
-            <button type="submit">Cari Bioskop</button>
-        </section>
-    </form>
+        <form action="/film/cinema" method="post">
+            @csrf
+            <section id="find-cinema">
+                <label for="film">Judul Film</label>
+                <select name="film_id" id="film">
+                    @foreach ($films as $film)
+                        <option value="{{ $film->id }}">{{ $film->title }}</option>
+                    @endforeach
+                </select>
+
+                <button type="submit">Cari Bioskop</button>
+            </section>
+        </form>
+    </main>
 </body>
 
 </html>
