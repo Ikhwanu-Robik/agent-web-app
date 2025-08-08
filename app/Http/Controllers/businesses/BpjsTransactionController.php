@@ -31,7 +31,8 @@ class BpjsTransactionController extends Controller
 
         TransactionReport::updateBpjsReport();
 
-        return redirect("/bpjs/receipt")
+        return redirect()
+            ->route("bpjs_transaction.receipt")
             ->with("bpjs", $bpjs)
             ->with("form_input", $validated)
             ->with("transaction", $transaction)

@@ -99,7 +99,7 @@
             @endforeach
         @endif
 
-        <form action="" method="POST">
+        <form action="{{ route("bpjs_transaction.find_bpjs_data") }}" method="POST">
             @csrf
             <label for="civil-id">NIK</label>
             <input type="number" name="civil_id" id="civil-id" value="{{ $bpjs ? $bpjs->civilInformation->NIK : '' }}">
@@ -121,7 +121,7 @@
             <h2>atau langsung berlangganan</h2>
         @endif
 
-        <form action="/bpjs/pay" method="post">
+        <form action="{{ route("bpjs_transaction.pay") }}" method="post">
             @csrf
             @if (isset($bpjs))
                 <input type="hidden" name="civil_id" value="{{ $bpjs->civilInformation->NIK }}">
