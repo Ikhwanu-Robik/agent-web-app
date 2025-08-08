@@ -17,7 +17,7 @@ class BpjsTransactionController extends Controller
     {
         $bpjs = ActiveBpjs::search($getBpjsDataRequest->validated()["civil_id"]);
 
-        return redirect("/bpjs")->with("bpjs", $bpjs);
+        return redirect()->route("bpjs_transaction.form")->with("bpjs", $bpjs);
     }
 
     public function pay(PayBpjsTransactionRequest $payBpjsTransactionRequest, FlipTransaction $flipTransaction)

@@ -172,15 +172,15 @@
         <section id="services">
             <h2>What to do?</h2>
             <ul>
-                <li><a href="/bus/ticket"><img src="{{ config('app.url') . '/assets/bus_icon.png' }}"
+                <li><a href="{{ route("bus_ticket_transaction.select_schedule") }}"><img src="{{ config('app.url') . '/assets/bus_icon.png' }}"
                             alt="">Tiket Bus</a></li>
-                <li><a href="/bpjs"><img src="{{ config('app.url') . '/assets/bpjs.png' }}" alt="">Bayar
+                <li><a href="{{ route("bpjs_transaction.form") }}"><img src="{{ config('app.url') . '/assets/bpjs.png' }}" alt="">Bayar
                         BPJS</a></li>
-                <li><a href="/film"><img src="{{ config('app.url') . '/assets/cinema_icon.png' }}"
+                <li><a href="{{ route("film_ticket_transaction.select_film") }}"><img src="{{ config('app.url') . '/assets/cinema_icon.png' }}"
                             alt="">Tiket Film</a></li>
-                <li><a href="/game/topup"><img src="{{ config('app.url') . '/assets/game_icon.png' }}"
+                <li><a href="{{ route("game_top_up_transaction.select_game") }}"><img src="{{ config('app.url') . '/assets/game_icon.png' }}"
                             alt="">Top up Game</a></li>
-                <li><a href="/power"><img src="{{ config('app.url') . '/assets/electricity_icon.png' }}"
+                <li><a href="{{ route("power_top_up_transaction.form") }}"><img src="{{ config('app.url') . '/assets/electricity_icon.png' }}"
                             alt="">Isi token listrik</a></li>
             </ul>
         </section>

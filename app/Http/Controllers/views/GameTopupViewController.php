@@ -22,21 +22,16 @@ class GameTopupViewController extends Controller
         ]);
     }
 
-    public function gamePackage()
-    {
-        return view("agent.game-topup.game-topup-package");
-    }
-
     public function selectPaymentMethod()
     {
         $transaction = session("transaction");
         $package = GameTopUpPackage::with("game")
             ->findOr($transaction->package_id, function () {
-                return redirect("/game/topup");
+                return redirect()->route("game_top_up_transaction.select_game");
             });
 
         if (!$transaction) {
-            return redirect("/game/topup");
+            return redirect()->route("game_top_up_transaction.select_game");
         }
 
         $validVouchers = Voucher::getValidVouchers("game_top_up");
@@ -55,12 +50,12 @@ class GameTopupViewController extends Controller
         $transaction = session("transaction");
         $flipResponse = session("flip_response");
         if (!$transaction) {
-            return redirect("/game/topup");
+            return redirect()->route("game_top_up_transaction.select_game");
         }
 
         $package = GameTopUpPackage::with("game")
             ->findOr($transaction["package_id"], function () {
-                return redirect("/game/topup");
+                return redirect()->route("game_top_up_transaction.select_game");
             });
 
         return view("agent.game-topup.receipt", [

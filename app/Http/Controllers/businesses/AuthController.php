@@ -16,7 +16,7 @@ class AuthController extends Controller
         $validated = $loginRequest->validated();
 
         if (Auth::attempt($validated)) {
-            return redirect("/");
+            return redirect()->route("home");
         }
 
         return redirect()->back()->with("auth_fail", "email or password is wrong");
@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         User::create($validated);
 
-        return redirect("/");
+        return redirect()->route("home");
     }
 
     public function logout(Request $request)

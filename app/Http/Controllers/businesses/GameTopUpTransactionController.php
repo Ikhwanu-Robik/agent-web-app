@@ -19,7 +19,8 @@ class GameTopUpTransactionController extends Controller
             ->where("game_id", "=", $validated["game_id"])
             ->get();
 
-        return redirect("/game/topup")
+        return redirect()
+            ->route("game_top_up_transaction.select_game")
             ->with("packages", $packages)
             ->with("selected_game_id", $validated["game_id"]);
     }

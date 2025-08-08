@@ -14,7 +14,7 @@ class PowerTopupViewController extends Controller
     public function showSelectPaymentMethodPage()
     {
         if (!session()->has("transaction")) {
-            return redirect("/power");
+            return redirect()->route("power_top_up_transaction.form");
         }
         session()->reflash();
 
@@ -26,7 +26,7 @@ class PowerTopupViewController extends Controller
         $transaction = session("transaction");
         $flipResponse = session("flip_response");
         if (!$transaction) {
-            return redirect("/power");
+            return redirect()->route("power_top_up_transaction.form");
         }
 
         return view("agent.power-topup.receipt", [

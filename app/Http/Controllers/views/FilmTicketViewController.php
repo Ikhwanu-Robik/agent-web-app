@@ -21,7 +21,7 @@ class FilmTicketViewController extends Controller
     {
         $cinemas = session("cinemas");
         if (!$cinemas) {
-            return redirect("/film");
+            return redirect()->route("film_ticket_transaction.select_film");
         }
 
         return view("agent.film-ticket.film-ticket-cinema", ["cinemas" => $cinemas]);
@@ -40,7 +40,7 @@ class FilmTicketViewController extends Controller
     public function showFilmPaymentPage()
     {
         if (!session("film_ticket_transaction") || !session("seat_coordinates")) {
-            return redirect("/film");
+            return redirect()->route("film_ticket_transaction.select_film");
         }
 
         $filmTicketTransaction = session("film_ticket_transaction");
@@ -59,7 +59,7 @@ class FilmTicketViewController extends Controller
     public function showFilmReceipt()
     {
         if (!session("transaction")) {
-            return redirect("/film");
+            return redirect()->route("film_ticket_transaction.select_film");
         }
 
         $filmTicketTransaction = session("transaction");

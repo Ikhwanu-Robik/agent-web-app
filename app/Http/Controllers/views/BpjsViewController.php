@@ -23,7 +23,7 @@ class BpjsViewController extends Controller
         session()->flash("bpjs", $bpjs);
 
         if (!$transaction) {
-            return redirect("/bpjs")->with("bpjs", $bpjs);
+            return redirect()->route("bpjs_transaction.form")->with("bpjs", $bpjs);
         }
 
         return view("agent.bpjs-subscription.receipt", [

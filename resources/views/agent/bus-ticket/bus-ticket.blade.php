@@ -151,7 +151,7 @@
                             <br>
                             <span>kursi tersedia</span> <b>{{ $schedule->seats }}</b> <br>
                             <b>Rp. {{ $schedule->ticket_price }} / tiket</b>
-                            <form action="/bus/ticket" method="post" style="display:inline">
+                            <form action="{{ route("bus_ticket_transaction.select_schedule") }}" method="post" style="display:inline">
                                 @csrf
                                 <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
                                 <input type="hidden" name="ticket_amount"
