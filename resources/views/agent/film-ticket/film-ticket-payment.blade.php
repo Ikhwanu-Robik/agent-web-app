@@ -146,7 +146,7 @@
 
         </table>
 
-        <form action="/film/cinema/transaction" method="post">
+        <form action="{{ route("film_ticket_transaction.pay") }}" method="post">
             @csrf
             <label for="payment_method">Payment Method</label>
             <select name="payment_method" id="payment_method">

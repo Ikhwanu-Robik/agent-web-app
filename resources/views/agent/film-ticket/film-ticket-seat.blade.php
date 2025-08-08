@@ -109,7 +109,7 @@
         <div id="seats">
             <span>Pilih Kursi</span>
 
-            <form action="/film/cinema/seats/book" method="post">
+            <form action="{{ route("film_ticket_transaction.book_seat") }}" method="post">
                 @csrf
                 <input type="hidden" name="cinema_film_id" value="{{ $filmSchedule->id }}">
 

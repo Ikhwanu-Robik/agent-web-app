@@ -103,7 +103,7 @@
                                 @foreach ($cinema->films as $schedule)
                                     <tr>
                                         <td>
-                                            <form action="/film/cinema/seats" method="get">
+                                            <form action="{{ route("film_ticket_transaction.show_book_seat_form") }}" method="get">
                                                 <input type="hidden" name="cinema_film_id"
                                                     value="{{ $schedule->film_schedule->id }}">
                                                 <button type="submit">Pilih</button>

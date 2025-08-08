@@ -98,7 +98,7 @@
             </div>
         @endif
 
-        <form action="/film/cinema" method="post">
+        <form action="{{ route("film_ticket_transaction.find_airing_cinema") }}" method="post">
             @csrf
             <section id="find-cinema">
                 <label for="film">Judul Film</label>

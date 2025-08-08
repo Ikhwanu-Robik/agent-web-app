@@ -18,7 +18,7 @@ class FilmTicketTransactionController extends Controller
         $validated = $getAiringCinemaRequest->validated();
         $matchingCinemas = Cinema::findAiring($validated["film_id"]);
 
-        return redirect("/film/cinema")->with("cinemas", $matchingCinemas);
+        return redirect()->route("film_ticket_transaction.show_airing_cinema")->with("cinemas", $matchingCinemas);
     }
 
     public function order(OrderFilmTicketRequest $orderFilmTicketRequest)
@@ -27,7 +27,8 @@ class FilmTicketTransactionController extends Controller
         $filmTicketTransaction = FilmTIcketTransaction::createOrder($validated);
         $filmTicketTransaction->appendCinemaDetails();
 
-        return redirect("/film/cinema/payment")
+        return redirect()
+            ->route("film_ticket_transaction.select_payment_method")
             ->with("film_ticket_transaction", $filmTicketTransaction)
             ->with("seat_coordinates", $validated["seat_coordinates"]);
     }
@@ -42,7 +43,8 @@ class FilmTicketTransactionController extends Controller
 
         CinemaFilm::find($transaction->cinemaFilm->id)->updateAvailableSeats($transaction);
 
-        return redirect("/film/cinema/seats/transaction/success")
+        return redirect()
+            ->route("film_ticket_transaction.receipt")
             ->with("transaction", $transaction)
             ->with("flip_response", $flipResponse);
     }
