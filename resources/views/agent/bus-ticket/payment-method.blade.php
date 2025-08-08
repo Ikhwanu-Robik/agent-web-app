@@ -99,7 +99,7 @@
             <span>{{ $transaction->ticket_amount }} Ticket{{ $transaction->ticket_amount > 1 ? 's' : '' }}</span> <br>
             <h3>Rp.{{ $transaction->total }}</h3>
             <h3>Choose your payment method</h3>
-            <form action="/bus/ticket/pay" method="post" style="display:inline">
+            <form action="{{ route("bus_ticket_transaction.pay") }}" method="post" style="display:inline">
                 @csrf
                 <input type="hidden" name="bus_schedule_id" value="{{ $transaction->bus_schedule_id }}" />
                 <input type="hidden" name="ticket_amount" value="{{ $transaction->ticket_amount }}" />

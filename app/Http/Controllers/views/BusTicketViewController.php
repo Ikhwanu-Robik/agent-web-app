@@ -32,7 +32,7 @@ class BusTicketViewController extends Controller
         $flipResponse = session("flip_response");
 
         if (!$transaction) {
-            return redirect()->route("bus_ticket_transction.select_schedule");
+            return redirect()->route("bus_ticket_transaction.select_schedule");
         }
 
         return view("agent.bus-ticket.receipt", [

@@ -32,7 +32,8 @@ class BusTicketTransactionController extends Controller
 
         $validVouchers = Voucher::getValidVouchers("bus_ticket");
 
-        return redirect("/bus/ticket/payment")
+        return redirect()
+            ->route("bus_ticket_transaction.select_payment_method")
             ->with("transaction", $transaction)
             ->with("vouchers", $validVouchers);
     }
@@ -47,8 +48,9 @@ class BusTicketTransactionController extends Controller
         BusSchedule::find($validated["bus_schedule_id"])
             ->reduceAvailableTicket($validated["ticket_amount"]);
 
-        return redirect("/bus/ticket/finished")
-            ->with("transaction", $transaction)
+        return redirect()
+            ->route("bus_ticket_transaction.receipt")
+            ->with("transaction", value: $transaction)
             ->with("payment_method", $validated["payment_method"])
             ->with("flip_response", $paymentData["flip_response"]);
     }
