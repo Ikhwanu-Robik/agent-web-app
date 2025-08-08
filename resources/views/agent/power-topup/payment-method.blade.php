@@ -89,7 +89,7 @@
     <main>
         <h1>Choose Payment Method</h1>
 
-        <form action="/power/buy" method="post">
+        <form action="{{ route("power_top_up_transaction.pay") }}" method="post">
             @csrf
             <label for="payment_method">Payment Method</label>
             <select name="payment_method" id="payment_method">

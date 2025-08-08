@@ -24,7 +24,8 @@ class PowerTopUpTransactionController extends Controller
 
         $validVouchers = Voucher::getValidVouchers("power");
 
-        return redirect("/power/payment")
+        return redirect()
+            ->route("power_top_up_transaction.select_payment_method")
             ->with("transaction", $transaction)
             ->with("vouchers", $validVouchers);
     }
@@ -39,7 +40,8 @@ class PowerTopUpTransactionController extends Controller
 
         TransactionReport::updatePowerTopUpReport();
 
-        return redirect("/power/receipt")
+        return redirect()
+            ->route("power_top_up_transaction.receipt")
             ->with("transaction", $transaction)
             ->with("flip_response", $paymentData["flipResponse"]);
     }

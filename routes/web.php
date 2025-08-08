@@ -11,7 +11,7 @@ require("bus_ticket.php");
 require("bpjs.php");
 require("film_ticket.php");
 require("game_top_up.php");
-require("power_topup.php");
+require("power_top_up.php");
 
 Route::middleware("auth")->group(function () {
    Route::post("/logout", [AuthController::class, "logout"])->name("logout");

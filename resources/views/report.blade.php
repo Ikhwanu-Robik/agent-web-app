@@ -255,7 +255,7 @@
                         </div>
                     @endif
 
-                    <form action="/report/power" method="post">
+                    <form action="{{ route("report.find_power") }}" method="post">
                         @csrf
                         <input type="text" name="subscriber_number" id="subscriber_number"
                             placeholder="power subscriber number">
