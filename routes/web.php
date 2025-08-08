@@ -25,4 +25,4 @@ Route::middleware("guest")->group(function () {
    Route::post("/register", [AuthController::class, "register"])->name("register");
 });
 
-Route::post("/flipcallback", FlipCallbackController::class);
+Route::post("/flipcallback", FlipCallbackController::class)->name("flipcallback");
