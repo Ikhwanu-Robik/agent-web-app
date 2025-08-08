@@ -7,7 +7,7 @@
         <a href="/vouchers" class="nav-button">Vouchers</a>
         <a href="/report" class="nav-button">Transaction History</a>
     </div>
-    <form action="/logout" method="post">
+    <form action="{{ route("logout") }}" method="post">
         @csrf
         <button type="submit" id="logout-button">Logout</button>
     </form>

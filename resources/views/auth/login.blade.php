@@ -73,14 +73,14 @@
             </div>
         @endif
 
-        <form method="POST" action="/login">
+        <form method="POST" action="{{ route("login") }}">
             @csrf
             <input type="email" name="email" placeholder="email" />
             <input type="password" name="password" placeholder="password" />
             <button type="submit">Login</button>
         </form>
 
-        <span>Don't have an account? </span><a href="/register">Register</a>
+        <span>Don't have an account? </span><a href="{{ route("register") }}">Register</a>
     </main>
 </body>
 

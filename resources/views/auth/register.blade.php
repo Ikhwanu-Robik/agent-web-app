@@ -69,7 +69,7 @@
             </div>
         @endif
 
-        <form method="POST" action="/register" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("register") }}" enctype="multipart/form-data">
             @csrf
             <input type="text" name="name" placeholder="name" value="{{ old('name') }}" />
             <input type="email" name="email" placeholder="email" value="{{ old('email') }}" />
@@ -79,7 +79,7 @@
             <button type="submit">Register</button>
         </form>
 
-        <span>Already have an account? </span><a href="/login">Login</a>
+        <span>Already have an account? </span><a href="{{ route("login") }}">Login</a>
     </main>
 </body>
 
