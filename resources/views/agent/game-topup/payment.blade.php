@@ -111,7 +111,7 @@
             </tr>
         </table>
 
-        <form action="{{ '/game/topup/package/' . $package->id . '/pay' }}" method="post">
+        <form action="{{ route("game_top_up_transaction.pay", ["package" => $package->id]) }}" method="post">
             @csrf
             <label for="payment_method">payment_method</label>
             <select name="payment_method" id="payment_method">

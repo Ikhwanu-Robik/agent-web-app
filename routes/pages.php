@@ -20,7 +20,7 @@ Route::middleware("auth")->group(function () {
         ->name("bpjs_transaction.form");
     Route::get("/film", [FilmTicketViewController::class, "filmTicket"])
         ->name("film_ticket_transaction.select_film");
-    Route::get("/game/topup", [GameTopupViewController::class, "selectGame"])
+    Route::get("/game/top-up", [GameTopupViewController::class, "selectGame"])
         ->name("game_top_up_transaction.select_game");
     Route::get("/power", [PowerTopupViewController::class, "showPowerTopUpForm"])
         ->name("power_top_up_transaction.form");

@@ -10,7 +10,7 @@ require("admin.php");
 require("bus_ticket.php");
 require("bpjs.php");
 require("film_ticket.php");
-require("game_topup.php");
+require("game_top_up.php");
 require("power_topup.php");
 
 Route::middleware("auth")->group(function () {

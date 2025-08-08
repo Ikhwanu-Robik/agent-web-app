@@ -31,7 +31,8 @@ class GameTopUpTransactionController extends Controller
 
         $transaction = GameTopUpTransaction::createOrder($validated, $package);
 
-        return redirect("/game/topup/payment")
+        return redirect()
+            ->route("game_top_up_transaction.select_payment_method")
             ->with("transaction", $transaction);
     }
 
@@ -43,7 +44,8 @@ class GameTopUpTransactionController extends Controller
 
         $flipResponse = $transaction->processPayment($flipTransaction, $package, $validated);
 
-        return redirect("/game/topup/receipt")
+        return redirect()
+            ->route("game_top_up_transaction.receipt")
             ->with("transaction", $transaction)
             ->with("flip_response", $flipResponse);
     }

@@ -90,7 +90,7 @@
         <h1>Top Up Game</h1>
         <h2>Pilih Game</h2>
 
-        <form action="/game/packages" method="post">
+        <form action="{{ route("game_top_up_transaction.find_game_packages") }}" method="post">
             @csrf
             <select name="game_id" id="">
                 @foreach ($games as $game)
@@ -110,7 +110,7 @@
                                 <span>{{ $package->game->name }}</span> <br>
                                 <em>{{ $package->items_count }} {{ $package->game->currency }} -
                                     {{ $package->price }}</em>
-                                <form action="{{ '/game/package/' . $package->id }}" method="post">
+                                <form action="{{ route("game_top_up_transaction.order_package", ["package" => $package->id]) }}" method="post">
                                     @csrf
                                     <input type="hidden" name="game_id" value="{{ $selectedGameId }}">
                                     <input type="hidden" name="game_topup_package_id" value="{{ $package->id }}">
