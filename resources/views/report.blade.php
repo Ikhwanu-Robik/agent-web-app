@@ -139,10 +139,13 @@
             <a href="/report?service=power-top-up">Power Top Up</a>
         </aside>
 
-        @if ($service == 'bus-ticket')
-            <article>
-                <h1>Your Bus Ticket Transaction History</h1>
-
+        <article>
+            @if ($service && $reports)
+                <a href="{{ route('report', ['export' => 'xlsx', 'service' => $service]) }}">
+                    <button>Export to Excel</button>
+                </a>
+            @endif
+            @if ($service == 'bus-ticket')
                 <section id="content">
                     <ul>
                         @foreach ($reports as $transaction)
@@ -159,10 +162,7 @@
                         @endforeach
                     </ul>
                 </section>
-            </article>
-        @elseif ($service == 'bpjs')
-            <article>
-
+            @elseif ($service == 'bpjs')
                 @if ($reports == null)
                     <h2>First of all, we need to know your NIK</h2>
 
@@ -174,7 +174,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route("report.find_bpjs") }}" method="post">
+                    <form action="{{ route('report.find_bpjs') }}" method="post">
                         @csrf
                         <input type="text" name="civil_id" id="civil_id" placeholder="NIK">
                         <button type="submit">Send</button>
@@ -185,7 +185,6 @@
                         $civilInformation = $reports->civil_information;
                     @endphp
 
-                    <h1>Your BPJS Transaction History</h1>
                     <h4>NIK : {{ $civilInformation->NIK }}</h4>
                     <h4>Class : {{ $civilInformation->activeBpjs->bpjsClass->class }}</h4>
                     <h4>Active until : {{ $civilInformation->activeBpjs->dueDate() }}</h4>
@@ -203,12 +202,7 @@
                         </ul>
                     </section>
                 @endif
-            </article>
-        @elseif($service == 'film-ticket')
-            <article>
-                <a href="{{ route("report", ["export" => "xlsx", "service" => $service]) }}">
-                    <button>Export to Excel</button>
-                </a>
+            @elseif($service == 'film-ticket')
                 <section id="content">
                     <ul>
                         @foreach ($reports as $transaction)
@@ -226,9 +220,7 @@
                         @endforeach
                     </ul>
                 </section>
-            </article>
-        @elseif($service == 'game-topup')
-            <article>
+            @elseif($service == 'game-topup')
                 <section id="content">
                     <ul>
                         @foreach ($reports as $transaction)
@@ -244,9 +236,7 @@
                         @endforeach
                     </ul>
                 </section>
-            </article>
-        @elseif($service == 'power-top-up')
-            <article>
+            @elseif($service == 'power-top-up')
                 @if ($reports == null)
                     <h2>First of all, we need to know your Power Subscriber Number</h2>
 
@@ -258,14 +248,13 @@
                         </div>
                     @endif
 
-                    <form action="{{ route("report.find_power") }}" method="post">
+                    <form action="{{ route('report.find_power') }}" method="post">
                         @csrf
                         <input type="text" name="subscriber_number" id="subscriber_number"
                             placeholder="power subscriber number">
                         <button type="submit">Send</button>
                     </form>
                 @else
-                    <h1>Your Power Top Up History</h1>
                     <h4>NIK : {{ $reports[0]->subscriber_number }}</h4>
 
                     <section id="content">
@@ -279,12 +268,12 @@
                         </ul>
                     </section>
                 @endif
-            </article>
-        @else
-            <article id="no-service-selected">
-                <h1>Choose a service to see your transaction history</h1>
-            </article>
-        @endif
+            @else
+                <article id="no-service-selected">
+                    <h1>Choose a service to see your transaction history</h1>
+                </article>
+            @endif
+        </article>
     </main>
 </body>
 

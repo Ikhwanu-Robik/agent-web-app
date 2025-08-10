@@ -9,7 +9,36 @@
 </head>
 
 <body>
-    @if ($service == 'film-ticket')
+    @if ($service == 'bus-ticket')
+        <table>
+            <thead>
+                <tr>
+                    <th style="font-weight: bold">Origin</th>
+                    <th style="font-weight: bold">Destination</th>
+                    <th style="font-weight: bold">Bus</th>
+                    <th style="font-weight: bold">Price</th>
+                    <th style="font-weight: bold">Quantity</th>
+                    <th style="font-weight: bold">Total</th>
+                    <th style="font-weight: bold">Method</th>
+                    <th style="font-weight: bold">Status</th>
+                </tr>
+            </thead>
+            <thead>
+                @foreach ($reports as $transaction)
+                    <tr>
+                        <td>{{ $transaction->busSchedule->originStation->name }}</td>
+                        <td>{{ $transaction->busSchedule->destinationStation->name }}</td>
+                        <td>{{ $transaction->busSchedule->bus->name }}</td>
+                        <td>{{ $transaction->busSchedule->ticket_price }}</td>
+                        <td>{{ $transaction->ticket_amount }}</td>
+                        <td>{{ $transaction->total }}</td>
+                        <td>{{ $transaction->method }}</td>
+                        <td>{{ $transaction->status }}</td>
+                    </tr>
+                @endforeach
+            </thead>
+        </table>
+    @elseif ($service == 'film-ticket')
         <table>
             <thead>
                 <tr>
@@ -29,9 +58,12 @@
                         $ticket_qty = count($seats_coordinates);
                     @endphp
                     <tr>
-                        <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">{{ $transaction->cinemaFilm->film->title }}</td>
-                        <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">{{ $transaction->cinemaFilm->cinema->name }}</td>
-                        <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">{{ $transaction->created_at }}</td>
+                        <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
+                            {{ $transaction->cinemaFilm->film->title }}</td>
+                        <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
+                            {{ $transaction->cinemaFilm->cinema->name }}</td>
+                        <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
+                            {{ $transaction->created_at }}</td>
                         <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
                             {{ $transaction->cinemaFilm->ticket_price }}</td>
                         <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
@@ -45,7 +77,7 @@
                         </td>
                     </tr>
                     @if ($ticket_qty > 1)
-                        @for ($i = 1; $i < $ticket_qty; $i++) 
+                        @for ($i = 1; $i < $ticket_qty; $i++)
                             <tr>
                                 <td>
                                     {{ $seats_coordinates[$i] }}
