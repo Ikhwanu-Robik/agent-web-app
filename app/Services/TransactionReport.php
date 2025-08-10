@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exports\BpjsTransactionsExport;
 use App\Exports\BusTicketTransactionsExport;
 use App\Exports\GameTopUpTransactionsExport;
+use App\Exports\PowerTopUpTransactionsExport;
 use Carbon\Carbon;
 use App\Models\BpjsTransaction;
 use App\Models\CivilInformation;
@@ -58,7 +59,7 @@ class TransactionReport
             $gameTopUpTransactions->count() => "game top up",
             $powerTopUpTransactions->count() => "power top up"
         ];
-        
+
         // get the most transactions of the month
         $topAmount = max($transactionsCounts);
         // get the service name of most transactions of the month
@@ -107,7 +108,7 @@ class TransactionReport
     }
 
     public function setBpjsReportSession(array $validated)
-    {        
+    {
         $civilInformation = CivilInformation::where("NIK", "=", $validated["civil_id"])->with(["activeBpjs", "activeBpjs.bpjsClass"])->first();
         $bpjsTransactions = BpjsTransaction::where("civil_information_id", "=", $civilInformation->id)
             ->get();
@@ -127,7 +128,7 @@ class TransactionReport
         $civilInformation = session()->get("civil_information");
         if ($civilInformation) {
             $bpjsTransactions = BpjsTransaction::where("civil_information_id", "=", $civilInformation->id)->get();
-    
+
             session()->put("bpjs_transactions", $bpjsTransactions);
         }
     }
@@ -137,7 +138,7 @@ class TransactionReport
         $oldTransactions = session()->get("power_top_up_transactions");
         if ($oldTransactions != null && count($oldTransactions)) {
             $powerTopUpTransactions = PowerTransaction::where("subscriber_number", "=", $oldTransactions[0]->subscriber_number)->get();
-    
+
             session()->put("power_top_up_transactions", $powerTopUpTransactions);
         }
     }
@@ -189,17 +190,18 @@ class TransactionReport
         return $reports;
     }
 
-    public static function export(string $service, string $exportType) {
+    public static function export(string $service, string $exportType)
+    {
         if ($service == "bus-ticket") {
             return Excel::download(new BusTicketTransactionsExport, "file-ticket-transction-report.{$exportType}");
-        }
-        elseif ($service == "bpjs") {
+        } elseif ($service == "bpjs") {
             return Excel::download(new BpjsTransactionsExport, "bpjs-transaction-report.{$exportType}");
-        }
-        elseif ($service == "film-ticket") {
+        } elseif ($service == "film-ticket") {
             return Excel::download(new FilmTicketTransactionsExport, "film-ticket-transaction-report.{$exportType}");
         } elseif ($service == "game-top-up") {
             return Excel::download(new GameTopUpTransactionsExport, "game-top-up-transaction-report.{$exportType}");
+        } elseif ($service == "power-top-up") {
+            return Excel::download(new PowerTopUpTransactionsExport, "power-top-up-transaction-report.{$exportType}");
         }
 
         return null;
