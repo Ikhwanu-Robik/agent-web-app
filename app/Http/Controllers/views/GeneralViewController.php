@@ -36,8 +36,13 @@ class GeneralViewController extends Controller
 
     public function report(Request $request)
     {
+        $exportType = $request->query("export") ? $request->query("export") : null;
         $service = $request->query("service") ? $request->query("service") : "";
         $reports = TransactionReport::getReport($service);
+
+        if ($exportType) {
+            return TransactionReport::export($service, $exportType);
+        }
 
         return view("report", ["service" => $service, "reports" => $reports]);
     }

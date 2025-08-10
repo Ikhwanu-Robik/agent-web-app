@@ -9,7 +9,9 @@ use App\Models\PowerTransaction;
 use App\Models\BusTicketTransaction;
 use App\Models\GameTopUpTransaction;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\FilmTicketTransaction;
+use App\Exports\FilmTicketTransactionsExport;
 
 class TransactionReport
 {
@@ -182,5 +184,13 @@ class TransactionReport
         }
 
         return $reports;
+    }
+
+    public static function export(string $service, string $exportType) {
+        if ($service == "film-ticket") {
+            return Excel::download(new FilmTicketTransactionsExport, "film-ticket-transaction.{$exportType}");
+        }
+
+        return null;
     }
 }

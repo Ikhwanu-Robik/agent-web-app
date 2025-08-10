@@ -206,6 +206,9 @@
             </article>
         @elseif($service == 'film-ticket')
             <article>
+                <a href="{{ route("report", ["export" => "xlsx", "service" => $service]) }}">
+                    <button>Export to Excel</button>
+                </a>
                 <section id="content">
                     <ul>
                         @foreach ($reports as $transaction)
