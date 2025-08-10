@@ -4,14 +4,18 @@ namespace App\Exports;
 
 use App\Facades\TransactionReport;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithProperties;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\Number;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\Currency;
 
-class BpjsTransactionsExport implements FromView, ShouldAutoSize, WithEvents
+class BpjsTransactionsExport implements FromView, ShouldAutoSize, WithEvents, WithProperties
 {
     /**
      * @return \Illuminate\Contracts\View\View
@@ -27,6 +31,14 @@ class BpjsTransactionsExport implements FromView, ShouldAutoSize, WithEvents
     public function registerEvents(): array
     {
         return [
+            BeforeWriting::class => function (BeforeWriting $event) {
+                $event
+                    ->getWriter()
+                    ->getDelegate()
+                    ->getActiveSheet()
+                    ->getPageSetup()
+                    ->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+            },
             AfterSheet::class => function (AfterSheet $afterSheet) {
                 $rupiahCurrencyMask = new Currency(
                     "Rp",
@@ -38,6 +50,14 @@ class BpjsTransactionsExport implements FromView, ShouldAutoSize, WithEvents
 
                 $afterSheet->sheet->formatColumn("C", $rupiahCurrencyMask);
             },
+        ];
+    }
+
+    public function properties(): array
+    {
+        return [
+            "creator" => Auth::user()->name,
+            "title" => "BPJS Subscription Extension Report"
         ];
     }
 }

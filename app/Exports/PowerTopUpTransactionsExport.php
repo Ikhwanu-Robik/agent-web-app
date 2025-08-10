@@ -4,14 +4,18 @@ namespace App\Exports;
 
 use App\Facades\TransactionReport;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithProperties;
+use Maatwebsite\Excel\Events\BeforeWriting;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\Number;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\Currency;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
-class PowerTopUpTransactionsExport implements FromView, ShouldAutoSize, WithEvents
+class PowerTopUpTransactionsExport implements FromView, ShouldAutoSize, WithEvents, WithProperties
 {
     /**
      * @return \Illuminate\Contracts\View\View
@@ -27,6 +31,14 @@ class PowerTopUpTransactionsExport implements FromView, ShouldAutoSize, WithEven
     public function registerEvents(): array
     {
         return [
+            BeforeWriting::class => function (BeforeWriting $event) {
+                $event
+                    ->getWriter()
+                    ->getDelegate()
+                    ->getActiveSheet()
+                    ->getPageSetup()
+                    ->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+            },
             AfterSheet::class => function (AfterSheet $afterSheet) {
                 $rupiahCurrencyMask = new Currency(
                     "Rp",
@@ -36,8 +48,16 @@ class PowerTopUpTransactionsExport implements FromView, ShouldAutoSize, WithEven
                     Currency::SYMBOL_WITHOUT_SPACING
                 );
 
-                $afterSheet->sheet->formatColumn("B", $rupiahCurrencyMask);
+                $afterSheet->sheet->formatColumn("B", $rupiahCurrencyMask);                
             },
+        ];
+    }
+
+    public function properties(): array
+    {
+        return [
+            "creator" => Auth::user()->name,
+            "title" => "Power Top Up Report"
         ];
     }
 }

@@ -144,6 +144,9 @@
                 <a href="{{ route('report', ['export' => 'xlsx', 'service' => $service]) }}">
                     <button>Export to Excel</button>
                 </a>
+                <a href="{{ route('report', ['export' => 'pdf', 'service' => $service]) }}">
+                    <button>Export to PDF</button>
+                </a>
             @endif
             @if ($service == 'bus-ticket')
                 <section id="content">
