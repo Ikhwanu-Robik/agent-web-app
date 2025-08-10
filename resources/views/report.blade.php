@@ -135,7 +135,7 @@
             <a href="/report?service=bus-ticket">Bus Ticket</a>
             <a href="/report?service=bpjs">BPJS</a>
             <a href="/report?service=film-ticket">Film Ticket</a>
-            <a href="/report?service=game-topup">Game Top Up</a>
+            <a href="/report?service=game-top-up">Game Top Up</a>
             <a href="/report?service=power-top-up">Power Top Up</a>
         </aside>
 
@@ -220,7 +220,7 @@
                         @endforeach
                     </ul>
                 </section>
-            @elseif($service == 'game-topup')
+            @elseif($service == 'game-top-up')
                 <section id="content">
                     <ul>
                         @foreach ($reports as $transaction)

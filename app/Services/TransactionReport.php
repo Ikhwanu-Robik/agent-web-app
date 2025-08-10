@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exports\BpjsTransactionsExport;
 use App\Exports\BusTicketTransactionsExport;
+use App\Exports\GameTopUpTransactionsExport;
 use Carbon\Carbon;
 use App\Models\BpjsTransaction;
 use App\Models\CivilInformation;
@@ -177,7 +178,7 @@ class TransactionReport
             case "film-ticket":
                 $reports = self::getFilmTicketTransaction();
                 break;
-            case "game-topup":
+            case "game-top-up":
                 $reports = self::getGameTopupTransaction();
                 break;
             case "power-top-up":
@@ -197,6 +198,8 @@ class TransactionReport
         }
         elseif ($service == "film-ticket") {
             return Excel::download(new FilmTicketTransactionsExport, "film-ticket-transaction-report.{$exportType}");
+        } elseif ($service == "game-top-up") {
+            return Excel::download(new GameTopUpTransactionsExport, "game-top-up-transaction-report.{$exportType}");
         }
 
         return null;

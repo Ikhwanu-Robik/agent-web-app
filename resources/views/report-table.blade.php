@@ -111,6 +111,35 @@
                 @endforeach
             </tbody>
         </table>
+    @elseif ($service == 'game-top-up')
+        <table>
+            <thead>
+                <tr>
+                    <th style="font-weight: bold">Date</th>
+                    <th style="font-weight: bold">Package</th>
+                    <th style="font-weight: bold">Game</th>
+                    <th style="font-weight: bold">Total</th>
+                    <th style="font-weight: bold">Method</th>
+                    <th style="font-weight: bold">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($reports as $transaction)
+                    <tr>
+                        <td>{{ $transaction->created_at }}</td>
+                        <td>
+                            {{ $transaction->topUpPackage->title . ' ' .
+                            $transaction->topUpPackage->items_count . ' ' .
+                            $transaction->topUpPackage->game->currency }}
+                        </td>
+                        <td>{{ $transaction->topUpPackage->game->name }}</td>
+                        <td>{{ $transaction->total }}</td>
+                        <td>{{ $transaction->method }}</td>
+                        <td>{{ $transaction->status }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     @endif
 </body>
 
