@@ -38,6 +38,29 @@
                 @endforeach
             </thead>
         </table>
+    @elseif ($service == 'bpjs')
+        <table>
+            <thead>
+                <tr>
+                    <th style="font-weight: bold">Date</th>
+                    <th style="font-weight: bold">Months Extended</th>
+                    <th style="font-weight: bold">Total</th>
+                    <th style="font-weight: bold">Method</th>
+                    <th style="font-weight: bold">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($reports as $transaction)
+                    <tr>
+                        <td>{{ $transaction->created_at }}</td>
+                        <td>{{ $transaction->month_bought }}</td>
+                        <td>{{ $transaction->total }}</td>
+                        <td>{{ $transaction->method }}</td>
+                        <td>{{ $transaction->status }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     @elseif ($service == 'film-ticket')
         <table>
             <thead>

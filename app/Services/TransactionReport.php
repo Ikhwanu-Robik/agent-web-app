@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exports\BpjsTransactionsExport;
 use App\Exports\BusTicketTransactionsExport;
 use Carbon\Carbon;
 use App\Models\BpjsTransaction;
@@ -190,6 +191,9 @@ class TransactionReport
     public static function export(string $service, string $exportType) {
         if ($service == "bus-ticket") {
             return Excel::download(new BusTicketTransactionsExport, "file-ticket-transction-report.{$exportType}");
+        }
+        elseif ($service == "bpjs") {
+            return Excel::download(new BpjsTransactionsExport, "bpjs-transaction-report.{$exportType}");
         }
         elseif ($service == "film-ticket") {
             return Excel::download(new FilmTicketTransactionsExport, "film-ticket-transaction-report.{$exportType}");
