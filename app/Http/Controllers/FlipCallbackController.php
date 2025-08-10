@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BpjsTransaction;
+use App\Facades\FlipTransaction;
 use App\Models\PowerTransaction;
-use App\Services\FlipTransaction;
 use App\Http\Controllers\Controller;
 use App\Models\BusTicketTransaction;
 use App\Models\GameTopUpTransaction;
@@ -16,7 +16,7 @@ class FlipCallbackController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, FlipTransaction $flipTransaction)
+    public function __invoke(Request $request)
     {
         $validated = $request->validate([
             "token" => "required",
@@ -29,7 +29,7 @@ class FlipCallbackController extends Controller
             return abort(403);
         }
 
-        $flipPaymentResponse = $flipTransaction->getFlipPayment($data->bill_link_id);
+        $flipPaymentResponse = FlipTransaction::getFlipPayment($data->bill_link_id);
 
         if ($flipPaymentResponse->failed()) {
             abort($flipPaymentResponse->getStatusCode());

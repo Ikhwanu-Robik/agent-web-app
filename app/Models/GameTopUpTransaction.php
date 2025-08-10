@@ -5,11 +5,11 @@ namespace App\Models;
 use App\Enums\FlipStep;
 use App\Models\Voucher;
 use App\Enums\FlipBillType;
+use App\Facades\FlipTransaction;
 use App\Models\GameTopUpPackage;
-use App\Services\FlipTransaction;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class GameTopUpTransaction extends Model
 {
@@ -55,7 +55,7 @@ class GameTopUpTransaction extends Model
         return $voucher;
     }
 
-    public function processPayment(FlipTransaction $flipTransaction, GameTopUpPackage $package, $validated)
+    public function processPayment(GameTopUpPackage $package, $validated)
     {
         $voucher = $this->calculateTotal($validated["voucher"]);
 
@@ -67,7 +67,7 @@ class GameTopUpTransaction extends Model
         if ($validated["payment_method"] == "cash") {
             $this->status = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
-            $response = $flipTransaction->createFlipBill(
+            $response = FlipTransaction::createFlipBill(
                 "Game Top Up - {$package->game->name} - {$package->title} - {$package->items_count} {$package->game->currency}",
                 FlipBillType::SINGLE,
                 $this->total,

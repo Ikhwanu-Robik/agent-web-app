@@ -4,7 +4,6 @@ namespace App\Http\Controllers\businesses;
 
 use App\Facades\TransactionReport;
 use App\Models\ActiveBpjs;
-use App\Services\FlipTransaction;
 use App\Models\BpjsTransaction;
 use App\Models\CivilInformation;
 use App\Http\Controllers\Controller;
@@ -20,7 +19,7 @@ class BpjsTransactionController extends Controller
         return redirect()->route("bpjs_transaction.form")->with("bpjs", $bpjs);
     }
 
-    public function pay(PayBpjsTransactionRequest $payBpjsTransactionRequest, FlipTransaction $flipTransaction)
+    public function pay(PayBpjsTransactionRequest $payBpjsTransactionRequest)
     {
         $validated = $payBpjsTransactionRequest->validated();
 

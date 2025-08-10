@@ -6,7 +6,6 @@ use App\Http\Requests\BuyGamePackageRequest;
 use App\Http\Requests\GetGamePackagesRequest;
 use App\Http\Requests\PayGamePackageRequest;
 use App\Models\GameTopUpPackage;
-use App\Services\FlipTransaction;
 use App\Http\Controllers\Controller;
 use App\Models\GameTopUpTransaction;
 
@@ -36,13 +35,13 @@ class GameTopUpTransactionController extends Controller
             ->with("transaction", $transaction);
     }
 
-    public function pay(PayGamePackageRequest $payGamePackageRequest, GameTopUpPackage $package, FlipTransaction $flipTransaction)
+    public function pay(PayGamePackageRequest $payGamePackageRequest, GameTopUpPackage $package)
     {
         $validated = $payGamePackageRequest->validated();
 
         $transaction = session("transaction");
 
-        $flipResponse = $transaction->processPayment($flipTransaction, $package, $validated);
+        $flipResponse = $transaction->processPayment($package, $validated);
 
         return redirect()
             ->route("game_top_up_transaction.receipt")

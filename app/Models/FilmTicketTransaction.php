@@ -6,7 +6,7 @@ use App\Enums\FlipStep;
 use App\Models\Voucher;
 use App\Models\CinemaFilm;
 use App\Enums\FlipBillType;
-use App\Services\FlipTransaction;
+use App\Facades\FlipTransaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -63,7 +63,7 @@ class FilmTicketTransaction extends Model
         return $voucher;
     }
 
-    public function processPayment( FlipTransaction $flipTransaction, array $validated)
+    public function processPayment(array $validated)
     {
         $voucher = $this->calculateTotal($validated["voucher"]);
 
@@ -74,7 +74,7 @@ class FilmTicketTransaction extends Model
             $this->status = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
             $this->method = "flip";
-            $response = $flipTransaction->createFlipBill(
+            $response = FlipTransaction::createFlipBill(
                 "Film Ticket - {$this->cinemaFilm->film->name} - {$this->cinemaFilm->cinema->name}",
                 FlipBillType::SINGLE,
                 $this->total,

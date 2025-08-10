@@ -6,7 +6,7 @@ use App\Enums\FlipStep;
 use App\Models\Voucher;
 use App\Enums\FlipBillType;
 use App\Models\BusSchedule;
-use App\Services\FlipTransaction;
+use App\Facades\FlipTransaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -73,7 +73,7 @@ class BusTicketTransaction extends Model
         return $voucher;
     }
 
-    public function processPayment(FlipTransaction $flipTransaction, array $validated)
+    public function processPayment(array $validated)
     {
         $busSchedule = BusSchedule::with(["bus", "originStation", "destinationStation"])
             ->findOrFail($validated["bus_schedule_id"]);
@@ -91,7 +91,7 @@ class BusTicketTransaction extends Model
             $this->method = "cash";
             $this->status = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
-            $response = $flipTransaction->createFlipBill(
+            $response = FlipTransaction::createFlipBill(
                 "Bus Ticket - {$busSchedule->bus->name} - {$busSchedule->origin_station->name} - {$busSchedule->destination_station->name}",
                 FlipBillType::SINGLE,
                 $this->total,

@@ -6,7 +6,6 @@ use App\Facades\TransactionReport;
 use App\Http\Requests\FinalizePowerTopUpRequest;
 use App\Http\Requests\PreparePowerTopUpRequest;
 use App\Models\Voucher;
-use App\Services\FlipTransaction;
 use App\Models\PowerTransaction;
 use App\Http\Controllers\Controller;
 
@@ -30,13 +29,13 @@ class PowerTopUpTransactionController extends Controller
             ->with("vouchers", $validVouchers);
     }
 
-    public function finalizeTransaction(FinalizePowerTopUpRequest $finalizePowerTopUpRequest, FlipTransaction $flipTransaction)
+    public function finalizeTransaction(FinalizePowerTopUpRequest $finalizePowerTopUpRequest)
     {
         $validated = $finalizePowerTopUpRequest->validated();
 
         $transaction = session("transaction");
 
-        $paymentData = $transaction->processPayment($flipTransaction, $validated);
+        $paymentData = $transaction->processPayment($validated);
 
         TransactionReport::updatePowerTopUpReport();
 

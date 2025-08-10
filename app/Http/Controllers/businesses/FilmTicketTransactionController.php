@@ -5,7 +5,6 @@ namespace App\Http\Controllers\businesses;
 use App\Http\Requests\GetAiringCinemaRequest;
 use App\Http\Requests\OrderFilmTicketRequest;
 use App\Http\Requests\PayFilmTicketRequest;
-use App\Services\FlipTransaction;
 use App\Models\Cinema;
 use App\Models\CinemaFilm;
 use App\Http\Controllers\Controller;
@@ -33,13 +32,13 @@ class FilmTicketTransactionController extends Controller
             ->with("seat_coordinates", $validated["seat_coordinates"]);
     }
 
-    public function makeTransaction(PayFilmTicketRequest $payFilmTicketRequest, FlipTransaction $flipTransaction)
+    public function makeTransaction(PayFilmTicketRequest $payFilmTicketRequest)
     {
         $validated = $payFilmTicketRequest->validated();
 
         $transaction = session("film_ticket_transaction");
 
-        $flipResponse = $transaction->processPayment($flipTransaction, $validated);
+        $flipResponse = $transaction->processPayment($validated);
 
         CinemaFilm::find($transaction->cinemaFilm->id)->updateAvailableSeats($transaction);
 

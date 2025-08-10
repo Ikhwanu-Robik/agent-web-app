@@ -4,7 +4,6 @@ namespace App\Http\Controllers\businesses;
 
 use App\Models\Voucher;
 use App\Models\BusSchedule;
-use App\Services\FlipTransaction;
 use App\Http\Controllers\Controller;
 use App\Models\BusTicketTransaction;
 use App\Http\Requests\PayBusTicketRequest;
@@ -38,12 +37,12 @@ class BusTicketTransactionController extends Controller
             ->with("vouchers", $validVouchers);
     }
 
-    public function pay(PayBusTicketRequest $payBusTicketRequest, FlipTransaction $flipTransaction)
+    public function pay(PayBusTicketRequest $payBusTicketRequest)
     {
         $validated = $payBusTicketRequest->validated();
 
         $transaction = session("transaction");
-        $paymentData = $transaction->processPayment($flipTransaction, $validated);
+        $paymentData = $transaction->processPayment($validated);
         
         BusSchedule::find($validated["bus_schedule_id"])
             ->reduceAvailableTicket($validated["ticket_amount"]);

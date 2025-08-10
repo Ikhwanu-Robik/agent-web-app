@@ -5,10 +5,10 @@ namespace App\Models;
 use App\Enums\FlipStep;
 use App\Models\ActiveBpjs;
 use App\Enums\FlipBillType;
+use App\Facades\FlipTransaction;
 use App\Models\CivilInformation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Facades\App\Services\FlipTransaction;
 
 class BpjsTransaction extends Model
 {
