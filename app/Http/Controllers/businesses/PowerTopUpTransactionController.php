@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\businesses;
 
 use App\Facades\TransactionReport;
-use App\Http\Requests\FinalizePowerTopUpRequest;
-use App\Http\Requests\PreparePowerTopUpRequest;
+use App\Http\Requests\PayPowerTopUpRequest;
+use App\Http\Requests\OrderPowerTopUpRequest;
 use App\Models\PowerTransaction;
 use App\Http\Controllers\Controller;
 
 class PowerTopUpTransactionController extends Controller
 {
-    public function order(PreparePowerTopUpRequest $preparePowerTopUpRequest)
+    public function order(OrderPowerTopUpRequest $orderPowerTopUpRequest)
     {
-        $validated = $preparePowerTopUpRequest->validated();
+        $validated = $orderPowerTopUpRequest->validated();
 
         // pretend calling external api to validate subscriber_number
         // POST https://pln.co.id/api/subcibers/validate
@@ -25,9 +25,9 @@ class PowerTopUpTransactionController extends Controller
             ->with("transaction", $transaction);
     }
 
-    public function pay(FinalizePowerTopUpRequest $finalizePowerTopUpRequest)
+    public function pay(PayPowerTopUpRequest $payPowerTopUpRequest)
     {
-        $validated = $finalizePowerTopUpRequest->validated();
+        $validated = $payPowerTopUpRequest->validated();
 
         $transaction = session("transaction");
 

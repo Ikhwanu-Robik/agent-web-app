@@ -7,7 +7,7 @@ use App\Enums\PaymentMethod;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class FinalizePowerTopUpRequest extends FormRequest
+class PayPowerTopUpRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

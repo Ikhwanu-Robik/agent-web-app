@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\businesses;
 
-use App\Http\Requests\BuyGamePackageRequest;
+use App\Http\Requests\OrderGamePackageRequest;
 use App\Http\Requests\GetGamePackagesRequest;
 use App\Http\Requests\PayGamePackageRequest;
 use App\Models\GameTopUpPackage;
@@ -24,9 +24,9 @@ class GameTopUpTransactionController extends Controller
             ->with("selected_game_id", $validated["game_id"]);
     }
 
-    public function order(BuyGamePackageRequest $buyGamePackageRequest, GameTopUpPackage $package)
+    public function order(OrderGamePackageRequest $orderGamePackageRequest, GameTopUpPackage $package)
     {
-        $validated = $buyGamePackageRequest->validated();
+        $validated = $orderGamePackageRequest->validated();
 
         $transaction = GameTopUpTransaction::createOrder($validated, $package);
 

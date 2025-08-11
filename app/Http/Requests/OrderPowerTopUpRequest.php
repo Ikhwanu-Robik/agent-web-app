@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BuyGamePackageRequest extends FormRequest
+class OrderPowerTopUpRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class BuyGamePackageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "game_id" => "required|exists:games,id",
-            "game_topup_package_id" => "required|exists:game_topup_packages,id"
+            "subscriber_number" => "required|numeric",
+            "nominal" => "required|numeric"
         ];
     }
 }
