@@ -67,12 +67,17 @@ class GameTopUpTransaction extends Model
         if ($validated["payment_method"] == "cash") {
             $this->status = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
+            $gameName = $package->game->name;
+            $packageTitle = $package->title;
+            $itemCount = $package->items_count;
+            $gameCurrency = $package->game->currency;
+
             $response = FlipTransaction::createFlipBill(
-                "Game Top Up - {$package->game->name} - {$package->title} - {$package->items_count} {$package->game->currency}",
+                "Game Top Up - {$gameName} - {$packageTitle} - {$itemCount} {$gameCurrency}",
                 FlipBillType::SINGLE,
                 $this->total,
                 FlipStep::INPUT_DATA,
-                "/game/topup"
+                "/game/top-up"
             );
 
             $flipResponse = $response;

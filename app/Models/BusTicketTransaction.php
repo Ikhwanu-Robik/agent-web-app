@@ -77,13 +77,12 @@ class BusTicketTransaction extends Model
     {
         $busSchedule = BusSchedule::with(["bus", "originStation", "destinationStation"])
             ->findOrFail($validated["bus_schedule_id"]);
-        
+
         $voucher = $this->calculateTotal(
             $busSchedule,
             $validated["ticket_amount"],
             $validated["voucher"]
         );
-
 
         $flipResponse = null;
         $this->status = "PENDING";
@@ -91,8 +90,12 @@ class BusTicketTransaction extends Model
             $this->method = "cash";
             $this->status = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
+            $busName = $busSchedule->bus->name;
+            $originStationName = $busSchedule->originStation->name;
+            $destinationStationName = $busSchedule->destinationStation->name;
+
             $response = FlipTransaction::createFlipBill(
-                "Bus Ticket - {$busSchedule->bus->name} - {$busSchedule->origin_station->name} - {$busSchedule->destination_station->name}",
+                "Bus Ticket - {$busName} - {$originStationName} - {$destinationStationName}",
                 FlipBillType::SINGLE,
                 $this->total,
                 FlipStep::INPUT_DATA,
@@ -100,7 +103,7 @@ class BusTicketTransaction extends Model
             );
 
             $this->method = "flip";
-            $this->flip_link_id = $response["flip_link_id"];
+            $this->flip_link_id = $response["link_id"];
 
             $flipResponse = $response;
         }

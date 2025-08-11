@@ -74,12 +74,15 @@ class FilmTicketTransaction extends Model
             $this->status = "SUCCESSFUL";
         } else if ($validated["payment_method"] == "flip") {
             $this->method = "flip";
+            $filmName = $this->cinemaFilm->film->title;
+            $cinemaName = $this->cinemaFilm->cinema->name;
+
             $response = FlipTransaction::createFlipBill(
-                "Film Ticket - {$this->cinemaFilm->film->name} - {$this->cinemaFilm->cinema->name}",
+                "Film Ticket - {$filmName} - {$cinemaName}",
                 FlipBillType::SINGLE,
                 $this->total,
                 FlipStep::INPUT_DATA,
-                "/film/cinema"
+                "/film"
             );
 
             $flipResponse = $response;
