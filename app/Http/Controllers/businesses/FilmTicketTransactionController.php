@@ -12,7 +12,7 @@ use App\Models\FilmTicketTransaction;
 
 class FilmTicketTransactionController extends Controller
 {
-    public function searchCinema(GetAiringCinemaRequest $getAiringCinemaRequest)
+    public function search(GetAiringCinemaRequest $getAiringCinemaRequest)
     {
         $validated = $getAiringCinemaRequest->validated();
         $matchingCinemas = Cinema::findAiring($validated["film_id"]);
@@ -32,7 +32,7 @@ class FilmTicketTransactionController extends Controller
             ->with("seat_coordinates", $validated["seat_coordinates"]);
     }
 
-    public function makeTransaction(PayFilmTicketRequest $payFilmTicketRequest)
+    public function pay(PayFilmTicketRequest $payFilmTicketRequest)
     {
         $validated = $payFilmTicketRequest->validated();
 

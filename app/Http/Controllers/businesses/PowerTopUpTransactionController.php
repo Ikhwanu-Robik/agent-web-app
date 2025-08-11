@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 
 class PowerTopUpTransactionController extends Controller
 {
-    public function prepareTransaction(PreparePowerTopUpRequest $preparePowerTopUpRequest)
+    public function order(PreparePowerTopUpRequest $preparePowerTopUpRequest)
     {
         $validated = $preparePowerTopUpRequest->validated();
 
@@ -25,7 +25,7 @@ class PowerTopUpTransactionController extends Controller
             ->with("transaction", $transaction);
     }
 
-    public function finalizeTransaction(FinalizePowerTopUpRequest $finalizePowerTopUpRequest)
+    public function pay(FinalizePowerTopUpRequest $finalizePowerTopUpRequest)
     {
         $validated = $finalizePowerTopUpRequest->validated();
 

@@ -24,7 +24,7 @@ class GameTopUpTransactionController extends Controller
             ->with("selected_game_id", $validated["game_id"]);
     }
 
-    public function buyPackage(BuyGamePackageRequest $buyGamePackageRequest, GameTopUpPackage $package)
+    public function order(BuyGamePackageRequest $buyGamePackageRequest, GameTopUpPackage $package)
     {
         $validated = $buyGamePackageRequest->validated();
 
