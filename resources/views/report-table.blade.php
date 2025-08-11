@@ -72,6 +72,8 @@
                     <th style="font-weight: bold">Quantity</th>
                     <th style="font-weight: bold">Seats</th>
                     <th style="font-weight: bold">Total</th>
+                    <th style="font-weight: bold">Method</th>
+                    <th style="font-weight: bold">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -97,6 +99,12 @@
                         </td>
                         <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
                             {{ $transaction->total }}
+                        </td>
+                        <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
+                            {{ $transaction->method }}
+                        </td>
+                        <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
+                            {{ $transaction->status }}
                         </td>
                     </tr>
                     @if ($ticket_qty > 1)
