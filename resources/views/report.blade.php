@@ -161,6 +161,7 @@
                                     Rp.{{ number_format($transaction->total, 0, ',', '.') }} |
                                     {{ $transaction->method }} |
                                     {{ $transaction->status }}</p>
+                                <span>{{ $transaction->created_at }}</span>
                             </li>
                         @endforeach
                     </ul>
@@ -196,10 +197,11 @@
                         <ul>
                             @foreach ($bpjsTransactions as $transaction)
                                 <li class="transaction-record">
+                                    <span>{{ $transaction->created_at }}</span>
                                     <h5>+ {{ $transaction->month_bought }}
                                         month{{ $transaction->month_bought > 1 ? 's' : '' }}</h5>
                                     <span>Rp.{{ number_format($transaction->total, 0, '.') }} |
-                                        {{ $transaction->method }}</span>
+                                        {{ $transaction->method }} | {{ $transaction->status }}</span>
                                 </li>
                             @endforeach
                         </ul>
@@ -219,6 +221,13 @@
                                 <span>Seats :
                                     {{ $transaction->seats_coordinates }}
                                 </span>
+                                <span>
+                                    Method: {{ $transaction->method }}
+                                </span>
+                                <span>
+                                    Status: {{ $transaction->status }}
+                                </span>
+                                <br>
                             </li>
                         @endforeach
                     </ul>
@@ -265,7 +274,8 @@
                             @foreach ($reports as $transaction)
                                 <li class="transaction-record">
                                     <h5>Rp.{{ number_format($transaction->total, 0, '.') }} |
-                                        {{ $transaction->method }}</h5>
+                                        {{ $transaction->method }} | {{ $transaction->status }}</h5>
+                                    <span>{{ $transaction->created_at }}</span>
                                 </li>
                             @endforeach
                         </ul>
