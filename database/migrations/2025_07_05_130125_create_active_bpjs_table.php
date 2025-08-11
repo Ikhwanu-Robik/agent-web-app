@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('active_bpjs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("civil_information_id");
-            $table->integer("class_id");
+            $table->unsignedBigInteger("class_id");
             $table->string("due_timestamp");
             $table->timestamps();
 

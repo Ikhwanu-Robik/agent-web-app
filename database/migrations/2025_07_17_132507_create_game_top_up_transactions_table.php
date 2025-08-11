@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('flip_link_id')->unique()->nullable();
             $table->timestamps();
 
-            $table->foreign("package_id")->references("id")->on("game_topup_packages");
+            $table->foreign("package_id")->references("id")->on("game_top_up_packages");
         });
     }
 
