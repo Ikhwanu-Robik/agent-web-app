@@ -46,7 +46,7 @@ return new class extends Migration {
             $table->integer("ticket_amount");
             $table->integer("total");
             $table->string('method')->nullable();
-            $table->boolean('status')->nullable();
+            $table->string('status')->nullable();
             $table->string('flip_link_id')->unique()->nullable();
 
             $table->foreign("bus_schedule_id")->references("id")->on("bus_schedules");
