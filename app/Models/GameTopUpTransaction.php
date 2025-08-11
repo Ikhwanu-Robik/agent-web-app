@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class GameTopUpTransaction extends Model
 {
-    protected $table = "game_topup_transactions";
-
     protected $fillable = [
         'user_id',
         'package_id',        

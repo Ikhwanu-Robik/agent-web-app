@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('game_topup_transactions', function (Blueprint $table) {
+        Schema::create('game_top_up_transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->unsignedBigInteger('package_id');
@@ -29,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('game_topup_transactions');
+        Schema::dropIfExists('game_top_up_transactions');
     }
 };

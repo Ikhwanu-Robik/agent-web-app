@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class GameTopUpPackage extends Model
 {
-    protected $table = "game_topup_packages";
-
     protected $fillable = [
         'game_id',
         'title',

@@ -19,7 +19,7 @@ class GameTopUpTransaction extends Seeder
             "currency" => "Originite Prime"
         ]);
 
-        DB::table("game_topup_packages")->insert([
+        DB::table("game_top_up_packages")->insert([
             "game_id" => 1,
             "title" => "5th Anniversery Offer",
             "items_count" => 70,
