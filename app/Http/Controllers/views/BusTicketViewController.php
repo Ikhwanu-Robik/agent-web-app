@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\views;
 
+use App\Models\Voucher;
 use App\Models\BusStation;
 use App\Http\Controllers\Controller;
 
@@ -15,7 +16,7 @@ class BusTicketViewController extends Controller
     public function busPayment()
     {
         $transaction = session("transaction");
-        $vouchers = session("vouchers");
+        $vouchers = Voucher::getValidVouchers("bus_ticket");
 
         session()->reflash();
 

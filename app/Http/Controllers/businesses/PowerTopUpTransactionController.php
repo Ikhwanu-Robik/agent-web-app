@@ -5,7 +5,6 @@ namespace App\Http\Controllers\businesses;
 use App\Facades\TransactionReport;
 use App\Http\Requests\FinalizePowerTopUpRequest;
 use App\Http\Requests\PreparePowerTopUpRequest;
-use App\Models\Voucher;
 use App\Models\PowerTransaction;
 use App\Http\Controllers\Controller;
 
@@ -21,12 +20,9 @@ class PowerTopUpTransactionController extends Controller
 
         $transaction = PowerTransaction::createOrder($validated);
 
-        $validVouchers = Voucher::getValidVouchers("power");
-
         return redirect()
             ->route("power_top_up_transaction.select_payment_method")
-            ->with("transaction", $transaction)
-            ->with("vouchers", $validVouchers);
+            ->with("transaction", $transaction);
     }
 
     public function finalizeTransaction(FinalizePowerTopUpRequest $finalizePowerTopUpRequest)

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\businesses;
 
-use App\Models\Voucher;
 use App\Models\BusSchedule;
 use App\Http\Controllers\Controller;
 use App\Models\BusTicketTransaction;
@@ -29,12 +28,9 @@ class BusTicketTransactionController extends Controller
         $transaction = BusTicketTransaction::createOrder($validated);
         $transaction->appendBusScheduleDetails();
 
-        $validVouchers = Voucher::getValidVouchers("bus_ticket");
-
         return redirect()
             ->route("bus_ticket_transaction.select_payment_method")
-            ->with("transaction", $transaction)
-            ->with("vouchers", $validVouchers);
+            ->with("transaction", $transaction);
     }
 
     public function pay(PayBusTicketRequest $payBusTicketRequest)

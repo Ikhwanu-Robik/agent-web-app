@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\views;
 
+use App\Models\Voucher;
 use App\Http\Controllers\Controller;
 
 class PowerTopupViewController extends Controller
@@ -16,9 +17,10 @@ class PowerTopupViewController extends Controller
         if (!session()->has("transaction")) {
             return redirect()->route("power_top_up_transaction.form");
         }
+        $vouchers = Voucher::getValidVouchers("power");
         session()->reflash();
 
-        return view("agent.power-topup.payment-method", ["vouchers" => session("vouchers")]);
+        return view("agent.power-topup.payment-method", ["vouchers" => $vouchers]);
     }
 
     public function showReceipt()
