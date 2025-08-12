@@ -96,7 +96,7 @@ class FilmTicketTransaction extends Model
         }
         $this->cinema_film = $this->cinemaFilm;
         $this->payment_method = $this->method;
-        $this->seats_coordinates_array = session("seat_coordinates");    
+        $this->seats_coordinates_array = json_decode($this->seats_coordinates);    
 
         return $flipResponse;
     }

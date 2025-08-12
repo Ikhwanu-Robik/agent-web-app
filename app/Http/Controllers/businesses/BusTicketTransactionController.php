@@ -40,8 +40,10 @@ class BusTicketTransactionController extends Controller
         $transaction = session("transaction");
         $paymentData = $transaction->processPayment($validated);
         
-        BusSchedule::find($validated["bus_schedule_id"])
-            ->reduceAvailableTicket($validated["ticket_amount"]);
+        if ($transaction->status == "SUCCESSFUL") {
+            BusSchedule::find($validated["bus_schedule_id"])
+                ->reduceAvailableTicket($validated["ticket_amount"]);
+        }
 
         return redirect()
             ->route("bus_ticket_transaction.receipt")

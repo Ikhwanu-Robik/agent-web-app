@@ -45,19 +45,18 @@ class CinemaFilm extends Model
         CinemaFilm::create($attributes);
     }
 
-    public function updateAvailableSeats(FilmTicketTransaction $transaction)
+    public function updateAvailableSeats(array $bookedSeatsCoordinates)
     {
-        $cinemaFilm = CinemaFilm::find($transaction->cinema_film->id);
-        $newSeats = json_decode($cinemaFilm->seats_status);
+        $newSeats = json_decode($this->seats_status);
 
-        foreach (session("seat_coordinates") as $seatCoord) {
+        foreach ($bookedSeatsCoordinates as $seatCoord) {
             $col = explode(",", $seatCoord)[0];
             $row = explode(",", $seatCoord)[1];
 
             $newSeats[$row][$col] = 1;
         }
 
-        $cinemaFilm->seats_status = json_encode($newSeats);
-        $cinemaFilm->save();
+        $this->seats_status = json_encode($newSeats);
+        $this->save();
     }
 }

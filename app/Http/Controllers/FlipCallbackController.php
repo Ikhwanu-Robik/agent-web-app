@@ -45,12 +45,20 @@ class FlipCallbackController extends Controller
 
         if ($busTicketTransaction) {
             $busTicketTransaction->status = $paymentData["status"];
+            if ($paymentData["status"] == "SUCCESSFUL") {
+                $busTicketTransaction->busSchedule
+                    ->reduceAvailableTicket($busTicketTransaction->ticket_amount);
+            }
             $busTicketTransaction->save();
         } else if ($bpjsTransaction) {
             $bpjsTransaction->status = $paymentData["status"];
             $bpjsTransaction->save();
         } else if ($filmTicketTransaction) {
             $filmTicketTransaction->status = $paymentData["status"];
+            if ($paymentData["status"] == "SUCCESSFUL") {
+                $filmTicketTransaction->CinemaFilm
+                    ->updateAvailableSeats(json_decode($filmTicketTransaction->seats_coordinates));
+            }
             $filmTicketTransaction->save();
         } else if ($gameTopUpTransaction) {
             $gameTopUpTransaction->status = $paymentData["status"];

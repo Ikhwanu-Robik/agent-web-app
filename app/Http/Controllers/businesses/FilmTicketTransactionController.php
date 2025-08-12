@@ -6,7 +6,6 @@ use App\Http\Requests\GetAiringCinemaRequest;
 use App\Http\Requests\OrderFilmTicketRequest;
 use App\Http\Requests\PayFilmTicketRequest;
 use App\Models\Cinema;
-use App\Models\CinemaFilm;
 use App\Http\Controllers\Controller;
 use App\Models\FilmTicketTransaction;
 
@@ -40,7 +39,9 @@ class FilmTicketTransactionController extends Controller
 
         $flipResponse = $transaction->processPayment($validated);
 
-        CinemaFilm::find($transaction->cinemaFilm->id)->updateAvailableSeats($transaction);
+        if ($transaction->status == "SUCCESSFUL") {
+            $transaction->CinemaFilm->updateAvailableSeats(json_decode($transaction->seats_coordinates));
+        }
 
         return redirect()
             ->route("film_ticket_transaction.receipt")
