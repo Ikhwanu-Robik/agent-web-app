@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vouchers</title>
+    <title>BPJS</title>
     <style>
         * {
             padding: 0;
@@ -69,16 +69,27 @@
             background-color: rgb(10, 60, 114);
             border: none;
         }
-
-        #voucher-container {
+    
+        main {
+            padding: 3em;
             display: flex;
+            flex-direction: column;
             gap: 1em;
-            margin: 0.5em;
         }
 
-        .voucher {
-            background-color: rgb(255, 255, 98);
-            padding: 1em;
+        main input, main button, main select {
+            padding: 0.2em;
+        }
+
+        main button {
+            background-color: rgb(0, 128, 255);
+            color: white;
+            border: none;
+            padding: 0.5em;
+        }
+
+        main button:hover {
+            background-color: rgb(0, 200, 255);
         }
     </style>
 </head>
@@ -87,9 +98,9 @@
     @include('components.header')
 
     <main>
-        <h1>Bayar BPJS</h1>
+        <h1>Extend BPJS Subscription</h1>
 
-        <h2>Cari tahu masa aktif BPJS mu</h2>
+        <h2>Find out your remaining your BPJS expiry</h2>
 
         @if ($errors->any())
             @foreach ($errors->all() as $error)
@@ -103,22 +114,23 @@
             @csrf
             <label for="civil-id">NIK</label>
             <input type="number" name="civil_id" id="civil-id" value="{{ $bpjs ? $bpjs->civilInformation->NIK : '' }}">
-            <button type="submit">Cari data BPJS</button>
+            <button type="submit">Find BPJS Data</button>
         </form>
 
         @if ($bpjs)
             <section id="bpjs-active-status">
                 @if ($bpjs->isStillActive())
-                    Kamu BPJS kelas {{ $bpjs->bpjsClass->class }}, dengan biaya bulanan
-                    Rp.{{ number_format($bpjs->bpjsClass->price, 0, '.') }}. Kamu sudah membayar BPJS sampai
+                    BPJS Class {{ $bpjs->bpjsClass->class }}, with monthly fee
+                    Rp.{{ number_format($bpjs->bpjsClass->price, 0, '.') }}.
+                    Your BPJS will be active until
                     {{ $bpjs->dueDate()->monthName . ' ' . $bpjs->dueDate()->year }}
                 @else
-                    Kamu tidak memiliki langganan BPJS yang aktif
+                    Your BPJS is currently inactive
                 @endif
             </section>
-            <h2>Bayar BPJS</h2>
+            <h2>Extend BPJS</h2>
         @else
-            <h2>atau langsung berlangganan</h2>
+            <h2>or straight up extend subscription</h2>
         @endif
 
         <form action="{{ route("bpjs_transaction.pay") }}" method="post">
@@ -129,14 +141,14 @@
                 <label for="civil-id">NIK</label>
                 <input type="number" name="civil_id" id="civil-id">
             @endif
-            <label for="month">Untuk Berapa Bulan</label>
+            <label for="month">for how many months</label>
             <input type="number" name="month" id="month" min="1" value="1">
-            <label for="method">Metode pembayaran</label>
+            <label for="method">Payment Method</label>
             <select name="payment_method" id="method">
                 <option value="cash">Cash</option>
                 <option value="flip">Flip</option>
             </select>
-            <button type="submit">Bayar</button>
+            <button type="submit">Pay</button>
         </form>
     </main>
 </body>

@@ -1,0 +1,54 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+#container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(207, 207, 207);
+}
+
+#receipt {
+    height: 100vh;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 1em;
+    padding: 2em;
+}
+
+header {
+    background-color: rgb(0, 136, 255);
+    width: 28vw;
+    height: 8em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+#transaction-status,
+#timestamp {
+    color: rgb(255, 255, 255);
+}
+
+section {
+    display: flex;
+    width: 28vw;
+    height: 70vh;
+    background-color: rgb(255, 255, 255);
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+    gap: 1em;
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+}

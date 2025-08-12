@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vouchers</title>
+    <title>Game Top Up</title>
     <style>
         * {
             padding: 0;
@@ -70,15 +70,32 @@
             border: none;
         }
 
-        #voucher-container {
+        main {
+            padding: 3em;
             display: flex;
+            flex-direction: column;
             gap: 1em;
-            margin: 0.5em;
         }
 
-        .voucher {
-            background-color: rgb(255, 255, 98);
-            padding: 1em;
+        main input,
+        main button,
+        main select {
+            padding: 0.2em;
+        }
+
+        main button {
+            background-color: rgb(0, 128, 255);
+            color: white;
+            border: none;
+            padding: 0.5em;
+        }
+
+        main button:hover {
+            background-color: rgb(0, 200, 255);
+        }
+
+        main > table {
+            display: block;
         }
     </style>
 </head>
@@ -102,23 +119,23 @@
             <tr>
                 <td>Items</td>
                 <td>:</td>
-                <td>{{ $package->items_count }}</td>
+                <td>{{ $package->items_count }} {{ $package->game->currency }}</td>
             </tr>
             <tr>
                 <td>Price</td>
                 <td>:</td>
-                <td>{{ $package->price }}</td>
+                <td>Rp. {{ number_format($package->price, 0, ",", ".") }}</td>
             </tr>
         </table>
 
         <form action="{{ route("game_top_up_transaction.pay", ["package" => $package->id]) }}" method="post">
             @csrf
-            <label for="payment_method">payment_method</label>
+            <label for="payment_method">Payment Method</label>
             <select name="payment_method" id="payment_method">
                 <option value="cash">cash</option>
                 <option value="flip">flip</option>
             </select>
-            <label for="voucher">voucher</label>
+            <label for="voucher">Voucher</label>
             <select name="voucher" id="voucher">
                 <option value="-1">no voucher</option>
                 @foreach ($vouchers as $voucher)

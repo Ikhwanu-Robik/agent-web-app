@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vouchers</title>
+    <title>Bus Ticket</title>
     <style>
         * {
             padding: 0;
@@ -70,15 +70,28 @@
             border: none;
         }
 
-        #voucher-container {
+        main {
+            padding: 3em;
             display: flex;
+            flex-direction: column;
             gap: 1em;
-            margin: 0.5em;
         }
 
-        .voucher {
-            background-color: rgb(255, 255, 98);
-            padding: 1em;
+        main input,
+        main button,
+        main select {
+            padding: 0.2em;
+        }
+
+        main button {
+            background-color: rgb(0, 128, 255);
+            color: white;
+            border: none;
+            padding: 0.5em;
+        }
+
+        main button:hover {
+            background-color: rgb(0, 200, 255);
         }
     </style>
 </head>
@@ -87,19 +100,21 @@
     @include('components.header')
 
     <main>
-        <h2>
-            You're About to Buy Bus Tiket for {{ $transaction->busSchedule->bus->name }}</h2>
-
-        <div>
+        <h2>You're About to Buy Bus Tiket for {{ $transaction->busSchedule->bus->name }}</h2>
+        <div id="transaction-data">
             <h4>From {{ $transaction->busSchedule->originStation->name }} To
                 {{ $transaction->busSchedule->destinationStation->name }}</h4>
             <h4>Depart at
                 {{ $transaction->busSchedule->departure_date . ' ' . $transaction->busSchedule->departure_time }}
             </h4>
-            <span>{{ $transaction->ticket_amount }} Ticket{{ $transaction->ticket_amount > 1 ? 's' : '' }}</span> <br>
+            <span>{{ $transaction->ticket_amount }} Ticket{{ $transaction->ticket_amount > 1 ? 's' : '' }}</span>
+            <br>
             <h3>Rp.{{ $transaction->total }}</h3>
+        </div>
+
+        <div id="form">
             <h3>Choose your payment method</h3>
-            <form action="{{ route("bus_ticket_transaction.pay") }}" method="post" style="display:inline">
+            <form action="{{ route('bus_ticket_transaction.pay') }}" method="post" style="display:inline">
                 @csrf
                 <input type="hidden" name="bus_schedule_id" value="{{ $transaction->bus_schedule_id }}" />
                 <input type="hidden" name="ticket_amount" value="{{ $transaction->ticket_amount }}" />

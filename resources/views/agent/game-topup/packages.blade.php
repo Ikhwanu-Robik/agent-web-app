@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vouchers</title>
+    <title>Game Top Up</title>
     <style>
         * {
             padding: 0;
@@ -70,15 +70,28 @@
             border: none;
         }
 
-        #voucher-container {
+        main {
+            padding: 3em;
             display: flex;
+            flex-direction: column;
             gap: 1em;
-            margin: 0.5em;
         }
 
-        .voucher {
-            background-color: rgb(255, 255, 98);
-            padding: 1em;
+        main input,
+        main button,
+        main select {
+            padding: 0.2em;
+        }
+
+        main button {
+            background-color: rgb(0, 128, 255);
+            color: white;
+            border: none;
+            padding: 0.5em;
+        }
+
+        main button:hover {
+            background-color: rgb(0, 200, 255);
         }
     </style>
 </head>
@@ -88,7 +101,7 @@
 
     <main>
         <h1>Top Up Game</h1>
-        <h2>Pilih Game</h2>
+        <h2>Choose Game</h2>
 
         <form action="{{ route("game_top_up_transaction.find_game_packages") }}" method="post">
             @csrf
@@ -97,7 +110,7 @@
                     <option value="{{ $game->id }}">{{ $game->name }}</option>
                 @endforeach
             </select>
-            <button type="submit">Pilih</button>
+            <button type="submit">Search Top Up Packages</button>
         </form>
 
         @if ($packages)
@@ -109,12 +122,12 @@
                                 <h3>{{ $package->title }}</h3>
                                 <span>{{ $package->game->name }}</span> <br>
                                 <em>{{ $package->items_count }} {{ $package->game->currency }} -
-                                    {{ $package->price }}</em>
+                                    Rp. {{ number_format($package->price, 0, ",", ".") }}</em>
                                 <form action="{{ route("game_top_up_transaction.order_package", ["package" => $package->id]) }}" method="post">
                                     @csrf
                                     <input type="hidden" name="game_id" value="{{ $selectedGameId }}">
                                     <input type="hidden" name="game_top_up_package_id" value="{{ $package->id }}">
-                                    <button type="submit">Beli</button>
+                                    <button type="submit">Buy</button>
                                 </form>
                             </div>
                         </li>

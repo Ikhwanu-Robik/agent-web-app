@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vouchers</title>
+    <title>Film Ticket</title>
     <style>
         * {
             padding: 0;
@@ -70,15 +70,28 @@
             border: none;
         }
 
-        #voucher-container {
+        main {
+            padding: 3em;
             display: flex;
+            flex-direction: column;
             gap: 1em;
-            margin: 0.5em;
         }
 
-        .voucher {
-            background-color: rgb(255, 255, 98);
-            padding: 1em;
+        main input,
+        main button,
+        main select {
+            padding: 0.2em;
+        }
+
+        main button {
+            background-color: rgb(0, 128, 255);
+            color: white;
+            border: none;
+            padding: 0.5em;
+        }
+
+        main button:hover {
+            background-color: rgb(0, 200, 255);
         }
     </style>
 </head>
@@ -88,8 +101,8 @@
 
     <main>
 
-        <h1>Beli Tiket Film</h1>
-        <h2>Pilih Kursi</h2>
+        <h1>Buy Film Ticket</h1>
+        <h2>Choose Your Seat</h2>
 
         @if ($errors->any())
             <div>
@@ -101,14 +114,14 @@
             </div>
         @endif
 
-        <h3>{{ $filmSchedule->film->title }}</h3>
-        <span>{{ $filmSchedule->cinema->name }}</span> <br>
-        <span>{{ $filmSchedule->airing_datetime }}</span> <br>
-        <span>Rp.{{ number_format($filmSchedule->ticket_price, 0, '.') }}</span>
+        <div>
+            <h3>{{ $filmSchedule->film->title }}</h3>
+            <span>{{ $filmSchedule->cinema->name }}</span> <br>
+            <span>{{ $filmSchedule->airing_datetime }}</span> <br>
+            <span>Rp.{{ number_format($filmSchedule->ticket_price, 0, '.') }}</span>
+        </div>
 
         <div id="seats">
-            <span>Pilih Kursi</span>
-
             <form action="{{ route("film_ticket_transaction.book_seat") }}" method="post">
                 @csrf
                 <input type="hidden" name="cinema_film_id" value="{{ $filmSchedule->id }}">
@@ -129,7 +142,7 @@
                     @endforeach
 
                 </table>
-                <button type="submit">Beli</button>
+                <button type="submit">Pay</button>
 
             </form>
 

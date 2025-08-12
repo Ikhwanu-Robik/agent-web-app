@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vouchers</title>
+    <title>Bus Ticket</title>
     <style>
         * {
             padding: 0;
@@ -80,6 +80,28 @@
             background-color: rgb(255, 255, 98);
             padding: 1em;
         }
+
+        main {
+            padding: 3em;
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+
+        main input, main button, main select {
+            padding: 0.2em;
+        }
+
+        main button {
+            background-color: rgb(0, 128, 255);
+            color: white;
+            border: none;
+            padding: 0.5em;
+        }
+
+        main button:hover {
+            background-color: rgb(0, 200, 255);
+        }
     </style>
 </head>
 
@@ -87,7 +109,7 @@
     @include('components.header')
 
     <main>
-        <h1>Beli Tiket Bus</h1>
+        <h1>Buy Bus Ticket</h1>
 
         @if ($errors->any())
             <div class="error" style="color:red">
@@ -102,7 +124,7 @@
         <form action="{{ route("bus_ticket_transaction.find_package") }}" method="post">
             @csrf
 
-            <label for="origin">Dari</label>
+            <label for="origin">From</label>
             <select name="origin" id="origin">
                 @foreach ($busStations as $station)
                     <option value="{{ $station->id }}"
@@ -110,7 +132,7 @@
                         {{ $station->name }}</option>
                 @endforeach
             </select>
-            <label for="destination">Tujuan</label>
+            <label for="destination">To</label>
             <select name="destination" id="destination">
                 @foreach ($busStations as $station)
                     <option value="{{ $station->id }}"
@@ -118,11 +140,11 @@
                         {{ $station->name }}</option>
                 @endforeach
             </select>
-            <label for="ticket-amount">Jumlah Tiket</label>
+            <label for="ticket-amount">Quantity</label>
             <input type="number" name="ticket_amount" id="ticket-amount" min="1"
                 value="{{ old('ticket_amount') ? old('ticket_amount') : 1 }}">
 
-            <button type="submit">Cari</button>
+            <button type="submit">Search Ticket</button>
         </form>
 
         @php
@@ -135,34 +157,35 @@
             }
         @endphp
 
-        @if ($counter == 0 && session('redirect_status'))
-            <h2>Tidak ada jadwal yang sesuai</h2>
-        @elseif ($counter != 0)
-            <h2>Jadwal Sesuai</h2>
-            <ul>
-                @foreach (session('matching_schedules') as $schedule)
-                    <li>
-                        <section id="matching_schedules">
-                            <h3>{{ $schedule->bus->name }}</h3>
-                            <span>dari</span> <b>{{ $schedule->originStation->name }}</b> <span>ke</span>
-                            <b>{{ $schedule->destinationStation->name }}</b> <br>
-                            <span>berangkat</span> <b>{{ $schedule->departure_date }}</b>
-                            <b>{{ $schedule->departure_time }}</b>
-                            <br>
-                            <span>kursi tersedia</span> <b>{{ $schedule->seats }}</b> <br>
-                            <b>Rp. {{ $schedule->ticket_price }} / tiket</b>
-                            <form action="{{ route("bus_ticket_transaction.order") }}" method="post" style="display:inline">
-                                @csrf
-                                <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
-                                <input type="hidden" name="ticket_amount"
-                                    value="{{ session('_old_input')['ticket_amount'] }}" />
-                                <button type="submit">Beli {{ session('_old_input')['ticket_amount'] }} tiket</button>
-                            </form>
-                        </section>
-                    </li>
-                @endforeach
-            </ul>
-        @endif
+        <div>
+            @if ($counter == 0 && session('redirect_status'))
+                <h2>No matching schedule</h2>
+            @elseif ($counter != 0)
+                <ul>
+                    @foreach (session('matching_schedules') as $schedule)
+                        <li>
+                            <section id="matching_schedules">
+                                <h3>{{ $schedule->bus->name }}</h3>
+                                <span>From</span> <b>{{ $schedule->originStation->name }}</b>
+                                <span>To</span> <b>{{ $schedule->destinationStation->name }}</b> <br>
+                                <span>Depart at </span> <b>{{ $schedule->departure_date }}</b>
+                                <b>{{ $schedule->departure_time }}</b>
+                                <br>
+                                <span>Seats remaining</span> <b>{{ $schedule->seats }}</b> <br>
+                                <b>Rp. {{ $schedule->ticket_price }} / ticket</b>
+                                <form action="{{ route("bus_ticket_transaction.order") }}" method="post" style="display:inline">
+                                    @csrf
+                                    <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
+                                    <input type="hidden" name="ticket_amount"
+                                        value="{{ session('_old_input')['ticket_amount'] }}" />
+                                    <button type="submit">Buy {{ session('_old_input')['ticket_amount'] }} ticket</button>
+                                </form>
+                            </section>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
+        </div>
 
     </main>
 </body>
