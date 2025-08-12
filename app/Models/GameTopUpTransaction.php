@@ -30,7 +30,7 @@ class GameTopUpTransaction extends Model
     {
         return self::make([
             "user_id" => Auth::id(),
-            "package_id" => $validated["game_topup_package_id"],
+            "package_id" => $validated["game_top_up_package_id"],
             "total" => $package->price,
             "method" => null,
             "status" => null,

@@ -113,7 +113,7 @@
                                 <form action="{{ route("game_top_up_transaction.order_package", ["package" => $package->id]) }}" method="post">
                                     @csrf
                                     <input type="hidden" name="game_id" value="{{ $selectedGameId }}">
-                                    <input type="hidden" name="game_topup_package_id" value="{{ $package->id }}">
+                                    <input type="hidden" name="game_top_up_package_id" value="{{ $package->id }}">
                                     <button type="submit">Beli</button>
                                 </form>
                             </div>

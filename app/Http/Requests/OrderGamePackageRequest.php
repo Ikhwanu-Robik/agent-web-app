@@ -23,7 +23,7 @@ class OrderGamePackageRequest extends FormRequest
     {
         return [
             "game_id" => "required|exists:games,id",
-            "game_topup_package_id" => "required|exists:game_topup_packages,id"
+            "game_top_up_package_id" => "required|exists:game_top_up_packages,id"
         ];
     }
 }
