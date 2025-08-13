@@ -126,11 +126,11 @@
                             <h4>Available Schedule</h4> <br> <br>
 
                             <div class="schedule-list">
-                                @foreach ($cinema->films as $schedule)
+                                @foreach ($cinema->schedules as $schedule)
                                     <form action="{{ route('film_ticket_transaction.show_book_seat_form') }}"
                                         method="get">
                                         <input type="hidden" name="cinema_film_id"
-                                            value="{{ $schedule->film_schedule->id }}">
+                                            value="{{ $schedule->id }}">
                                         <button type="submit">
                                             <div class="schedule-data">
                                                 <div>
@@ -141,19 +141,19 @@
                                                 </div>
 
                                                 <span>Ticket :
-                                                    Rp.{{ number_format($schedule->film_schedule->ticket_price, 0, '.') }}</span>
+                                                    Rp.{{ number_format($schedule->ticket_price, 0, '.') }}</span>
                                                 <br>
-                                                <span>Airing at : {{ $schedule->film_schedule->airing_datetime }}</span>
+                                                <span>Airing at : {{ $schedule->airing_datetime }}</span>
                                                 <h5>Seats Availability</h5>
                                                 <table>
                                                     @php
-                                                        $seats = json_decode($schedule->film_schedule->seats_status);
+                                                        $seats = json_decode($schedule->seats_status);
                                                     @endphp
                                                     @foreach ($seats as $row)
                                                         <tr>
                                                             @foreach ($row as $col)
                                                                 <td>
-                                                                    <input type="checkbox" name="" id=""
+                                                                    <input type="checkbox"
                                                                         disabled {{ $col == 1 ? 'checked' : '' }}>
                                                                 </td>
                                                             @endforeach

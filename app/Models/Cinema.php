@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use App\Models\Film;
 use Illuminate\Database\Eloquent\Model;
 
@@ -54,59 +53,36 @@ class Cinema extends Model
 
     public static function findAiring(int $film_id)
     {
-        $cinemas = self::with("films")->get();
-        $searchedFilm = Film::find($film_id);
+        $schedules = self::where("cinema_film.film_id", "=", $film_id)
+            ->join("cinema_film", "cinema_film.cinema_id", "=", "cinemas.id")
+            ->join("films", "cinema_film.film_id", "=", "films.id")
+            ->get([
+                "cinema_film.id",
+                "cinema_film.cinema_id",
+                "cinema_film.ticket_price",
+                "cinema_film.airing_datetime",
+                "cinema_film.seats_status",
+                "films.id AS film_id",
+                "films.title",
+                "films.poster_image_url",
+                "films.release_date",
+                "films.duration"
+            ]);
 
-        $matchingCinemas = [];
+        $cinemas = self::get();
 
-        // foreach each cinema
-        // and foreach the film they scheduled
-        // if the film is the film we are looking for
-        // mark the cinema as 'matching'
         foreach ($cinemas as $cinema) {
-            foreach ($cinema->films as $film) {
-                $isIdEqual = $film->film_schedule->film_id == $film_id;
-                $isDateTodayOrTomorrow = Carbon::parse($film->film_schedule->airing_datetime)->gt(Carbon::now());
+            $matchingSchedules = [];
 
-                $seatsStatusArray = json_decode($film->film_schedule->seats_status);
-                $totalSeats = count($seatsStatusArray) * count($seatsStatusArray[0]);
-                $filledSeats = 0;
-                foreach ($seatsStatusArray as $row) {
-                    foreach ($row as $col) {
-                        if ($col == 1) {
-                            $filledSeats++;
-                        }
-                    }
-                }
-
-                $isSeatsStillAvailable = $totalSeats != $filledSeats;
-
-                if ($isIdEqual && $isDateTodayOrTomorrow && $isSeatsStillAvailable) {
-                    array_push($matchingCinemas, $cinema);
-                }
-            }
-        }
-
-        // foreach each cinema
-        // and foreach film they scheduled
-        // if the film is the film we are looking for
-        // put it in temporary array, $matchingFilms
-        // then replace the cinema's films with the
-        // temporary array
-        // this is to ensure the matching_cinemas being
-        // returned only with the requested film
-        foreach ($matchingCinemas as $cinema) {
-            $matchingFilms = [];
-
-            foreach ($cinema->films as $film) {
-                if ($film->title == $searchedFilm->title) {
-                    array_push($matchingFilms, $film);
+            foreach ($schedules as $schedule) {
+                if ($cinema->id == $schedule->cinema_id) {
+                    array_push($matchingSchedules, $schedule);
                 }
             }
 
-            $cinema->films = $matchingFilms;
+            $cinema->schedules = $matchingSchedules;
         }
 
-        return $matchingCinemas;
+        return $cinemas;
     }
 }

@@ -15,8 +15,9 @@ class FilmTicketTransactionController extends Controller
     {
         $validated = $getAiringCinemaRequest->validated();
         $matchingCinemas = Cinema::findAiring($validated["film_id"]);
-
-        return redirect()->route("film_ticket_transaction.show_airing_cinema")->with("cinemas", $matchingCinemas);
+        
+        return redirect()->route("film_ticket_transaction.show_airing_cinema")
+            ->with("cinemas", $matchingCinemas);
     }
 
     public function order(OrderFilmTicketRequest $orderFilmTicketRequest)
