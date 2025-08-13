@@ -48,9 +48,9 @@ class FilmTicketTransactionsExport implements FromView, ShouldAutoSize, WithEven
                     Currency::SYMBOL_WITHOUT_SPACING
                 );
 
-                $afterSheet->sheet->formatColumn("D", $rupiahCurrencyMask);
+                $afterSheet->sheet->formatColumn("E", $rupiahCurrencyMask);
 
-                $afterSheet->sheet->formatColumn("G", $rupiahCurrencyMask);
+                $afterSheet->sheet->formatColumn("H", $rupiahCurrencyMask);
             },
         ];
     }

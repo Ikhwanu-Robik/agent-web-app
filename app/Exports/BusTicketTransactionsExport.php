@@ -48,9 +48,9 @@ class BusTicketTransactionsExport implements FromView, ShouldAutoSize, WithEvent
                     Currency::SYMBOL_WITHOUT_SPACING
                 );
 
-                $afterSheet->sheet->formatColumn("D", $rupiahCurrencyMask);
+                $afterSheet->sheet->formatColumn("E", $rupiahCurrencyMask);
 
-                $afterSheet->sheet->formatColumn("F", $rupiahCurrencyMask);
+                $afterSheet->sheet->formatColumn("G", $rupiahCurrencyMask);
             },
         ];
     }

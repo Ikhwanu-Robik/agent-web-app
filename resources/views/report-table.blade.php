@@ -13,6 +13,7 @@
         <table>
             <thead>
                 <tr>
+                    <th style="font-weight: bold">Date</th>
                     <th style="font-weight: bold">Origin</th>
                     <th style="font-weight: bold">Destination</th>
                     <th style="font-weight: bold">Bus</th>
@@ -23,9 +24,10 @@
                     <th style="font-weight: bold">Status</th>
                 </tr>
             </thead>
-            <thead>
+            <tbody>
                 @foreach ($reports as $transaction)
                     <tr>
+                        <td>{{ $transaction->created_at }}</td>
                         <td>{{ $transaction->busSchedule->originStation->name }}</td>
                         <td>{{ $transaction->busSchedule->destinationStation->name }}</td>
                         <td>{{ $transaction->busSchedule->bus->name }}</td>
@@ -36,7 +38,7 @@
                         <td>{{ $transaction->status }}</td>
                     </tr>
                 @endforeach
-            </thead>
+            </tbody>
         </table>
     @elseif ($service == 'bpjs')
         <table>
@@ -65,6 +67,7 @@
         <table>
             <thead>
                 <tr>
+                    <th style="font-weight: bold">Date</th>
                     <th style="font-weight: bold">Film Title</th>
                     <th style="font-weight: bold">Cinema</th>
                     <th style="font-weight: bold">Transaction Date</th>
@@ -83,6 +86,7 @@
                         $ticket_qty = count($seats_coordinates);
                     @endphp
                     <tr>
+                        <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">{{ $transaction->created_at }}</td>
                         <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
                             {{ $transaction->cinemaFilm->film->title }}</td>
                         <td rowspan="{{ $ticket_qty }}" style="vertical-align: middle">
