@@ -12,7 +12,7 @@ class PowerTopupViewController extends Controller
         return view("agent.power-topup.form");
     }
 
-    public function showSelectPaymentMethodPage()
+    public function showSelectPaymentForm()
     {
         if (!session()->has("transaction")) {
             return redirect()->route("power_top_up_transaction.form");

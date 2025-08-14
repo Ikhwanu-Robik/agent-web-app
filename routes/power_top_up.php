@@ -9,7 +9,7 @@ Route::middleware("auth")->group(function () {
         ->name("power_top_up_transaction.form");
     Route::post("/power", [PowerTopUpTransactionController::class, "order"])
         ->name("power_top_up_transaction.order");
-    Route::get("/power/payment", [PowerTopupViewController::class, "showSelectPaymentMethodPage"])
+    Route::get("/power/select-payment", [PowerTopupViewController::class, "showSelectPaymentForm"])
         ->name("power_top_up_transaction.select_payment_method");
     Route::post("/power/pay", [PowerTopUpTransactionController::class, "pay"])
         ->name("power_top_up_transaction.pay");
