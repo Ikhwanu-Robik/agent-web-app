@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\businesses;
 
-use App\Facades\TransactionReport;
 use App\Models\ActiveBpjs;
 use App\Models\BpjsTransaction;
 use App\Models\CivilInformation;
+use App\Facades\TransactionReport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetBpjsDataRequest;
 use App\Http\Requests\PayBpjsTransactionRequest;
@@ -28,6 +28,9 @@ class BpjsTransactionController extends Controller
 
         $transaction = BpjsTransaction::pay($payBpjsTransactionRequest->validated());
 
+        // updating $bpjs because the database has changed
+        $bpjs = ActiveBpjs::search($civilInformation->NIK);
+        
         TransactionReport::updateBpjsReport();
 
         return redirect()
