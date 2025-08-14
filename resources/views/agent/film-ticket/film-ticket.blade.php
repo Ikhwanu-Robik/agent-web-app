@@ -77,7 +77,9 @@
             gap: 1em;
         }
 
-        main input, main button, main select {
+        main input,
+        main button,
+        main select {
             padding: 0.2em;
         }
 
@@ -90,6 +92,18 @@
 
         main button:hover {
             background-color: rgb(0, 200, 255);
+        }
+
+        main #films-list {
+            display: flex;
+            gap: 1em;
+            flex-wrap: wrap;
+        }
+
+        main .film-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
         }
     </style>
 </head>
@@ -109,19 +123,23 @@
             </div>
         @endif
 
-        <form action="{{ route("film_ticket_transaction.find_airing_cinema") }}" method="post">
-            @csrf
-            <section id="find-cinema">
-                <label for="film">Title</label>
-                <select name="film_id" id="film">
-                    @foreach ($films as $film)
-                        <option value="{{ $film->id }}">{{ $film->title }}</option>
-                    @endforeach
-                </select>
-
-                <button type="submit">Find Airing Cinema</button>
-            </section>
-        </form>
+        <div id="films-list">
+            @foreach ($films as $film)
+                <form action="{{ route('film_ticket_transaction.find_airing_cinema', ['film' => $film->id]) }}"
+                    method="post">
+                    @csrf
+                    <input type="hidden" name="film_id" value="{{ $film->id }}">
+    
+                    <button type="submit">
+                        <div class="film-card">
+                            <img src="{{ asset($film->poster_image_url) }}" alt="" width="150em">
+                            <h4>{{ $film->title }}</h4>
+                            <span>{{ $film->duration }} minutes</span>
+                        </div>
+                    </button>
+                </form>
+            @endforeach
+        </div>
     </main>
 </body>
 

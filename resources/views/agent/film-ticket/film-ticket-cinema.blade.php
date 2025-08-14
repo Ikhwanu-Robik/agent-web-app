@@ -127,10 +127,13 @@
 
                             <div class="schedule-list">
                                 @foreach ($cinema->schedules as $schedule)
-                                    <form action="{{ route('film_ticket_transaction.show_book_seat_form') }}"
+                                    <form
+                                        action="{{ route('film_ticket_transaction.show_book_seat_form', [
+                                            'film' => $schedule->film_id,
+                                            'cinema' => $cinema->id,
+                                            'schedule' => $schedule->id
+                                        ]) }}"
                                         method="get">
-                                        <input type="hidden" name="cinema_film_id"
-                                            value="{{ $schedule->id }}">
                                         <button type="submit">
                                             <div class="schedule-data">
                                                 <div>
@@ -153,8 +156,8 @@
                                                         <tr>
                                                             @foreach ($row as $col)
                                                                 <td>
-                                                                    <input type="checkbox"
-                                                                        disabled {{ $col == 1 ? 'checked' : '' }}>
+                                                                    <input type="checkbox" disabled
+                                                                        {{ $col == 1 ? 'checked' : '' }}>
                                                                 </td>
                                                             @endforeach
                                                         </tr>

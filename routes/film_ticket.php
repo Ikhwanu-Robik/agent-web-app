@@ -5,20 +5,20 @@ use App\Http\Controllers\views\FilmTicketViewController;
 use App\Http\Controllers\businesses\FilmTicketTransactionController;
 
 Route::middleware("auth")->group(function () {
-    Route::get("/film", [FilmTicketViewController::class, "filmTicket"])
+    Route::get("/films", [FilmTicketViewController::class, "showFilms"])
         ->name("film_ticket_transaction.select_film");
-    Route::post("/film/cinema", [FilmTicketTransactionController::class, "search"])
+    Route::post("/films/{film}/cinemas", [FilmTicketTransactionController::class, "search"])
         ->name("film_ticket_transaction.find_airing_cinema");
-    Route::get("/film/cinema", [FilmTicketViewController::class, "showAiringCinemaPage"])
+    Route::get("/films/{film}/cinemas", [FilmTicketViewController::class, "showAiringCinemas"])
         ->name("film_ticket_transaction.show_airing_cinema");
-    Route::get("/film/cinema/seats", [FilmTicketViewController::class, "showFilmBookSeatPage"])
-        ->name("film_ticket_transaction.show_book_seat_form");
-    Route::post("/film/cinema/seats", [FilmTicketTransactionController::class, "order"])
+    Route::post("/films/{film}/cinemas/{cinema}/schedules/{schedule}/order", [FilmTicketTransactionController::class, "order"])
         ->name("film_ticket_transaction.book_seat");
-    Route::get("/film/cinema/payment", [FilmTicketViewController::class, "showFilmPaymentPage"])
+    Route::get("/films/{film}/cinemas/{cinema}/schedules/{schedule}/select-seat", [FilmTicketViewController::class, "showSelectSeatForm"])
+        ->name("film_ticket_transaction.show_book_seat_form");
+    Route::get("/films/{film}/cinemas/{cinema}/schedules/{schedule}/select-payment", [FilmTicketViewController::class, "showPaymentForm"])
         ->name("film_ticket_transaction.select_payment_method");
-    Route::post("/film/cinema/pay", [FilmTicketTransactionController::class, "pay"])
+    Route::post("/films/{film}/cinemas/{cinema}/schedules/{schedule}/pay", [FilmTicketTransactionController::class, "pay"])
         ->name("film_ticket_transaction.pay");
-    Route::get("/film/cinema/seats/transaction/receipt", [FilmTicketViewController::class, "showFilmReceipt"])
+    Route::get("/films/{film}/cinemas/{cinema}/schedules/{schedule}/receipt", [FilmTicketViewController::class, "showReceipt"])
         ->name("film_ticket_transaction.receipt");
 });

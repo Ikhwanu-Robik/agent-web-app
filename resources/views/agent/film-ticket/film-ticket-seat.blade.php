@@ -122,7 +122,13 @@
         </div>
 
         <div id="seats">
-            <form action="{{ route("film_ticket_transaction.book_seat") }}" method="post">
+            <form
+                action="{{ route('film_ticket_transaction.book_seat', [
+                    'film' => $filmSchedule->film->id,
+                    'cinema' => $filmSchedule->cinema->id,
+                    'schedule' => $filmSchedule->id
+                ]) }}"
+                method="post">
                 @csrf
                 <input type="hidden" name="cinema_film_id" value="{{ $filmSchedule->id }}">
 

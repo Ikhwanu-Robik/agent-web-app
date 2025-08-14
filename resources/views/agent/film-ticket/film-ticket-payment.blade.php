@@ -163,7 +163,13 @@
 
         </table>
 
-        <form action="{{ route("film_ticket_transaction.pay") }}" method="post">
+        <form
+            action="{{ route('film_ticket_transaction.pay', [
+                'film' => $filmTicketTransaction->cinema_film->film->id,
+                'cinema' => $filmTicketTransaction->cinema_film->cinema->id,
+                'schedule' => $filmTicketTransaction->cinema_film->id,
+            ]) }}"
+            method="post">
             @csrf
             <label for="payment_method">Payment Method</label>
             <select name="payment_method" id="payment_method">
