@@ -34,7 +34,7 @@ class Cinema extends Model
             "name" => $attributesRaw["name"],
             "seats_structure" => json_encode($seatsStructure)
         ];
-        Cinema::create($attributes);
+        self::create($attributes);
     }
 
     public function updateSpecial(array $attributes)
