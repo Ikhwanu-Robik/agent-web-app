@@ -75,7 +75,7 @@ class GameTopUpTransaction extends Model
                 FlipBillType::SINGLE,
                 $this->total,
                 FlipStep::INPUT_DATA,
-                "/game/top-up"
+                "/games"
             );
 
             $flipResponse = $response;

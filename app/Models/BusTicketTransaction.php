@@ -99,7 +99,7 @@ class BusTicketTransaction extends Model
                 FlipBillType::SINGLE,
                 $this->total,
                 FlipStep::INPUT_DATA,
-                "/bus/ticket"
+                "/bus/schedules"
             );
 
             $this->method = "flip";

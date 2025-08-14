@@ -82,7 +82,7 @@ class FilmTicketTransaction extends Model
                 FlipBillType::SINGLE,
                 $this->total,
                 FlipStep::INPUT_DATA,
-                "/film"
+                "/films"
             );
 
             $flipResponse = $response;
