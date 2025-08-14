@@ -14,14 +14,14 @@ class BusTicketTransactionController extends Controller
     public function search(GetBusScheduleRequest $getBusScheduleRequest)
     {
         $matchingSchedules = BusSchedule::search($getBusScheduleRequest->validated());
-
+        
         return back()
             ->with("matching_schedules", $matchingSchedules)
             ->with("redirect_status", "successful redirection")
             ->withInput();
     }
 
-    public function order(OrderBusTicketRequest $orderBusTicketRequest)
+    public function order(OrderBusTicketRequest $orderBusTicketRequest, BusSchedule $schedule)
     {
         $validated = $orderBusTicketRequest->validated();
 
@@ -29,11 +29,11 @@ class BusTicketTransactionController extends Controller
         $transaction->appendBusScheduleDetails();
 
         return redirect()
-            ->route("bus_ticket_transaction.select_payment_method")
+            ->route("bus_ticket_transaction.select_payment_method", ["schedule" => $transaction->bus_schedule_id])
             ->with("transaction", $transaction);
     }
 
-    public function pay(PayBusTicketRequest $payBusTicketRequest)
+    public function pay(PayBusTicketRequest $payBusTicketRequest, BusSchedule $schedule)
     {
         $validated = $payBusTicketRequest->validated();
 
@@ -46,7 +46,7 @@ class BusTicketTransactionController extends Controller
         }
 
         return redirect()
-            ->route("bus_ticket_transaction.receipt")
+            ->route("bus_ticket_transaction.receipt", ["schedule" => $transaction->bus_schedule_id])
             ->with("transaction", value: $transaction)
             ->with("payment_method", $validated["payment_method"])
             ->with("flip_response", $paymentData["flip_response"]);

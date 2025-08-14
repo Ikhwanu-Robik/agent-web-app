@@ -5,6 +5,8 @@ use App\Http\Controllers\businesses\ReportController;
 use App\Http\Controllers\views\PowerTopupViewController;
 
 Route::middleware("auth")->group(function () {
+    Route::get("/power", [PowerTopupViewController::class, "showPowerTopUpForm"])
+        ->name("power_top_up_transaction.form");
     Route::post("/power", [PowerTopUpTransactionController::class, "order"])
         ->name("power_top_up_transaction.order");
     Route::get("/power/payment", [PowerTopupViewController::class, "showSelectPaymentMethodPage"])

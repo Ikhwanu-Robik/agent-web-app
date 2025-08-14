@@ -121,7 +121,7 @@
             </div>
         @endif
 
-        <form action="{{ route("bus_ticket_transaction.find_package") }}" method="post">
+        <form action="{{ route("bus_ticket_transaction.find_schedule") }}" method="post">
             @csrf
 
             <label for="origin">From</label>
@@ -173,7 +173,7 @@
                                 <br>
                                 <span>Seats remaining</span> <b>{{ $schedule->seats }}</b> <br>
                                 <b>Rp. {{ $schedule->ticket_price }} / ticket</b>
-                                <form action="{{ route("bus_ticket_transaction.order") }}" method="post" style="display:inline">
+                                <form action="{{ route("bus_ticket_transaction.order", ["schedule" => $schedule->id]) }}" method="post" style="display:inline">
                                     @csrf
                                     <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
                                     <input type="hidden" name="ticket_amount"

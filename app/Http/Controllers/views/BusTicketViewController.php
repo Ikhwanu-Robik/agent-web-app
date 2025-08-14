@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\views;
 
+use App\Models\BusSchedule;
 use App\Models\Voucher;
 use App\Models\BusStation;
 use App\Http\Controllers\Controller;
 
 class BusTicketViewController extends Controller
 {
-    public function busTicket()
+    public function showSearchBusScheduleForm()
     {
         return view("agent.bus-ticket.bus-ticket", ["busStations" => BusStation::all()]);
     }
 
-    public function busPayment()
+    public function showPaymentForm(BusSchedule $schedule)
     {
         $transaction = session("transaction");
         $vouchers = Voucher::getValidVouchers("bus_ticket");
@@ -26,7 +27,7 @@ class BusTicketViewController extends Controller
         ]);
     }
 
-    public function busReceipt()
+    public function showReceipt(BusSchedule $schedule)
     {
         $transaction = session("transaction");
         $paymentMethod = session("payment_method");

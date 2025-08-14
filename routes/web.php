@@ -2,27 +2,14 @@
 
 use App\Http\Controllers\FlipCallbackController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\businesses\AuthController;
-use App\Http\Controllers\views\GeneralViewController;
 
-require("pages.php");
+require("auth.php");
+require("general.php");
 require("admin.php");
 require("bus_ticket.php");
 require("bpjs.php");
 require("film_ticket.php");
 require("game_top_up.php");
 require("power_top_up.php");
-
-Route::middleware("auth")->group(function () {
-   Route::post("/logout", [AuthController::class, "logout"])->name("logout");
-});
-
-Route::middleware("guest")->group(function () {
-   Route::get("/login", [GeneralViewController::class, "showLoginForm"])->name("login");
-   Route::post("/login", [AuthController::class, "login"])->name("login");
-
-   Route::get("/register", [GeneralViewController::class, "showRegisterForm"])->name("register");
-   Route::post("/register", [AuthController::class, "register"])->name("register");
-});
 
 Route::post("/flipcallback", FlipCallbackController::class)->name("flipcallback");

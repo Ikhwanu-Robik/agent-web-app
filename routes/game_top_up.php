@@ -4,6 +4,8 @@ use App\Http\Controllers\businesses\GameTopUpTransactionController;
 use App\Http\Controllers\views\GameTopupViewController;
 
 Route::middleware("auth")->group(function () {
+    Route::get("/game/top-up", [GameTopupViewController::class, "selectGame"])
+        ->name("game_top_up_transaction.select_game");
     Route::post("/game/packages", [GameTopUpTransactionController::class, "getGamePackages"])
         ->name("game_top_up_transaction.find_game_packages");
     Route::post("/game/package/{package}", [GameTopUpTransactionController::class, "order"])

@@ -6,6 +6,8 @@ use App\Http\Controllers\Businesses\ReportController;
 use App\Http\Controllers\businesses\BpjsTransactionController;
 
 Route::middleware("auth")->group(function () {
+    Route::get("/bpjs", [BpjsViewController::class, "showBpjsForm"])
+        ->name("bpjs_transaction.form");
     Route::post("/bpjs", [BpjsTransactionController::class, "search"])
         ->name("bpjs_transaction.find_bpjs_data");
     Route::post("/bpjs/pay", [BpjsTransactionController::class, "pay"])
@@ -14,5 +16,5 @@ Route::middleware("auth")->group(function () {
         ->name("bpjs_transaction.receipt");
 
     Route::post("/report/bpjs", [ReportController::class, "getBpjsReport"])
-        ->name("report.find_bpjs");
-});
+        ->name("report.find_bpjs_report");
+}); 

@@ -114,7 +114,7 @@
 
         <div id="form">
             <h3>Choose your payment method</h3>
-            <form action="{{ route('bus_ticket_transaction.pay') }}" method="post" style="display:inline">
+            <form action="{{ route('bus_ticket_transaction.pay', ["schedule" => $transaction->bus_schedule_id]) }}" method="post" style="display:inline">
                 @csrf
                 <input type="hidden" name="bus_schedule_id" value="{{ $transaction->bus_schedule_id }}" />
                 <input type="hidden" name="ticket_amount" value="{{ $transaction->ticket_amount }}" />

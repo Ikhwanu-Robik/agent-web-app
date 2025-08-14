@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 class BpjsViewController extends Controller
 {
-    public function bpjs()
+    public function showBpjsForm()
     {
         $bpjs = session("bpjs");
 

@@ -178,7 +178,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('report.find_bpjs') }}" method="post">
+                    <form action="{{ route('report.find_bpjs_report') }}" method="post">
                         @csrf
                         <input type="text" name="civil_id" id="civil_id" placeholder="NIK">
                         <button type="submit">Send</button>

@@ -80,7 +80,7 @@
             <button type="submit">Login</button>
         </form>
 
-        <span>Don't have an account? </span><a href="{{ route("register") }}">Register</a>
+        <span>Don't have an account? </span><a href="{{ route("register.form") }}">Register</a>
     </main>
 </body>
 

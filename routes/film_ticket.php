@@ -5,6 +5,8 @@ use App\Http\Controllers\views\FilmTicketViewController;
 use App\Http\Controllers\businesses\FilmTicketTransactionController;
 
 Route::middleware("auth")->group(function () {
+    Route::get("/film", [FilmTicketViewController::class, "filmTicket"])
+        ->name("film_ticket_transaction.select_film");
     Route::post("/film/cinema", [FilmTicketTransactionController::class, "search"])
         ->name("film_ticket_transaction.find_airing_cinema");
     Route::get("/film/cinema", [FilmTicketViewController::class, "showAiringCinemaPage"])
