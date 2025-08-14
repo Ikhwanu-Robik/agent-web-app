@@ -93,6 +93,12 @@
         main button:hover {
             background-color: rgb(0, 200, 255);
         }
+
+        main #games-list {
+            display: flex;
+            gap: 1em;
+            flex-wrap: wrap;
+        }
     </style>
 </head>
 
@@ -103,15 +109,15 @@
         <h1>Top Up Game</h1>
         <h2>Choose Game</h2>
 
-        <form action="{{ route("game_top_up_transaction.find_game_packages") }}" method="post">
-            @csrf
-            <select name="game_id" id="">
-                @foreach ($games as $game)
-                    <option value="{{ $game->id }}">{{ $game->name }}</option>
-                @endforeach
-            </select>
-            <button type="submit">Search Top Up Packages</button>
-        </form>
+        <div id="games-list">
+            @foreach ($games as $game)
+                <form action="{{ route('game_top_up_transaction.find_game_packages', ["game" => $game->id]) }}" method="post">
+                    @csrf
+                    <input type="hidden" name="game_id" value="{{ $game->id }}">
+                    <button type="submit">{{ $game->name }}</button>
+                </form>
+            @endforeach
+        </div>
 
         @if ($packages)
             <div>
@@ -122,8 +128,10 @@
                                 <h3>{{ $package->title }}</h3>
                                 <span>{{ $package->game->name }}</span> <br>
                                 <em>{{ $package->items_count }} {{ $package->game->currency }} -
-                                    Rp. {{ number_format($package->price, 0, ",", ".") }}</em>
-                                <form action="{{ route("game_top_up_transaction.order_package", ["package" => $package->id]) }}" method="post">
+                                    Rp. {{ number_format($package->price, 0, ',', '.') }}</em>
+                                <form
+                                    action="{{ route('game_top_up_transaction.order_package', ["game" => $package->game->id, 'package' => $package->id]) }}"
+                                    method="post">
                                     @csrf
                                     <input type="hidden" name="game_id" value="{{ $selectedGameId }}">
                                     <input type="hidden" name="game_top_up_package_id" value="{{ $package->id }}">

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\businesses;
 
-use App\Http\Requests\OrderGamePackageRequest;
-use App\Http\Requests\GetGamePackagesRequest;
-use App\Http\Requests\PayGamePackageRequest;
+use App\Models\Game;
 use App\Models\GameTopUpPackage;
 use App\Http\Controllers\Controller;
 use App\Models\GameTopUpTransaction;
+use App\Http\Requests\PayGamePackageRequest;
+use App\Http\Requests\GetGamePackagesRequest;
+use App\Http\Requests\OrderGamePackageRequest;
 
 class GameTopUpTransactionController extends Controller
 {
@@ -24,18 +25,21 @@ class GameTopUpTransactionController extends Controller
             ->with("selected_game_id", $validated["game_id"]);
     }
 
-    public function order(OrderGamePackageRequest $orderGamePackageRequest, GameTopUpPackage $package)
+    public function order(OrderGamePackageRequest $orderGamePackageRequest, Game $game, GameTopUpPackage $package)
     {
         $validated = $orderGamePackageRequest->validated();
 
         $transaction = GameTopUpTransaction::createOrder($validated, $package);
 
         return redirect()
-            ->route("game_top_up_transaction.select_payment_method")
+            ->route("game_top_up_transaction.select_payment_method", [
+                "game" => $game->id,
+                "package" => $package->id
+            ])
             ->with("transaction", $transaction);
     }
 
-    public function pay(PayGamePackageRequest $payGamePackageRequest, GameTopUpPackage $package)
+    public function pay(PayGamePackageRequest $payGamePackageRequest, Game $game, GameTopUpPackage $package)
     {
         $validated = $payGamePackageRequest->validated();
 
@@ -44,7 +48,10 @@ class GameTopUpTransactionController extends Controller
         $flipResponse = $transaction->processPayment($package, $validated);
 
         return redirect()
-            ->route("game_top_up_transaction.receipt")
+            ->route("game_top_up_transaction.receipt", [
+                "game" => $game->id,
+                "package" => $package->id
+            ])
             ->with("transaction", $transaction)
             ->with("flip_response", $flipResponse);
     }

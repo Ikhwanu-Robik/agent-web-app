@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GameTopupViewController extends Controller
 {
-    public function selectGame()
+    public function showSelectGameForm()
     {
         $packages = session("packages");
         session()->reflash();
@@ -22,7 +22,7 @@ class GameTopupViewController extends Controller
         ]);
     }
 
-    public function selectPaymentMethod()
+    public function selectPayment()
     {
         $transaction = session("transaction");
         $package = GameTopUpPackage::with("game")
@@ -45,7 +45,7 @@ class GameTopupViewController extends Controller
         ]);
     }
 
-    public function receipt()
+    public function showReceipt()
     {
         $transaction = session("transaction");
         $flipResponse = session("flip_response");
