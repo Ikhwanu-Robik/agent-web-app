@@ -119,14 +119,14 @@
             @endforeach
         </div>
 
-        @if ($packages)
+        @if (isset($packages) && $packages != null && count($packages) != 0)
+            <h2>Packages for {{ $packages[0]->game->name }}</h2>
             <div>
                 <ul>
                     @foreach ($packages as $package)
                         <li>
                             <div>
                                 <h3>{{ $package->title }}</h3>
-                                <span>{{ $package->game->name }}</span> <br>
                                 <em>{{ $package->items_count }} {{ $package->game->currency }} -
                                     Rp. {{ number_format($package->price, 0, ',', '.') }}</em>
                                 <form
@@ -142,6 +142,8 @@
                     @endforeach
                 </ul>
             </div>
+        @elseif ($selectedGameId != null)
+            <h2>No Packages Found</h2>
         @endif
     </main>
 </body>
