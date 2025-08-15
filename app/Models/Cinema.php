@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Film;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 
 class Cinema extends Model
@@ -53,7 +55,8 @@ class Cinema extends Model
 
     public static function findAiring(int $film_id)
     {
-        $schedules = self::where("cinema_film.film_id", "=", $film_id)
+        $schedules = Cinema::where("cinema_film.film_id", "=", $film_id, "and")
+            ->where("airing_datetime", ">=", Carbon::now())
             ->join("cinema_film", "cinema_film.cinema_id", "=", "cinemas.id")
             ->join("films", "cinema_film.film_id", "=", "films.id")
             ->get([
@@ -68,7 +71,7 @@ class Cinema extends Model
                 "films.release_date",
                 "films.duration"
             ]);
-
+            
         $cinemas = self::get();
 
         foreach ($cinemas as $cinema) {
