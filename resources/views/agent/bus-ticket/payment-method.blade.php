@@ -101,6 +101,17 @@
 
     <main>
         <h2>You're About to Buy Bus Tiket for {{ $transaction->busSchedule->bus->name }}</h2>
+
+        @if ($errors->any())
+            <div class="error" style="color:red">
+                @foreach ($errors->all() as $error)
+                    <div>
+                        {{ $error }}
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
         <div id="transaction-data">
             <h4>From {{ $transaction->busSchedule->originStation->name }} To
                 {{ $transaction->busSchedule->destinationStation->name }}</h4>
@@ -114,7 +125,8 @@
 
         <div id="form">
             <h3>Choose your payment method</h3>
-            <form action="{{ route('bus_ticket_transaction.pay', ["schedule" => $transaction->bus_schedule_id]) }}" method="post" style="display:inline">
+            <form action="{{ route('bus_ticket_transaction.pay', ['schedule' => $transaction->bus_schedule_id]) }}"
+                method="post" style="display:inline">
                 @csrf
                 <input type="hidden" name="bus_schedule_id" value="{{ $transaction->bus_schedule_id }}" />
                 <input type="hidden" name="ticket_amount" value="{{ $transaction->ticket_amount }}" />

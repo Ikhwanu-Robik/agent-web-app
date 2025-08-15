@@ -105,6 +105,17 @@
 
     <main>
         <h1>You're about to buy top up package :</h1>
+
+        @if ($errors->any())
+            <div class="error" style="color:red">
+                @foreach ($errors->all() as $error)
+                    <div>
+                        {{ $error }}
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
         <table>
             <tr>
                 <td>Game</td>

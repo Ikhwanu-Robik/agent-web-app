@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\VoucherOwned;
 use App\Rules\VoucherValid;
 use App\Enums\PaymentMethod;
 use Illuminate\Validation\Rule;
@@ -24,11 +25,19 @@ class PayGamePackageRequest extends FormRequest
      */
     public function rules(): array
     {
+        // reflashing the session
+        // becuase if validation fail
+        // and user get redirected back
+        // some data from the session is
+        // required to enter the route
+        session()->reflash();
+
         return [
             "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
             "voucher" => [
                 "required",
                 "numeric",
+                new VoucherOwned,
                 new VoucherValid("game_top_up")
             ]
         ];
