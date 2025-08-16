@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use App\Models\Bus;
 use App\Models\BusStation;
 use Illuminate\Database\Eloquent\Model;
@@ -33,8 +32,8 @@ class BusSchedule extends Model
 
     public static function search(array $validated)
     {
-        $query = self::where("departure_date", ">=", Carbon::now()->toDateString())
-            ->where("departure_time", ">=", Carbon::now()->toTimeString())
+        $query = self::where("departure_date", ">=", $validated["departure_date"])
+            ->where("departure_time", ">=", $validated["departure_time"])
             ->where("origin_station_id", "=", $validated["origin"])
             ->where("destination_station_id", "=", $validated["destination"])
             ->where("seats", ">=", $validated["ticket_amount"]);

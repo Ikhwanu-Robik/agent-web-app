@@ -24,7 +24,9 @@ class GetBusScheduleRequest extends FormRequest
         return [
             "origin" => "required|exists:bus_stations,id",
             "destination" => "required|exists:bus_stations,id",
-            "ticket_amount" => "required|numeric"
+            "ticket_amount" => "required|numeric",
+            "departure_date" => "required|date",
+            "departure_time" => "required"
         ];
     }
 }

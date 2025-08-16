@@ -142,7 +142,10 @@
             </select>
             <label for="ticket-amount">Quantity</label>
             <input type="number" name="ticket_amount" id="ticket-amount" min="1"
-                value="{{ old('ticket_amount') ? old('ticket_amount') : 1 }}">
+            value="{{ old('ticket_amount') ? old('ticket_amount') : 1 }}">
+            <label for="depart_date">After </label>
+            <input type="date" name="departure_date" id="depart_date" value="{{ old('departure_date') ? old('departure_date') : '' }}">
+            <input type="time" name="departure_time" id="depart_time" value="{{ old('departure_time') ? old('departure_time') : '' }}">
 
             <button type="submit">Search Ticket</button>
         </form>
