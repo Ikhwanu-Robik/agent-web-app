@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\resources\GameTopUpPackageController;
+use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\resources\BusController;
 use App\Http\Controllers\resources\FilmController;
@@ -13,7 +14,7 @@ use App\Http\Controllers\resources\BusStationController;
 use App\Http\Controllers\resources\CinemaFilmController;
 use App\Http\Controllers\resources\BusScheduleController;
 
-Route::middleware("auth")->group(function () {
+Route::middleware(["auth", EnsureUserIsAdmin::class])->group(function () {
    Route::get("/master", [GeneralViewController::class, "master"]);
 
    Route::prefix("/master")->group(function () {

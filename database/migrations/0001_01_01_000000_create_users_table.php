@@ -1,11 +1,11 @@
 <?php
 
+use App\Enums\UserRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,6 +18,12 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string("profile_photo");
+            $table->enum("role", json_decode(
+                json_encode(
+                    UserRole::cases()
+                )
+            ))
+                ->default(UserRole::AGENT);
             $table->rememberToken();
             $table->timestamps();
         });
