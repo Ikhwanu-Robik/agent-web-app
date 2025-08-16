@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\PaymentMethod;
+use App\Rules\VoucherOwned;
 use App\Rules\VoucherValid;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,12 +25,20 @@ class PayBusTicketRequest extends FormRequest
      */
     public function rules(): array
     {
+        // reflashing the session
+        // becuase if validation fail
+        // and user get redirected back
+        // some data from the session is
+        // required to enter the route
+        session()->reflash();
+        
         return [
             "bus_schedule_id" => "required|exists:bus_schedules,id",
             "ticket_amount" => "required|numeric",
             "payment_method" => ["required", Rule::enum(PaymentMethod::class)],
             "voucher" => [
                 "required",
+                new VoucherOwned,
                 new VoucherValid("bus_ticket")
             ]
         ];

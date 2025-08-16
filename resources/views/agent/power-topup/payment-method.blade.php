@@ -102,6 +102,16 @@
     <main>
         <h1>Choose Payment Method</h1>
 
+        @if ($errors->any())
+            <div class="error" style="color:red">
+                @foreach ($errors->all() as $error)
+                    <div>
+                        {{ $error }}
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
         <form action="{{ route("power_top_up_transaction.pay") }}" method="post">
             @csrf
             <label for="payment_method">Payment Method</label>

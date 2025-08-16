@@ -105,6 +105,17 @@
 
     <main>
         <h1>Choose Payment Method</h1>
+
+        @if ($errors->any())
+            <div class="error" style="color:red">
+                @foreach ($errors->all() as $error)
+                    <div>
+                        {{ $error }}
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
         <h2>You are about to buy a film ticket :</h2>
         <table>
             <tr>
