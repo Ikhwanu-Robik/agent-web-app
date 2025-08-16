@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\FlipStep;
+use App\Enums\TransactionStatus;
 use App\Models\Voucher;
 use App\Enums\FlipBillType;
 use App\Models\BusSchedule;
@@ -85,10 +86,10 @@ class BusTicketTransaction extends Model
         );
 
         $flipResponse = null;
-        $this->status = "PENDING";
+        $this->status = TransactionStatus::PENDING;
         if ($validated["payment_method"] == "cash") {
             $this->method = "cash";
-            $this->status = "SUCCESSFUL";
+            $this->status = TransactionStatus::SUCCESS;
         } else if ($validated["payment_method"] == "flip") {
             $busName = $busSchedule->bus->name;
             $originStationName = $busSchedule->originStation->name;

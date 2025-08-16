@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TransactionStatus;
 use Illuminate\Http\Request;
 use App\Models\BpjsTransaction;
 use App\Facades\FlipTransaction;
@@ -44,27 +45,27 @@ class FlipCallbackController extends Controller
         $powerTransaction = PowerTransaction::where("flip_link_id", "=", $paymentData["link_id"])->first();
 
         if ($busTicketTransaction) {
-            $busTicketTransaction->status = $paymentData["status"];
+            $busTicketTransaction->status = TransactionStatus::from($paymentData["status"]);
             if ($paymentData["status"] == "SUCCESSFUL") {
                 $busTicketTransaction->busSchedule
                     ->reduceAvailableTicket($busTicketTransaction->ticket_amount);
             }
             $busTicketTransaction->save();
         } else if ($bpjsTransaction) {
-            $bpjsTransaction->status = $paymentData["status"];
+            $bpjsTransaction->status = TransactionStatus::from($paymentData["status"]);
             $bpjsTransaction->save();
         } else if ($filmTicketTransaction) {
-            $filmTicketTransaction->status = $paymentData["status"];
+            $filmTicketTransaction->status = TransactionStatus::from($paymentData["status"]);
             if ($paymentData["status"] == "SUCCESSFUL") {
                 $filmTicketTransaction->CinemaFilm
                     ->updateAvailableSeats(json_decode($filmTicketTransaction->seats_coordinates));
             }
             $filmTicketTransaction->save();
         } else if ($gameTopUpTransaction) {
-            $gameTopUpTransaction->status = $paymentData["status"];
+            $gameTopUpTransaction->status = TransactionStatus::from($paymentData["status"]);
             $gameTopUpTransaction->save();
         } else if ($powerTransaction) {
-            $powerTransaction->status = $paymentData["status"];
+            $powerTransaction->status = TransactionStatus::from($paymentData["status"]);
             $powerTransaction->save();
         }
 

@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Enums\FlipStep;
+use App\Enums\TransactionStatus;
 use App\Models\Voucher;
 use App\Enums\FlipBillType;
 use App\Facades\FlipTransaction;
 use App\Models\GameTopUpPackage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 
 class GameTopUpTransaction extends Model
 {
@@ -58,12 +58,12 @@ class GameTopUpTransaction extends Model
         $voucher = $this->calculateTotal($validated["voucher"]);
 
         $this->method = $validated["payment_method"];
-        $this->status = "PENDING";
+        $this->status = TransactionStatus::PENDING;
 
         $flipResponse = null;
 
         if ($validated["payment_method"] == "cash") {
-            $this->status = "SUCCESSFUL";
+            $this->status = TransactionStatus::SUCCESS;
         } else if ($validated["payment_method"] == "flip") {
             $gameName = $package->game->name;
             $packageTitle = $package->title;

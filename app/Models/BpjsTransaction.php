@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\FlipStep;
+use App\Enums\TransactionStatus;
 use App\Models\ActiveBpjs;
 use App\Enums\FlipBillType;
 use App\Facades\FlipTransaction;
@@ -38,10 +39,10 @@ class BpjsTransaction extends Model
 
         $price = $bpjs->bpjsClass->price;
         $total = $validated["month"] * $price;
-        $status = "PENDING";
+        $status = TransactionStatus::PENDING;
         $flipResponse = null;
         if ($validated["payment_method"] == "cash") {
-            $status = "SUCCESSFUL";
+            $status = TransactionStatus::SUCCESS;
         } else if ($validated["payment_method"] == "flip") {
             $response = FlipTransaction::createFlipBill(
                 "BPJS - {$validated['month']} months",

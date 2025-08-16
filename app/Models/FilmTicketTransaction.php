@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\FlipStep;
+use App\Enums\TransactionStatus;
 use App\Models\Voucher;
 use App\Models\CinemaFilm;
 use App\Enums\FlipBillType;
@@ -67,11 +68,11 @@ class FilmTicketTransaction extends Model
     {
         $voucher = $this->calculateTotal($validated["voucher"]);
 
-        $this->status = "PENDING";
+        $this->status = TransactionStatus::PENDING;
         $flipResponse = null;
         if ($validated["payment_method"] == "cash") {
             $this->method = "cash";
-            $this->status = "SUCCESSFUL";
+            $this->status = TransactionStatus::SUCCESS;
         } else if ($validated["payment_method"] == "flip") {
             $this->method = "flip";
             $filmName = $this->cinemaFilm->film->title;

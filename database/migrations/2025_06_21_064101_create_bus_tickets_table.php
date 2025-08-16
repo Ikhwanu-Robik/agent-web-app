@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TransactionStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -46,7 +47,12 @@ return new class extends Migration {
             $table->integer("ticket_amount");
             $table->integer("total");
             $table->string('method')->nullable();
-            $table->string('status')->nullable();
+            $table->enum(
+                'status',
+                json_decode(
+                    json_encode(TransactionStatus::cases())
+                )
+            )->default(TransactionStatus::PENDING->value);
             $table->string('flip_link_id')->unique()->nullable();
 
             $table->foreign("bus_schedule_id")->references("id")->on("bus_schedules");
