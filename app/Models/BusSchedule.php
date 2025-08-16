@@ -33,7 +33,8 @@ class BusSchedule extends Model
 
     public static function search(array $validated)
     {
-        $query = self::where("departure_date", ">=", Carbon::now())
+        $query = self::where("departure_date", ">=", Carbon::now()->toDateString())
+            ->where("departure_time", ">=", Carbon::now()->toTimeString())
             ->where("origin_station_id", "=", $validated["origin"])
             ->where("destination_station_id", "=", $validated["destination"])
             ->where("seats", ">=", $validated["ticket_amount"]);
