@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\TransactionStatus;
 use App\Exports\BpjsTransactionsExport;
 use App\Exports\BusTicketTransactionsExport;
 use App\Exports\GameTopUpTransactionsExport;
@@ -26,18 +27,23 @@ class TransactionReport
 
         $busTicketTransactions = BusTicketTransaction::where("user_id", "=", Auth::id())
             ->whereBetween("created_at", [$firstDateOfTheMonth, $lastDateOfTheMonth])
+            ->where("status", "=", TransactionStatus::SUCCESS)
             ->get();
         $bpjsTransactions = BpjsTransaction::where("user_id", "=", Auth::id())
             ->whereBetween("created_at", [$firstDateOfTheMonth, $lastDateOfTheMonth])
+            ->where("status", "=", TransactionStatus::SUCCESS)
             ->get();
         $filmTicketTransactions = FilmTicketTransaction::where("user_id", "=", Auth::id())
             ->whereBetween("created_at", [$firstDateOfTheMonth, $lastDateOfTheMonth])
+            ->where("status", "=", TransactionStatus::SUCCESS)
             ->get();
         $gameTopUpTransactions = GameTopUpTransaction::where("user_id", "=", Auth::id())
             ->whereBetween("created_at", [$firstDateOfTheMonth, $lastDateOfTheMonth])
+            ->where("status", "=", TransactionStatus::SUCCESS)
             ->get();
         $powerTopUpTransactions = PowerTransaction::where("user_id", "=", Auth::id())
             ->whereBetween("created_at", [$firstDateOfTheMonth, $lastDateOfTheMonth])
+            ->where("status", "=", TransactionStatus::SUCCESS)
             ->get();
 
         // relates the service name with each amount of transactions this month
